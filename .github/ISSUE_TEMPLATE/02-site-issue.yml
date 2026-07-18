@@ -1,0 +1,33 @@
+name: サイトの不具合報告
+description: 表示崩れ・リンク切れ・動作不良などサイト自体の問題を報告する
+title: "[サイト不具合] "
+labels: ["site-issue"]
+body:
+  - type: input
+    id: page-url
+    attributes:
+      label: 発生ページの URL
+      placeholder: https://necofuryai.dev/
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 不具合の内容
+      description: 何が起きているか、期待する表示・動作との違い
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: ブラウザ / OS
+      placeholder: "例: Chrome 138 / macOS 15"
+    validations:
+      required: false
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: スクリーンショット
+      description: 可能であれば画像を貼り付けてください
+    validations:
+      required: false

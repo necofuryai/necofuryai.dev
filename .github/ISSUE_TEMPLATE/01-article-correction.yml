@@ -1,0 +1,35 @@
+name: 記事の誤り報告
+description: 記事内容の誤り (技術的な間違い・誤字脱字・リンク切れなど) を報告する
+title: "[記事修正] "
+labels: ["article-correction"]
+body:
+  - type: input
+    id: article-url
+    attributes:
+      label: 記事 URL
+      description: 誤りがある記事の URL
+      placeholder: https://necofuryai.dev/posts/xxx/
+    validations:
+      required: true
+  - type: textarea
+    id: location
+    attributes:
+      label: 該当箇所
+      description: 誤りがある箇所 (見出し名・段落・引用など、特定できる情報)
+      placeholder: 「〜〜」の節の 2 段落目
+    validations:
+      required: true
+  - type: textarea
+    id: what-is-wrong
+    attributes:
+      label: 誤りの内容
+      description: 何が誤っているか
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: 正しい内容と出典
+      description: 正しいと考える内容と、可能であれば根拠となる出典 (公式ドキュメント・仕様書など)
+    validations:
+      required: false
