@@ -7,6 +7,10 @@ name: Advisory Canary Fixture
 
 on:
   workflow_dispatch:
+  # 一時 trigger: workflow_dispatch は default branch 上の workflow にしか使えないため、
+  # 導入 PR での初回検証だけ push で起動する。マージ前にこの trigger を削除する。
+  push:
+    branches: [feature/dependabot-advisory-review]
 
 permissions: {}
 
