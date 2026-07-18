@@ -1,0 +1,232 @@
+name: Dependabot Auto-merge
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited, ready_for_review, converted_to_draft]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dependabot-automerge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    name: Inspect pull request without executing its code
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      is_dependabot: ${{ steps.inspect.outputs.is_dependabot }}
+      manifest_only: ${{ steps.inspect.outputs.manifest_only }}
+    steps:
+      - name: Inspect author, repository, base, and changed files
+        id: inspect
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          is_dependabot=false
+          manifest_only=false
+
+          if [[ "$PR_AUTHOR" == "dependabot[bot]" &&
+                "$BASE_BRANCH" == "main" &&
+                "$HEAD_REPOSITORY" == "$GITHUB_REPOSITORY" &&
+                "$GITHUB_REPOSITORY" == "necofuryai/necofuryai.dev" ]]; then
+            is_dependabot=true
+
+            changed_files_output="$(
+              gh api --paginate \
+                "/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files?per_page=100" \
+                --jq '.[].filename'
+            )"
+            [[ -n "$changed_files_output" ]]
+            mapfile -t changed_files <<< "$changed_files_output"
+
+            if (( ${#changed_files[@]} >= 1 && ${#changed_files[@]} <= 2 )); then
+              manifest_only=true
+              for changed_file in "${changed_files[@]}"; do
+                case "$changed_file" in
+                  package.json|pnpm-lock.yaml) ;;
+                  *) manifest_only=false ;;
+                esac
+              done
+            fi
+          fi
+
+          echo "is_dependabot=$is_dependabot" >> "$GITHUB_OUTPUT"
+          echo "manifest_only=$manifest_only" >> "$GITHUB_OUTPUT"
+
+  clear:
+    name: Clear stale Dependabot auto-merge request
+    needs: preflight
+    if: needs.preflight.outputs.is_dependabot == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Clear and verify an existing auto-merge request
+        id: clear
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for attempt in 1 2 3; do
+            if [[ "$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest == null')" == "true" ]]; then
+              exit 0
+            fi
+
+            gh pr merge --disable-auto "$PR_URL" || true
+            sleep "$attempt"
+          done
+
+          [[ "$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest == null')" == "true" ]]
+
+  metadata:
+    name: Evaluate Dependabot auto-merge eligibility
+    needs: preflight
+    if: >-
+      needs.preflight.outputs.is_dependabot == 'true' &&
+      needs.preflight.outputs.manifest_only == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      eligible: ${{ steps.policy.outputs.eligible }}
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        continue-on-error: true
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
+        with:
+          github-token: ${{ github.token }}
+
+      - name: Evaluate auto-merge policy
+        id: policy
+        if: always()
+        env:
+          METADATA_OUTCOME: ${{ steps.metadata.outcome }}
+          IS_DRAFT: ${{ github.event.pull_request.draft }}
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          DEPENDENCY_NAME: ${{ steps.metadata.outputs.dependency-names }}
+          DEPENDENCY_TYPE: ${{ steps.metadata.outputs.dependency-type }}
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
+          DIRECTORY: ${{ steps.metadata.outputs.directory }}
+          PACKAGE_ECOSYSTEM: ${{ steps.metadata.outputs.package-ecosystem }}
+          TARGET_BRANCH: ${{ steps.metadata.outputs.target-branch }}
+          PREVIOUS_VERSION: ${{ steps.metadata.outputs.previous-version }}
+          NEW_VERSION: ${{ steps.metadata.outputs.new-version }}
+          MAINTAINER_CHANGES: ${{ steps.metadata.outputs.maintainer-changes }}
+          DEPENDENCY_GROUP: ${{ steps.metadata.outputs.dependency-group }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          deny() {
+            echo "eligible=false" >> "$GITHUB_OUTPUT"
+            echo "Auto-merge denied by policy."
+            exit 0
+          }
+
+          [[ "$METADATA_OUTCOME" == "success" ]] || deny
+          [[ "$IS_DRAFT" == "false" ]] || deny
+          [[ "$HEAD_REPOSITORY" == "$GITHUB_REPOSITORY" ]] || deny
+          [[ "$PACKAGE_ECOSYSTEM" == "npm_and_yarn" ]] || deny
+          [[ "$DIRECTORY" == "/" ]] || deny
+          [[ "$TARGET_BRANCH" == "main" ]] || deny
+          [[ "$DEPENDENCY_TYPE" == "direct:development" ]] || deny
+          [[ "$UPDATE_TYPE" == "version-update:semver-patch" ]] || deny
+          [[ -z "$DEPENDENCY_GROUP" ]] || deny
+          [[ "$MAINTAINER_CHANGES" == "false" ]] || deny
+          [[ "$PREVIOUS_VERSION" =~ ^v?[1-9][0-9]*\.[0-9]+\.[0-9]+$ ]] || deny
+          [[ "$NEW_VERSION" =~ ^v?[1-9][0-9]*\.[0-9]+\.[0-9]+$ ]] || deny
+
+          case "$DEPENDENCY_NAME" in
+            "@astrojs/ts-plugin"|"@biomejs/biome"|"@types/hast"|"@types/markdown-it"|"@types/mdast"|"@types/sanitize-html") ;;
+            *) deny ;;
+          esac
+
+          echo "eligible=true" >> "$GITHUB_OUTPUT"
+
+  enable:
+    name: Enable eligible Dependabot auto-merge
+    needs: [preflight, clear, metadata]
+    if: >-
+      needs.clear.result == 'success' &&
+      needs.metadata.result == 'success' &&
+      needs.metadata.outputs.eligible == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Enable squash auto-merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh pr merge --auto --squash --match-head-commit "$HEAD_SHA" "$PR_URL"
+          [[ "$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest != null')" == "true" ]]
+
+  result:
+    name: Dependabot Auto-merge Policy
+    if: always()
+    needs: [preflight, clear, metadata, enable]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    env:
+      IS_DEPENDABOT: ${{ needs.preflight.outputs.is_dependabot }}
+      MANIFEST_ONLY: ${{ needs.preflight.outputs.manifest_only }}
+      PREFLIGHT_RESULT: ${{ needs.preflight.result }}
+      CLEAR_RESULT: ${{ needs.clear.result }}
+      METADATA_RESULT: ${{ needs.metadata.result }}
+      ELIGIBLE: ${{ needs.metadata.outputs.eligible }}
+      ENABLE_RESULT: ${{ needs.enable.result }}
+    steps:
+      - name: Require every applicable policy stage to succeed
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          [[ "$PREFLIGHT_RESULT" == "success" ]]
+
+          if [[ "$IS_DEPENDABOT" == "true" ]]; then
+            [[ "$CLEAR_RESULT" == "success" ]]
+            if [[ "$MANIFEST_ONLY" == "true" ]]; then
+              [[ "$METADATA_RESULT" == "success" ]]
+              if [[ "$ELIGIBLE" == "true" ]]; then
+                [[ "$ENABLE_RESULT" == "success" ]]
+              else
+                [[ "$ENABLE_RESULT" == "skipped" ]]
+              fi
+            else
+              [[ "$METADATA_RESULT" == "skipped" ]]
+              [[ "$ENABLE_RESULT" == "skipped" ]]
+            fi
+          else
+            [[ "$CLEAR_RESULT" == "skipped" ]]
+            [[ "$METADATA_RESULT" == "skipped" ]]
+            [[ "$ENABLE_RESULT" == "skipped" ]]
+          fi
