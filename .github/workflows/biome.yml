@@ -28,4 +28,4 @@ jobs:
 
       # Use the Biome version pinned in package.json so CI matches local runs
       - name: Run Biome
-        run: pnpm exec biome ci ./src --reporter=github
+        run: pnpm exec biome ci . --reporter=github
