@@ -1,0 +1,37 @@
+{
+	"permissions": {
+		"defaultMode": "dontAsk",
+		"allow": [
+			"Read(./src/**)",
+			"Read(./package.json)",
+			"Read(./pnpm-lock.yaml)",
+			"Read(./astro.config.mjs)",
+			"Read(./.github/workflows/**)",
+			"Read(./.claude-review-input/**)",
+			"Glob(./**)",
+			"Grep(./**)"
+		],
+		"deny": [
+			"Read(./.git/**)",
+			"Read(./.env*)",
+			"Read(./.npmrc)",
+			"Read(//proc/**)",
+			"Read(//sys/**)",
+			"Read(//dev/**)",
+			"Read(//etc/**)",
+			"Read(//run/**)",
+			"Read(//tmp/**)",
+			"Read(//github/**)",
+			"Read(//home/runner/.claude/**)",
+			"Read(//home/runner/.config/**)",
+			"Read(//home/runner/.cache/claude/**)",
+			"Read(//home/runner/work/_temp/**)",
+			"Read(//home/runner/work/_temp/claude-workload-identity/**)",
+			"Grep(//proc/**)",
+			"Grep(//etc/**)",
+			"Grep(//home/runner/.claude/**)",
+			"Grep(//home/runner/work/_temp/**)",
+			"Glob(//home/runner/work/_temp/**)"
+		]
+	}
+}
