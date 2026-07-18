@@ -95,13 +95,14 @@ jobs:
           include_fix_links: false
           plugins: ""
           plugin_marketplaces: ""
+          # --bare は Anthropic auth を ANTHROPIC_API_KEY / apiKeyHelper に限定し
+          # OAuth token を読まないため使えない (fixture 実測 2026-07-19)。
           claude_args: >-
             --model claude-sonnet-5
             --effort xhigh
             --max-turns 4
             --tools "Read,Glob,Grep"
             --permission-mode dontAsk
-            --bare
             --settings .github/claude/advisory-permissions.json
           prompt: |
             あなたは Dependabot PR の advisory reviewer である。workspace の `.claude-review-input/` に
@@ -124,7 +125,7 @@ jobs:
           set -euo pipefail
           echo "claude step outcome: $CLAUDE_OUTCOME"
           [[ "$CLAUDE_OUTCOME" == "success" ]] || {
-            echo "Claude step failed: --bare x OAuth combination or auth is broken"; exit 1; }
+            echo "Claude step failed: OAuth auth or Action execution is broken"; exit 1; }
           [[ -n "${EXECUTION_FILE:-}" && -f "$EXECUTION_FILE" ]] || {
             echo "no execution file to inspect"; exit 1; }
 
