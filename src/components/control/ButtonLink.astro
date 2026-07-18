@@ -8,6 +8,7 @@ const { badge, url, label } = Astro.props;
 ---
 <a href={url} aria-label={label}>
     <button
+        type="button"
         class:list={`
             w-full
             h-10
