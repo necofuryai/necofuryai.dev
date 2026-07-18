@@ -2,18 +2,10 @@
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-// 本番の <link> 順(scrollbar → photoswipe → transition → expressive-code →
-// main → tailwind → markdown-extend → markdown → variables)を保つため、
-// この import 順を変更しないこと。utilities(tailwind.css)より前のファイルは
-// utilities に負け、後のファイルはタイで勝つ、というカスケードに依存している。
-import "../styles/scrollbar.css";
-import "../styles/photoswipe.css";
-import "../styles/transition.css";
-import "../styles/expressive-code.css";
-import "../styles/main.css";
-import "../styles/tailwind.css";
+// CSS は global.css がエントリで、author CSS の取り込み順もそこで管理する。
+// .styl は CSS から @import できないため JS import で読み込む
+import "../styles/global.css";
 import "../styles/markdown-extend.styl";
-import "../styles/markdown.css";
 import "../styles/variables.styl";
 
 import ConfigCarrier from "@components/ConfigCarrier.astro";
@@ -187,7 +179,7 @@ const bannerOffset =
 	'banner-height-home': `${BANNER_HEIGHT_HOME}vh`,
 	'banner-height': `${BANNER_HEIGHT}vh`,
 }}>
-@tailwind components;
+@reference "../styles/global.css";
 @layer components {
 	.enable-banner.is-home #banner-wrapper {
 		@apply h-[var(--banner-height-home)] translate-y-[var(--banner-height-extend)]

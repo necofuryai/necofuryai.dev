@@ -4,6 +4,7 @@ import svelte from "@astrojs/svelte";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import swup from "@swup/astro";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
@@ -157,6 +158,7 @@ export default defineConfig({
 		}),
 	},
 	vite: {
+		plugins: [tailwindcss()],
 		build: {
 			rolldownOptions: {
 				onLog(level, log, handler) {

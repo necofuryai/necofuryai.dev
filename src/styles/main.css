@@ -1,4 +1,12 @@
-@tailwind components;
+/* @utility はトップレベル必須。v4 ではカスタムクラスを @apply できないため、
+   .link / .btn-plain 等から @apply される expand-animation は utility として定義する
+   (マークアップでの直接使用はなし) */
+@utility expand-animation {
+    @apply relative z-0 before:ease-out before:transition active:bg-none
+    hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)]
+    before:absolute before:rounded-[inherit] before:inset-0 before:scale-[0.85]
+    hover:before:scale-100 before:-z-10;
+}
 
 @layer components {
     .card-base {
@@ -9,10 +17,6 @@
     }
     .card-shadow {
         @apply drop-shadow-[0_2px_4px_rgba(0,0,0,0.005)]
-    }
-    .expand-animation {
-        @apply relative before:ease-out before:transition active:bg-none hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)] z-0
-        before:absolute before:rounded-[inherit] before:inset-0 before:scale-[0.85] hover:before:scale-100 before:-z-10
     }
     .link {
         @apply transition rounded-md p-1 -m-1 expand-animation;
@@ -112,41 +116,45 @@
     }
 }
 
-.custom-md img, #post-cover img {
-    @apply cursor-zoom-in
-}
-
-::selection {
-    background-color: var(--selection-bg)
-}
-
-.dash-line {
-    position: relative;
-}
-
-.dash-line::before {
-    content: "";
-    position: absolute;
-    width: 10%;
-    height: 100%;
-    left: calc(50% - 1px);
-    border-left: 2px dashed var(--line-color);
-    pointer-events: none;
-    transition: all 0.3s;
-    transform: translateY(-50%);
-}
-
-.collapsed {
-    height: var(--collapsedHeight);
-}
-
-.custom-md spoiler {
-  @apply bg-[var(--codeblock-bg)] hover:bg-transparent px-1 py-0.5 overflow-hidden rounded-md transition-all duration-150;
-
-  &:not(:hover) {
-    color: var(--codeblock-bg);
-    * {
-        color: var(--codeblock-bg);
+/* 以下も @layer components に入れる: 旧構成では utilities より前に読み込まれて
+   いたため、v4 でも utilities に負ける位置(components レイヤー)を維持する */
+@layer components {
+    .custom-md img, #post-cover img {
+        @apply cursor-zoom-in
     }
-  }
+
+    ::selection {
+        background-color: var(--selection-bg)
+    }
+
+    .dash-line {
+        position: relative;
+    }
+
+    .dash-line::before {
+        content: "";
+        position: absolute;
+        width: 10%;
+        height: 100%;
+        left: calc(50% - 1px);
+        border-left: 2px dashed var(--line-color);
+        pointer-events: none;
+        transition: all 0.3s;
+        transform: translateY(-50%);
+    }
+
+    .collapsed {
+        height: var(--collapsedHeight);
+    }
+
+    .custom-md spoiler {
+        @apply bg-[var(--codeblock-bg)] hover:bg-transparent px-1 py-0.5 overflow-hidden rounded-md transition-all duration-150;
+
+        &:not(:hover) {
+            color: var(--codeblock-bg);
+            * {
+                color: var(--codeblock-bg);
+            }
+        }
+    }
 }
