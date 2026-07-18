@@ -7,11 +7,6 @@ name: Advisory Canary Fixture
 
 on:
   workflow_dispatch:
-  # 一時 trigger: workflow_dispatch は default branch 上の workflow にしか使えないため、
-  # 導入 PR での初回検証だけ pull_request で起動する。pinned Action は push イベント
-  # 非対応 (parseGitHubContext が throw) のため push は使えない。マージ前に削除する。
-  pull_request:
-    paths: [".github/workflows/advisory-canary-fixture.yml"]
 
 permissions: {}
 
