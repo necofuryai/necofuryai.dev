@@ -29,9 +29,15 @@ const isPublic = src.startsWith("/");
 // biome-ignore lint/suspicious/noImplicitAnyLet: <check later>
 let img;
 if (isLocal) {
-	const files = import.meta.glob<ImageMetadata>("../../**", {
-		import: "default",
-	});
+	// 画像拡張子に限定する: "../../**" だと src/ 以下の全モジュール(CSS 含む)が
+	// バンドルに載ってしまい、スタイルの読み込みが glob の副作用に依存してしまう。
+	// スタイルは Layout.astro で明示的に import する
+	const files = import.meta.glob<ImageMetadata>(
+		"../../**/*.{png,jpg,jpeg,webp,gif,svg,avif}",
+		{
+			import: "default",
+		},
+	);
 	let normalizedPath = path
 		.normalize(path.join("../../", basePath, src))
 		.replace(/\\/g, "/");
