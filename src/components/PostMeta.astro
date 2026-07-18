@@ -40,7 +40,7 @@ const className = Astro.props.class;
         <div class="flex items-center">
             <div class="meta-icon"
             >
-                <Icon name="material-symbols:edit-calendar-outline-rounded" class="text-xl"></Icon>
+                <Icon name="material-symbols:edit-calendar-outline-rounded" class="text-xl" />
             </div>
             <span class="text-50 text-sm font-medium">{formatDateToYYYYMMDD(updated)}</span>
         </div>
@@ -69,12 +69,14 @@ const className = Astro.props.class;
         </div>
         <div class="flex flex-row flex-nowrap items-center">
             {(tags && tags.length > 0) && tags.map((tag, i) => (
-                <div class:list={[{"hidden": i == 0}, "mx-1.5 text-[var(--meta-divider)] text-sm"]}>/</div>
-                <a href={getTagUrl(tag)} aria-label={`View all posts with the ${tag.trim()} tag`}
-                   class="link-lg transition text-50 text-sm font-medium
-                                hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap">
-                    {tag.trim()}
-                </a>
+                <>
+                    <div class:list={[{"hidden": i === 0}, "mx-1.5 text-[var(--meta-divider)] text-sm"]}>/</div>
+                    <a href={getTagUrl(tag)} aria-label={`View all posts with the ${tag.trim()} tag`}
+                       class="link-lg transition text-50 text-sm font-medium
+                                    hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap">
+                        {tag.trim()}
+                    </a>
+                </>
             ))}
             {!(tags && tags.length > 0) && <div class="transition text-50 text-sm font-medium">{i18n(I18nKey.noTags)}</div>}
         </div>

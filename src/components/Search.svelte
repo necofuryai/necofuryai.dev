@@ -9,7 +9,6 @@ import type { SearchResult } from "@/global";
 let keywordDesktop = "";
 let keywordMobile = "";
 let result: SearchResult[] = [];
-let isSearching = false;
 let pagefindLoaded = false;
 let initialized = false;
 
@@ -58,8 +57,6 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 		return;
 	}
 
-	isSearching = true;
-
 	try {
 		let searchResults: SearchResult[] = [];
 
@@ -81,8 +78,6 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 		console.error("Search error:", error);
 		result = [];
 		setPanelVisibility(false, isDesktop);
-	} finally {
-		isSearching = false;
 	}
 };
 
@@ -151,7 +146,7 @@ $: if (initialized && keywordMobile) {
 </div>
 
 <!-- toggle btn for phone/tablet view -->
-<button on:click={togglePanel} aria-label="Search Panel" id="search-switch"
+<button type="button" on:click={togglePanel} aria-label="Search Panel" id="search-switch"
         class="btn-plain scale-animation lg:hidden! rounded-lg w-11 h-11 active:scale-90">
     <Icon icon="material-symbols:search" class="text-[1.25rem]"></Icon>
 </button>
