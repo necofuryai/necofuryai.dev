@@ -26,10 +26,10 @@ const specCollection = defineCollection({
 	loader: glob({ base: "./src/content/spec", pattern: "**/*.{md,mdx}" }),
 	schema: z.object({}),
 });
-export const collections: Record<
-	string,
-	ReturnType<typeof defineCollection>
-> = {
+// No type annotation here: Astro's generated types infer each collection's
+// entry data type from `typeof collections`, and an annotation would erase
+// the schema information (making entry.data `unknown`).
+export const collections = {
 	posts: postsCollection,
 	spec: specCollection,
 };
