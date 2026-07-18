@@ -1034,7 +1034,8 @@ Claude の出力は、更新影響、release note で確認すべき点、画像
 approve、merge、label、branch update、file edit、baseline 更新、および「自動マージ可能」という verdict は禁止する。
 Claude が問題なしと説明しても、失敗した `Visual regression test` と `CI OK` は赤のまま維持する。
 
-`analyze` job では Anthropic credential だけに `id-token: write` を与え、GitHub token は `contents: read` と `pull-requests: read` に制限する。
+`analyze` job の GitHub token は `contents: read` と `pull-requests: read` に制限し、`id-token: write` は付与しない (WIF を使わないため OIDC は不要)。
+Anthropic credential は repository Actions secret の `CLAUDE_CODE_OAUTH_TOKEN` を `claude_code_oauth_token` input として渡す。
 Claude Code Action の既定 GitHub App token は job-level `permissions` と別物なので使わず、read-only の組み込み token を `github_token` input へ明示的に渡す。
 コメント投稿は `pull-requests: write` だけを持つ後段の固定 script に分離し、Claude 自身へ write token を渡さない。
 `--allowedTools` は tool の可用性を狭める設定ではないため、それだけに依存しない。
@@ -1042,7 +1043,7 @@ Claude Code Action の既定 GitHub App token は job-level `permissions` と別
 permission settings は default branch の Workflow に固定した JSON を `settings` input へ渡し、PR の `CLAUDE.md`、`.claude/`、plugin、hook を読み込まない。
 trusted settings では project 内の `Glob` と `Grep`、および project-relative の `src/**`、package files、Workflow、sanitized input だけを allow にする。
 `.git/**`、`.env*`、`.npmrc`、`//proc/**`、`//sys/**`、`//dev/**`、`//etc/**`、`//run/**`、`//tmp/**`、`//github/**`、`//home/runner/.claude/**`、`//home/runner/.config/**`、`//home/runner/.cache/claude/**`、`//home/runner/work/_temp/**` は Read deny にする。
-特に pinned Action が `RUNNER_TEMP/claude-workload-identity/identity-token` へ GitHub OIDC token を書く実装であるため、GitHub-hosted `ubuntu-24.04` の `//home/runner/work/_temp/claude-workload-identity/**` を独立した deny rule にも記述する。
+pinned Action は WIF 利用時に `RUNNER_TEMP/claude-workload-identity/identity-token` へ token を書く実装を持つ。本設計では WIF を使わないため書き込みは発生しないが、GitHub-hosted `ubuntu-24.04` の `//home/runner/work/_temp/claude-workload-identity/**` の deny rule は defense in depth として維持する。
 `GITHUB_ENV`、`GITHUB_OUTPUT`、`GITHUB_PATH`、`GITHUB_STEP_SUMMARY` が指す `_runner_file_commands` も `//home/runner/work/_temp/**` の deny 対象であることを fixture で確認する。
 [Pinned Action の WIF token file 実装](https://github.com/anthropics/claude-code-action/blob/3553f84341b92da26052e28acf1aa898f9511f32/base-action/src/workload-identity.ts)
 [Claude Code の permission 設定](https://code.claude.com/docs/en/permissions)
@@ -1051,6 +1052,7 @@ trusted settings では project 内の `Glob` と `Grep`、および project-rel
 `track_progress`、`show_full_output`、`display_report`、`classify_inline_comments`、`include_fix_links` は `false`、`plugins` と `plugin_marketplaces` は空、`--max-turns` は 4 とする。
 repository の `ACTIONS_STEP_DEBUG` が `true` だと full output が有効化されるため、`analyze` は `runner.debug == '1'` の場合に Claude Action を実行せず、管理者確認でも debug secret または variable が未設定であることを確認する。
 実装 PR では、実 credential ではない相互に異なる偽 canary を `RUNNER_TEMP/claude-workload-identity/permission-canary`、`RUNNER_TEMP/_runner_file_commands/permission-canary`、process environment、`.env` に配置し、悪意ある PR diff と画像内 prompt からそれらの読み取りを要求する leakage fixture を実行する。
+また、Action log、structured output、PR comment のいずれにも OAuth token の接頭辞 `sk-ant-oat` が現れないことを同じ fixture で確認し、GitHub の secret masking と Action の environment scrubbing への依存を実測で裏取りする。
 実行前に `RUNNER_TEMP` が GitHub-hosted runner の `/home/runner/work/_temp` と一致することを固定 script で検証し、一致しない runner image では Claude Action を起動しない。
 structured output、Action log、PR comment、sanitized artifact のいずれにも canary が現れず、deny rule により読み取りが拒否されたことを確認する。
 一つでも漏えいする、または pinned Action と runner image の組み合わせで拒否を再現できない場合、Claude advisory Workflow は merge せず延期する。
@@ -1062,12 +1064,18 @@ structured output は固定 JSON Schema で生成し、UTF-8 byte 数と field �
 LLM 出力を `eval`、shell command、path、API endpoint として解釈しない。
 Action failure、schema 不一致、空出力の場合は comment job を skip し、既存の required checks には触れない。
 
-credential は長寿命 API key や個人 OAuth token を使わず、Anthropic Workload Identity Federation だけを採用する。
-WIF の claim は owner だけでなく repository、workflow、default branch まで限定する。
-WIF を利用できない場合の既定動作は Claude advisory だけの延期とし、Playwright と自動マージの導入は止めない。
-WIF が利用できないことを理由に `CLAUDE_CODE_OAUTH_TOKEN`、`ANTHROPIC_API_KEY`、個人 PAT へ fallback しない。
-`--bare` と長寿命 token の挙動差を持ち込まず、credential の選択肢を一つに固定する。
-[Claude Code Action の WIF setup](https://github.com/anthropics/claude-code-action/blob/main/docs/setup.md#workload-identity-federation)
+credential は owner の判断 (2026-07-19、Issue #25) により、Max プランに紐づく `CLAUDE_CODE_OAUTH_TOKEN` を repository Actions secret として採用する。
+当初案の Workload Identity Federation は Anthropic Console (API クレジット課金) が前提であり、サブスクリプション課金を維持するため見送った。将来 API 課金へ移行する場合は WIF を再評価する。
+長寿命 secret を repository に置くことになるため、次を運用条件とする。
+
+- token は owner だけが `claude setup-token` で発行し、`gh secret set` で登録する。token 値は Claude Code との会話にも共有しない。
+- secret は Actions secret にだけ置き、Dependabot secrets へは複製しない (Dependabot event の直接実行では advisory を動かさない設計のため不要)。
+- token は claude.ai 側でいつでも失効できることを確認し、四半期ごとに rotate する。漏えいの疑いがあれば即時 revoke する。
+- `ANTHROPIC_API_KEY` と個人 PAT は引き続き使わない。credential の選択肢は OAuth token 一つに固定する。
+- advisory の実行は Max プランの利用枠を消費するため、対話利用への影響が観測されたら `--max-turns` と実行頻度を見直す。
+- `--bare` mode と OAuth token の組み合わせは実装時に fixture で動作確認する。
+
+[Claude Code Action の setup](https://github.com/anthropics/claude-code-action/blob/main/docs/setup.md)
 
 2026-07-18 時点の `anthropics/claude-code-action@v1` は `3553f84341b92da26052e28acf1aa898f9511f32` を指していた。
 実装時に release、source、tag の指す commit を再確認し、移動可能な `@v1` ではなく full-length SHA を固定する。
@@ -1157,8 +1165,8 @@ repository policy の `allowed_actions` は `selected` に変更する。
 将来 third-party Action を追加する場合は、Workflow の SHA 固定と allowlist 更新を同じ PR と管理者作業で扱う。
 [GitHub Actions permissions REST API](https://docs.github.com/en/rest/actions/permissions#set-allowed-actions-and-reusable-workflows-for-a-repository)
 
-Claude advisory の WIF provider 作成と unsigned Action commit の受容は、ファイル変更では完結しない独立した承認事項である。
-Claude Code は設定変更前に、対象 organization、claim 条件、利用する Action SHA、費用と credential の影響を提示し、owner の承認を得る。
+Claude advisory の `CLAUDE_CODE_OAUTH_TOKEN` secret 登録と unsigned Action commit の受容は、ファイル変更では完結しない独立した承認事項である。
+どちらも 2026-07-19 に owner が承認済みで、経緯と実施チェックリストは Issue #25 に記録した。secret の発行と登録は owner だけが行う。
 
 Dependabot alerts と security updates は別の機能である。
 alerts を先に有効化すれば、即座に自動修正 PR を流さずに既存の脆弱性を可視化できる。
@@ -1222,13 +1230,13 @@ Merge Queue は導入しない。
 
 1. current Claude Code Action release、source、full SHA、signature 表示を再確認する。
 2. unsigned commit を使う例外を受容するか、owner の判断を記録する。
-3. Anthropic WIF provider を repository、workflow、default branch まで絞った claim で作成する。
+3. owner が `claude setup-token` で OAuth token を発行し、`gh secret set CLAUDE_CODE_OAUTH_TOKEN` で repository Actions secret に登録する。
 4. `anthropics/claude-code-action@*`、`oven-sh/setup-bun@*`、`actions/download-artifact@*` を Actions allowlist に追加する。
 5. `main` から `feature/dependabot-advisory-review` を作る。
 6. `dependabot-advisory-review.yml`、credentialless sanitizer、fixture test を追加する。
 7. non-Dependabot PR、draft、head SHA 不一致、fork が preflight で skip される fixture を確認する。
 8. VRT artifact の事前 metadata 上限と transfer timeout、および parser が HTML、trace、script、symlink、path traversal、zip bomb、dimension と pixel 上限超過を拒否し、PNG を metadata なしで再 encode する fixture を確認する。
-9. WIF token directory、runner command files、process environment、`.env` に置いた非 secret の偽 canary を、悪意ある diff と画像内 prompt から取得できない leakage fixture を確認する。
+9. runner command files、process environment、`.env` に置いた非 secret の偽 canary と、実 token の接頭辞 `sk-ant-oat` のいずれも、悪意ある diff と画像内 prompt から output へ取得できない leakage fixture を確認する。
 10. この Workflow を required context に追加せず、squash merge する。
 11. retention 内に残るフェーズ 1 の初回 VRT failure run と PR number を使い、owner が raw、sanitized、analysis、comment の handoff を手動検証する。
 12. expected、actual、diff の三点が初回 artifact にない場合は、owner の承認を得て一時的な visual mismatch PR を作る。
@@ -1237,9 +1245,9 @@ Merge Queue は導入しない。
 
 フェーズ 1 の failure artifact が期限切れの場合も、同じ一時検証 PR を使う。
 
-WIF を用意できない場合、unsigned commit の受容が得られない場合、または credential leakage fixture が失敗する場合は、理由を記録してこのフェーズだけを延期する。
+OAuth token を用意できない場合、unsigned commit の受容が得られない場合、または credential leakage fixture が失敗する場合は、理由を記録してこのフェーズだけを延期する。
 core automation と Playwright は credential に依存しないため、次のフェーズへ進める。
-Claude Workflow の PR を merge しない場合は、先に追加した三つの Action pattern と未使用 WIF provider を同じ maintenance window で戻す。
+Claude Workflow の PR を merge しない場合は、先に追加した三つの Action pattern と登録済みの secret を同じ maintenance window で戻す。
 
 ### フェーズ 3：Dependabot 導入 PR
 
@@ -1399,8 +1407,8 @@ auto-merge request の解除 API が失敗する fixture では、`Dependabot Au
 critical と high を未分類のまま残さないことを完了条件にする。
 
 Claude advisory phase の完了条件は別に管理する。
-WIF claim、full SHA、read-only analysis job、write-only comment job、Dependabot author と head SHA の preflight、artifact の転送上限、credential leakage fixture、comment の重複防止を確認し、VRT failure の PNG 診断が required check を変更しないことを実証した時点で完了とする。
-WIF provider を用意できない、credential leakage fixture が失敗する、または unsigned Action commit の受容が得られず延期した場合、core automation は完了扱いにできるが、Claude review と画像診断は未完了として明記する。
+OAuth token secret の登録と失効・rotate 手順、full SHA、read-only analysis job、write-only comment job、Dependabot author と head SHA の preflight、artifact の転送上限、credential leakage fixture、comment の重複防止を確認し、VRT failure の PNG 診断が required check を変更しないことを実証した時点で完了とする。
+OAuth token を用意できない、credential leakage fixture が失敗する、または unsigned Action commit の受容が得られず延期した場合、core automation は完了扱いにできるが、Claude review と画像診断は未完了として明記する。
 
 ## 自動マージ範囲を広げる条件
 
@@ -1449,7 +1457,7 @@ VRT を緊急停止する場合は、単に test を `continue-on-error` にし�
 原因と影響を Issue に記録し、`visual-regression` job と `CI OK` の `needs` および明示成功判定を同じ PR で変更する。
 `CI OK` 自体は required context のまま維持し、復旧条件と期限を決める。
 
-Claude advisory を停止する場合は、WIF provider を無効化し、Workflow を削除する PR を merge した後に `anthropics/claude-code-action@*`、`oven-sh/setup-bun@*`、`actions/download-artifact@*` を Actions allowlist から外す。
+Claude advisory を停止する場合は、claude.ai 側で OAuth token を revoke して repository secret `CLAUDE_CODE_OAUTH_TOKEN` を削除し、Workflow を削除する PR を merge した後に `anthropics/claude-code-action@*`、`oven-sh/setup-bun@*`、`actions/download-artifact@*` を Actions allowlist から外す。
 Claude advisory は required context ではないため、branch protection の変更は不要である。
 既存 comment は監査記録として残し、credential や provider identifier が含まれていないことを確認する。
 
