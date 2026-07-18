@@ -42,3 +42,18 @@ export function getDir(path: string): string {
 export function url(path: string): string {
 	return joinUrl("", import.meta.env.BASE_URL, path);
 }
+
+export const DEFAULT_OG_IMAGE = "/og-default.png";
+
+// og:image / JSON-LD 用にカバー画像を絶対 URL へ解決する。
+// 相対パスのカバー (astro:assets がビルド時に解決するもの) は head からは
+// 参照できないため、デフォルト OG 画像にフォールバックする。
+export function resolveOgImageUrl(
+	image: string | undefined,
+	site: URL | undefined,
+): string | undefined {
+	if (!site) return undefined;
+	if (image && /^https?:\/\//.test(image)) return image;
+	if (image?.startsWith("/")) return new URL(url(image), site).href;
+	return new URL(url(DEFAULT_OG_IMAGE), site).href;
+}
