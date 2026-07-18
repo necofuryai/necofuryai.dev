@@ -77,5 +77,15 @@
 	"packageManager": "pnpm@9.14.4",
 	"engines": {
 		"node": ">=22.12.0"
+	},
+	"pnpm": {
+		"overrides": {
+			"axios": ">=1.18.1",
+			"form-data": ">=4.0.6",
+			"follow-redirects": ">=1.16.0",
+			"tar": "^7.5.20",
+			"rollup@<2.80.0": "2.80.0",
+			"serialize-javascript@<7.0.5": "7.0.5"
+		}
 	}
 }
