@@ -1,0 +1,28 @@
+@import "tailwindcss";
+/* 以下の author CSS は Tailwind によってこのエントリへ inline され単一の
+   コンパイル単位になるため、各ファイル内の @apply は @reference なしで解決される。
+   順序は旧 <link> 順を踏襲: utilities より前に置く main.css 等は @layer components
+   でラップされ utilities に負け、utilities の後の markdown.css はレイヤー外のまま
+   タイで勝つ。この関係を崩さないこと */
+@import "./scrollbar.css";
+@import "./photoswipe.css";
+@import "./transition.css";
+@import "./expressive-code.css";
+@import "./main.css";
+@import "./markdown.css";
+
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@layer base {
+  /* v3 Preflight 互換: v4 から button のデフォルトが cursor:default になった */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
