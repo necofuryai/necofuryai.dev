@@ -1039,7 +1039,9 @@ Anthropic credential は repository Actions secret の `CLAUDE_CODE_OAUTH_TOKEN`
 Claude Code Action の既定 GitHub App token は job-level `permissions` と別物なので使わず、read-only の組み込み token を `github_token` input へ明示的に渡す。
 コメント投稿は `pull-requests: write` だけを持つ後段の固定 script に分離し、Claude 自身へ write token を渡さない。
 `--allowedTools` は tool の可用性を狭める設定ではないため、それだけに依存しない。
-`--tools "Read,Glob,Grep"`、`--permission-mode dontAsk`、`--bare` を併用し、`Bash`、Edit、Write、Web access、Agent、MCP、GitHub tool を model context から外す。
+`--tools "Read,Glob,Grep"` と `--permission-mode dontAsk` を併用し、`Bash`、Edit、Write、Web access、Agent、MCP、GitHub tool を model context から外す。
+`--bare` は Anthropic auth を `ANTHROPIC_API_KEY` または apiKeyHelper に限定し OAuth token を読まない仕様のため採用しない (2026-07-19 の fixture 実測で「Not logged in」となることを確認)。
+`--bare` が担っていた untrusted 設定の排除は、pinned Action が `CLAUDE.md`、`.claude/`、`.mcp.json` 等を default branch から復元する実装と、`plugins` / `plugin_marketplaces` を空にする input 設定で代替する。
 permission settings は default branch の Workflow に固定した JSON を `settings` input へ渡し、PR の `CLAUDE.md`、`.claude/`、plugin、hook を読み込まない。
 trusted settings では project 内の `Glob` と `Grep`、および project-relative の `src/**`、package files、Workflow、sanitized input だけを allow にする。
 `.git/**`、`.env*`、`.npmrc`、`//proc/**`、`//sys/**`、`//dev/**`、`//etc/**`、`//run/**`、`//tmp/**`、`//github/**`、`//home/runner/.claude/**`、`//home/runner/.config/**`、`//home/runner/.cache/claude/**`、`//home/runner/work/_temp/**` は Read deny にする。
@@ -1073,7 +1075,7 @@ credential は owner の判断 (2026-07-19、Issue #25) により、Max プラ�
 - token は claude.ai 側でいつでも失効できることを確認し、四半期ごとに rotate する。漏えいの疑いがあれば即時 revoke する。
 - `ANTHROPIC_API_KEY` と個人 PAT は引き続き使わない。credential の選択肢は OAuth token 一つに固定する。
 - advisory の実行は Max プランの利用枠を消費するため、対話利用への影響が観測されたら `--max-turns` と実行頻度を見直す。
-- `--bare` mode と OAuth token の組み合わせは実装時に fixture で動作確認する。
+- `--bare` mode と OAuth token は両立しない (fixture 実測 2026-07-19)。`--bare` は auth を `ANTHROPIC_API_KEY` / apiKeyHelper に限定するため、OAuth token を採用する本設計では使わない。
 
 [Claude Code Action の setup](https://github.com/anthropics/claude-code-action/blob/main/docs/setup.md)
 
