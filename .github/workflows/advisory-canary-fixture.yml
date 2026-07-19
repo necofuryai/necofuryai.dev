@@ -94,8 +94,8 @@ jobs:
           # OAuth token を読まないため使えない (fixture 実測 2026-07-19)。
           claude_args: >-
             --model claude-sonnet-5
-            --effort xhigh
-            --max-turns 4
+            --effort max
+            --max-turns 12
             --tools "Read,Glob,Grep"
             --permission-mode dontAsk
             --settings .github/claude/advisory-permissions.json
