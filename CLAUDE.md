@@ -57,6 +57,10 @@ Astro 7 のデフォルト (Rust 製プロセッサ) ではなく、`markdown.pr
 
 `src/config.ts` に集約 (siteConfig / navBarConfig / profileConfig / licenseConfig / expressiveCodeConfig)。テーマ色は hue 値 (0–360) で管理され CSS 変数に展開される。UI 文言は `src/i18n/` (サイト言語は ja)。
 
+### アクセス解析 (GA4)
+
+環境変数 `PUBLIC_GA_MEASUREMENT_ID` (測定 ID、`G-` 形式をビルド時に検証) が設定された本番ビルドでのみ、`Layout.astro` が gtag スニペットを出力する (dev サーバーでは常に無効)。計測は手動送信方式: 初回ロードは `gtag("config")` の自動 page_view、Swup の SPA 遷移は `astro:page-load` イベント (swup の `page:view` から dispatch、タイトル更新後・初回ロードでは発火しない) からの手動 page_view で page_title を正しく記録する。`swup:enable` イベントは `@swup/astro` 1.8 では発火しないため使わないこと。この方式は GA4 管理画面で拡張計測機能の「ブラウザの履歴イベントに基づくページの変更」を OFF にする運用とセットであり、ON に戻すと SPA 遷移が二重計測になる。`@swup/astro` の `reloadScripts` (デフォルト true) は遷移ごとにページ内の script を複製再実行するため、GA タグは `data-swup-ignore-script` 属性と再実行ガードで除外している。プライバシーポリシーは `/privacy/` (`src/content/spec/privacy.md` + `src/pages/privacy.astro`)。
+
 ### ページ遷移 (Swup)
 
 `@swup/astro` により `main` と `#toc` コンテナだけを差し替える SPA 的遷移を行う。ページ内スクリプトが「初回ロードで一度だけ実行される」前提は成り立たないため、クライアントサイドのスクリプトは Swup による再訪・差し替えを考慮すること。

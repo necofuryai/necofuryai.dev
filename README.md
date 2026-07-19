@@ -29,6 +29,13 @@ pnpm lint             # Biome チェック (自動修正あり)
 pnpm format           # Biome フォーマット
 ```
 
+## アクセス解析
+
+Google アナリティクス 4 (GA4) を使用しています。
+ビルド時に環境変数 `PUBLIC_GA_MEASUREMENT_ID` (測定 ID) が設定されている場合のみ、本番ビルドにタグが出力されます。
+未設定のビルドと開発サーバーでは計測は行われません。
+収集する情報の詳細は[プライバシーポリシー](https://necofuryai.dev/privacy/)を参照してください。
+
 ## ライセンス
 
 - コード: [MIT License](LICENSE)
