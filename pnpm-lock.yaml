@@ -125,8 +125,8 @@ importers:
         specifier: ^0.4.2
         version: 0.4.2
       remark-github-admonitions-to-directives:
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: ^2.1.0
+        version: 2.1.0
       remark-math:
         specifier: ^6.0.0
         version: 6.0.0
@@ -4375,8 +4375,9 @@ packages:
   remark-gfm@4.0.1:
     resolution: {integrity: sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg==}
 
-  remark-github-admonitions-to-directives@1.0.5:
-    resolution: {integrity: sha512-MSRzDs51HGbUrHJ0es8POuxwJiUycWw4aYCTN2RZhdOm5UvyqdB8ApWoGBj9QAiPSHKw2HWl1hd5rRzWxVfNew==}
+  remark-github-admonitions-to-directives@2.1.0:
+    resolution: {integrity: sha512-bI3E4Oj1pKY3ym2IQrrVCdORgEu0+mSrWgpCYFNy8QvytfnLs/nAacVPjkWU/JzDMUiQio2k4nTFP7bsIr9TSA==}
+    engines: {pnpm: '>=9.0.0'}
 
   remark-math@6.0.0:
     resolution: {integrity: sha512-MMqgnP74Igy+S3WwnhQ7kqGlEerTETXMvJhrUzDikVZ2/uogJCb+WHUg97hK9/jcfc0dkD73s3LN8zU49cTEtA==}
@@ -8614,7 +8615,7 @@ snapshots:
       nth-check: 2.1.1
       property-information: 7.1.0
       space-separated-tokens: 2.0.2
-      unist-util-visit: 5.1.0
+      unist-util-visit: 5.0.0
       zwitch: 2.0.4
 
   hast-util-to-html@9.0.5:
@@ -9096,7 +9097,7 @@ snapshots:
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
-      unist-util-visit: 5.1.0
+      unist-util-visit: 5.0.0
 
   mdast-util-directive@3.1.0:
     dependencies:
@@ -9248,7 +9249,7 @@ snapshots:
       mdast-util-to-string: 4.0.0
       micromark-util-classify-character: 2.0.1
       micromark-util-decode-string: 2.0.1
-      unist-util-visit: 5.0.0
+      unist-util-visit: 5.1.0
       zwitch: 2.0.4
 
   mdast-util-to-string@4.0.0:
@@ -10208,12 +10209,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-github-admonitions-to-directives@1.0.5:
+  remark-github-admonitions-to-directives@2.1.0:
     dependencies:
       '@types/mdast': 4.0.4
       mdast-util-directive: 3.1.0
       unified: 11.0.5
-      unist-util-visit: 5.0.0
+      unist-util-visit: 5.1.0
     transitivePeerDependencies:
       - supports-color
 
@@ -10253,7 +10254,7 @@ snapshots:
       retext: 9.0.0
       retext-smartypants: 6.2.0
       unified: 11.0.5
-      unist-util-visit: 5.1.0
+      unist-util-visit: 5.0.0
 
   remark-stringify@11.0.0:
     dependencies:
@@ -10959,7 +10960,7 @@ snapshots:
   unist-util-remove-position@5.0.0:
     dependencies:
       '@types/unist': 3.0.3
-      unist-util-visit: 5.1.0
+      unist-util-visit: 5.0.0
 
   unist-util-stringify-position@4.0.0:
     dependencies:
