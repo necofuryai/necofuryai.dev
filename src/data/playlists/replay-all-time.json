@@ -1,0 +1,1021 @@
+{
+	"placeholder": false,
+	"order": 0,
+	"fetchedAt": "2026-07-19T09:24:25.652Z",
+	"id": "pl.rp-M9CMY0pYR",
+	"storefront": "jp",
+	"name": "リプレイ：オールタイム",
+	"curator": "ねこふりゃいさんのApple Music",
+	"description": "あなたがこれまでに一番よく聴いた楽曲をまとめて振り返ろう。",
+	"url": "https://music.apple.com/jp/playlist/%E3%83%AA%E3%83%97%E3%83%AC%E3%82%A4-%E3%82%AA%E3%83%BC%E3%83%AB%E3%82%BF%E3%82%A4%E3%83%A0/pl.rp-M9CMY0pYR",
+	"embedUrl": "https://embed.music.apple.com/jp/playlist/pl.rp-M9CMY0pYR",
+	"artwork": {
+		"urlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Features/v4/7b/30/77/7b3077fb-7bee-4c36-68bb-967162a2389c/9a5bcd3b-34e1-4ad3-893b-669728225286.png/{w}x{h}cc.jpg",
+		"width": 4320,
+		"height": 1080,
+		"bgColor": "db345e",
+		"textColors": ["000000", "000000", "331a21", "351a21"]
+	},
+	"tracks": [
+		{
+			"id": "1604335165",
+			"title": "One Last Kiss",
+			"artist": "宇多田ヒカル",
+			"album": "BADモード",
+			"durationMs": 249904,
+			"url": "https://music.apple.com/jp/album/one-last-kiss/1604335159?i=1604335165",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/e5/31/8b/e5318beb-1a66-134c-4132-0565a1f08340/mzaf_15946734450136901781.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8a/4f/6c/8a4f6cce-3955-92e1-b566-5c5ff715225b/4547366549522.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1631260956",
+			"title": "Prove",
+			"artist": "ONE OK ROCK",
+			"album": "Luxury Disease",
+			"durationMs": 226769,
+			"url": "https://music.apple.com/jp/album/prove/1631260679?i=1631260956",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/92/ad/f7/92adf794-f755-4184-f948-d5bfda8b7791/mzaf_15338016319482779577.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/21/ca/f3/21caf318-b247-7c1b-b782-77f569d0b7f2/075679739889.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1856531494",
+			"title": "カウントダウンラブ",
+			"artist": "I'm a Cutie Finder",
+			"album": "THE IDOLM@STER SHINY COLORS Song for Prism カウントダウンラブ / KAWAII♡めたもる交響曲 - EP",
+			"durationMs": 274700,
+			"url": "https://music.apple.com/jp/album/%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E3%83%80%E3%82%A6%E3%83%B3%E3%83%A9%E3%83%96/1856531493?i=1856531494",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/73/f3/65/73f36559-c0a8-8d1e-32d2-d303e7741b29/mzaf_14029808611971812791.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/62/92/44/6292441c-7aab-7b51-e444-1dac97a9ce1f/4540774248216.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1765319343",
+			"title": "わちゅごなどぅー",
+			"artist": "虹ヶ咲学園スクールアイドル同好会",
+			"album": "わちゅごなどぅー - EP",
+			"durationMs": 210467,
+			"url": "https://music.apple.com/jp/album/%E3%82%8F%E3%81%A1%E3%82%85%E3%81%94%E3%81%AA%E3%81%A9%E3%81%85%E3%83%BC/1765319342?i=1765319343",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b2/7e/38/b27e381a-957d-81b7-543b-135ba058cdf0/mzaf_10615512306227563725.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b1/90/23/b1902347-c1b4-f141-3d9b-aa93a3132179/4540774243600.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1770958215",
+			"title": "Poison Berry Daughters",
+			"artist": "シャイニーカラーズ",
+			"album": "Happy Surprise Trick!",
+			"durationMs": 230651,
+			"url": "https://music.apple.com/jp/album/poison-berry-daughters/1770958209?i=1770958215",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7e/e8/18/7ee818b7-c69b-3c5d-94f8-5300ec863c28/mzaf_1987438423260884614.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1765301212",
+			"title": "ココン東西",
+			"artist": "みらくらぱーく!",
+			"album": "夏めきペイン",
+			"durationMs": 190745,
+			"url": "https://music.apple.com/jp/album/%E3%82%B3%E3%82%B3%E3%83%B3%E6%9D%B1%E8%A5%BF/1765300786?i=1765301212",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e2/0f/fd/e20ffdce-3a56-184f-6639-fbe1c1c47568/mzaf_741841019466336926.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/07/f1/01/07f10104-bc53-df6f-c80d-19af9940492f/4540774250714.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1437881659",
+			"title": "スカーレット警察のゲットーパトロール24時",
+			"artist": "IOSYS",
+			"album": "GENSOKYO DEMPA EXPO ─イオシス東方コンピレーション vol.23─ (イオシス東方コンピレーション vol.23)",
+			"durationMs": 289000,
+			"url": "https://music.apple.com/jp/album/%E3%82%B9%E3%82%AB%E3%83%BC%E3%83%AC%E3%83%83%E3%83%88%E8%AD%A6%E5%AF%9F%E3%81%AE%E3%82%B2%E3%83%83%E3%83%88%E3%83%BC%E3%83%91%E3%83%88%E3%83%AD%E3%83%BC%E3%83%AB24%E6%99%82/1437881652?i=1437881659",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2c/62/e6/2c62e65f-a85a-8de8-0e4f-ad0f8271113e/mzaf_16925257194321331384.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music118/v4/3e/d9/bb/3ed9bbc3-743a-d751-96bd-d57ff91326c5/4580547310719.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1891023878",
+			"title": "虹色Passions!",
+			"artist": "虹ヶ咲学園スクールアイドル同好会",
+			"album": "虹色Passions! - EP",
+			"durationMs": 255053,
+			"url": "https://music.apple.com/jp/album/%E8%99%B9%E8%89%B2passions/1891023877?i=1891023878",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4f/4c/56/4f4c565b-5472-3779-2357-b3715f5f73f2/mzaf_9894354947341101938.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/3a/12/18/3a12183c-30aa-0be8-4651-c39265304560/4540774240500.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1890060756",
+			"title": "飛ぶ時",
+			"artist": "Vaundy",
+			"album": "飛ぶ時 / 飛ぼうよ - Single",
+			"durationMs": 252811,
+			"url": "https://music.apple.com/jp/album/%E9%A3%9B%E3%81%B6%E6%99%82/1890060754?i=1890060756",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/94/e0/1d/94e01dcb-c00e-8f28-cc00-ce2b7aa7b56d/mzaf_9748317802096708441.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/40/6f/fe/406ffe67-b650-6f46-5aa6-c6dc947e23b5/4547366818246.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1787242365",
+			"title": "快盗Vを見逃すな",
+			"artist": "放課後クライマックスガールズ",
+			"album": "THE IDOLM@STER SHINY COLORS Song for Prism Shower of light / 快盗Vを見逃すな【放課後クライマックスガールズ盤】 - EP",
+			"durationMs": 186507,
+			"url": "https://music.apple.com/jp/album/%E5%BF%AB%E7%9B%97v%E3%82%92%E8%A6%8B%E9%80%83%E3%81%99%E3%81%AA/1787242364?i=1787242365",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ed/8e/22/ed8e226b-5095-e0e5-6ab0-5df63eba28d7/mzaf_6231938738649650610.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/1a/96/741a962c-4ece-02a4-c306-0ec1b888a2e9/4540774246359.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1695839266",
+			"title": "Gold  ～また逢う日まで～",
+			"artist": "宇多田ヒカル",
+			"album": "Gold  ～また逢う日まで～ - Single",
+			"durationMs": 254291,
+			"url": "https://music.apple.com/jp/album/gold-%E3%81%BE%E3%81%9F%E9%80%A2%E3%81%86%E6%97%A5%E3%81%BE%E3%81%A7/1695839072?i=1695839266",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/9e/da/40/9eda40b1-ddb2-7606-62b1-5216a1e02e43/mzaf_3787308049804022522.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/4a/0c/33/4a0c33b2-2ed0-f4d9-df11-94987827f773/4547366629347.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1548438183",
+			"title": "五等分のカタチ",
+			"artist": "中野家の五つ子(花澤香菜・竹達彩奈・伊藤美来・佐倉綾音・水瀬いのり)",
+			"album": "五等分のカタチ/はつこい - EP",
+			"durationMs": 243733,
+			"url": "https://music.apple.com/jp/album/%E4%BA%94%E7%AD%89%E5%88%86%E3%81%AE%E3%82%AB%E3%82%BF%E3%83%81/1548438181?i=1548438183",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/93/ae/73/93ae73c4-ba1f-a19a-a0cc-a5b817f2f146/mzaf_1591456253990875382.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/37/a9/57/37a95753-0558-ded8-688f-c0c1d6646587/PCCG_01964.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1891028578",
+			"title": "Awakening Promise",
+			"artist": "上原歩夢 (CV.大西亜玖璃)",
+			"album": "Awakening Promise / 夢がここからはじまるよ - EP",
+			"durationMs": 253747,
+			"url": "https://music.apple.com/jp/album/awakening-promise/1891028577?i=1891028578",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a7/94/e8/a794e843-67f5-0f44-7fb3-86ac93bcd1fa/mzaf_4806056312373890669.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/3e/67/9c/3e679c0c-82a0-0285-3d8e-b00b4b5d24fe/4540774240616.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1807063533",
+			"title": "どON",
+			"artist": "RIP SLYME",
+			"album": "どON - Single",
+			"durationMs": 218219,
+			"url": "https://music.apple.com/jp/album/%E3%81%A9on/1807063532?i=1807063533",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f3/61/28/f3612860-0910-96e7-557c-d19d2bd70ebc/mzaf_12259318343939507176.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/55/9b/b0/559bb069-3ea1-bfbb-aeff-b3c937c4307d/5021732768469.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1856531495",
+			"title": "KAWAII♡めたもる交響曲",
+			"artist": "I'm a Cutie Finder",
+			"album": "THE IDOLM@STER SHINY COLORS Song for Prism カウントダウンラブ / KAWAII♡めたもる交響曲 - EP",
+			"durationMs": 193033,
+			"url": "https://music.apple.com/jp/album/kawaii-%E3%82%81%E3%81%9F%E3%82%82%E3%82%8B%E4%BA%A4%E9%9F%BF%E6%9B%B2/1856531493?i=1856531495",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/30/f6/07/30f6072b-e69d-1686-c7c4-0489fff5f0a4/mzaf_878300900720401168.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/62/92/44/6292441c-7aab-7b51-e444-1dac97a9ce1f/4540774248216.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1604335164",
+			"title": "君に夢中",
+			"artist": "宇多田ヒカル",
+			"album": "BADモード",
+			"durationMs": 257953,
+			"url": "https://music.apple.com/jp/album/%E5%90%9B%E3%81%AB%E5%A4%A2%E4%B8%AD/1604335159?i=1604335164",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/f0/27/a1/f027a13b-b40b-f1ba-49ed-252ff88f90d4/mzaf_15568523383148119997.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8a/4f/6c/8a4f6cce-3955-92e1-b566-5c5ff715225b/4547366549522.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1891028579",
+			"title": "夢がここからはじまるよ",
+			"artist": "虹ヶ咲学園スクールアイドル同好会",
+			"album": "Awakening Promise / 夢がここからはじまるよ - EP",
+			"durationMs": 283680,
+			"url": "https://music.apple.com/jp/album/%E5%A4%A2%E3%81%8C%E3%81%93%E3%81%93%E3%81%8B%E3%82%89%E3%81%AF%E3%81%98%E3%81%BE%E3%82%8B%E3%82%88/1891028577?i=1891028579",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d6/e4/26/d6e426d5-7517-6522-e757-51b3831c4f0d/mzaf_9193900167763153411.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/3e/67/9c/3e679c0c-82a0-0285-3d8e-b00b4b5d24fe/4540774240616.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1708356492",
+			"title": "小悪魔LOVE",
+			"artist": "桜坂しずく (CV.前田佳織里)",
+			"album": "Fly with You!!",
+			"durationMs": 242933,
+			"url": "https://music.apple.com/jp/album/%E5%B0%8F%E6%82%AA%E9%AD%94love/1708356488?i=1708356492",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/ad/25/77/ad25776e-ff56-01d8-ab94-38349260819c/mzaf_3493490542270310528.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ce/ac/17/ceac1746-b101-b0c7-c9f2-852099311a71/4540774250707.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1428767877",
+			"title": "花束を君に",
+			"artist": "宇多田ヒカル",
+			"album": "Fantôme",
+			"durationMs": 278243,
+			"url": "https://music.apple.com/jp/album/%E8%8A%B1%E6%9D%9F%E3%82%92%E5%90%9B%E3%81%AB/1428766398?i=1428767877",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/01/79/cc/0179cc51-2e05-2a98-9e60-81c3ae1f612e/mzaf_9475772250931226846.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/33/c7/f7/33c7f769-589b-9c48-fe2f-e2d0a4781ec4/16UMGIM59612.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1886240225",
+			"title": "パッパパラダイス",
+			"artist": "宇多田ヒカル",
+			"album": "パッパパラダイス - Single",
+			"durationMs": 230901,
+			"url": "https://music.apple.com/jp/album/%E3%83%91%E3%83%83%E3%83%91%E3%83%91%E3%83%A9%E3%83%80%E3%82%A4%E3%82%B9/1886240070?i=1886240225",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/85/1f/68/851f6898-acff-5f6a-3f87-ebc6caa6ea5d/mzaf_9008750661241306504.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c3/ab/1c/c3ab1cc1-fde2-3a2a-f331-7a1a77d15fc5/4547366815788.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1737842246",
+			"title": "雑踏、僕らの街",
+			"artist": "トゲナシトゲアリ",
+			"album": "雑踏、僕らの街 - Single",
+			"durationMs": 184244,
+			"url": "https://music.apple.com/jp/album/%E9%9B%91%E8%B8%8F-%E5%83%95%E3%82%89%E3%81%AE%E8%A1%97/1737841888?i=1737842246",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/19/82/eb/1982ebb0-a36b-d79e-b963-5908d40b2ba6/mzaf_1880463588454976210.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/42/4f/b2/424fb29f-e511-839c-c31f-23d48ecf68a3/24UMGIM21411.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1891025953",
+			"title": "Poppin' Up!",
+			"artist": "中須かすみ (CV.相良茉優)",
+			"album": "Dream with You / Poppin' Up! / DIVE!【中須かすみ盤】 - EP",
+			"durationMs": 258147,
+			"url": "https://music.apple.com/jp/album/poppin-up/1891025951?i=1891025953",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/36/9b/5f/369b5f0f-fe03-fed3-53ca-7be241ac8aee/mzaf_3849306047353233606.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/00/22/12/002212ca-efbd-0341-d1bd-94ea736a25e6/4540774240531.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1603372204",
+			"title": "凸凹",
+			"artist": "吉岡 聖恵",
+			"album": "凸凹 - Single",
+			"durationMs": 229640,
+			"url": "https://music.apple.com/jp/album/%E5%87%B8%E5%87%B9/1603372203?i=1603372204",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/87/ec/84/87ec84e3-893f-3380-9f17-143fa01ad564/mzaf_13928801954312581158.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8a/55/12/8a551298-2be5-35e5-b51f-29541182ec93/4547366547481.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1872946387",
+			"title": "GateWay",
+			"artist": "m-flo loves Diggy MO' & しのだりょうすけ",
+			"album": "SUPERLIMINAL",
+			"durationMs": 231960,
+			"url": "https://music.apple.com/jp/album/gateway/1872946381?i=1872946387",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/76/0b/d4/760bd455-ac90-0972-ebcb-ddfe39fcc2ce/mzaf_16612372802144668882.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/66/4a/16/664a1689-92d3-1523-e189-d7bc1797a7a5/ANTCD-A0000019264.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1742554343",
+			"title": "W●RK",
+			"artist": "ꉈꀧ꒒꒒ꁄꍈꍈꀧ꒦ꉈ ꉣꅔꎡꅔꁕꁄ & 椎名林檎",
+			"album": "W●RK - Single",
+			"durationMs": 201074,
+			"url": "https://music.apple.com/jp/album/w-rk/1742554338?i=1742554343",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f2/eb/8a/f2eb8ab7-8f1e-f080-e325-8467744516c0/mzaf_9606963836109020050.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/68/be/82/68be82ce-6780-5304-a0a5-4f5d40fd13fc/4547366684209.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1822723486",
+			"title": "Future Parade",
+			"artist": "虹ヶ咲学園スクールアイドル同好会",
+			"album": "Future Parade - EP",
+			"durationMs": 276320,
+			"url": "https://music.apple.com/jp/album/future-parade/1822723485?i=1822723486",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/af/31/f4/af31f496-fa36-bd50-2602-58f10552caaa/mzaf_6295971177374515488.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/05/cc/b1/05ccb17b-74e2-576c-bb6c-2a51def1d859/4540774242764.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1537418577",
+			"title": "イケナイ太陽",
+			"artist": "ORANGE RANGE",
+			"album": "ALL the SINGLES",
+			"durationMs": 241653,
+			"url": "https://music.apple.com/jp/album/%E3%82%A4%E3%82%B1%E3%83%8A%E3%82%A4%E5%A4%AA%E9%99%BD/1537418560?i=1537418577",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a7/44/ac/a744ac6b-f81c-b061-1dc6-dfd67ccbb2e4/mzaf_13704085025977389199.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6b/50/9c/6b509c4b-6550-40f7-2086-008eaed86c5f/jacket_SRCL07315B00Z_550.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1535627511",
+			"title": "17才",
+			"artist": "ハルカトミユキ",
+			"album": "17才 - Single",
+			"durationMs": 271633,
+			"url": "https://music.apple.com/jp/album/17%E6%89%8D/1535627509?i=1535627511",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/a0/43/db/a043dbb9-fff2-c6f6-e02b-989342e17940/mzaf_1991214738990547585.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c1/76/a4/c176a40c-fe08-290e-5b48-cd73ee1f5593/jacket_AIXX01343B00Z_550.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1822732531",
+			"title": "Colorful Dreams! Colorful Smiles!",
+			"artist": "虹ヶ咲学園スクールアイドル同好会",
+			"album": "Colorful Dreams! Colorful Smiles! - EP",
+			"durationMs": 264733,
+			"url": "https://music.apple.com/jp/album/colorful-dreams-colorful-smiles/1822732320?i=1822732531",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/3c/28/fb/3c28fbaf-b5aa-16c5-ca72-0e8674f1389d/mzaf_2080766581519386999.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ab/c3/a2/abc3a238-9fe9-88b2-20ad-fc6288f2ed27/4540774242306.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1891005608",
+			"title": "Maze Town",
+			"artist": "A・ZU・NA",
+			"album": "Maze Town - EP",
+			"durationMs": 263627,
+			"url": "https://music.apple.com/jp/album/maze-town/1891005607?i=1891005608",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/15/f1/ab/15f1ab50-7917-3072-dedf-4e66da09881c/mzaf_14958616330200623437.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1b/3b/22/1b3b22e1-6dc2-c90a-f908-a070bdef87be/4540774241323.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1444575349",
+			"title": "Fight The Blues (Remastered 2018)",
+			"artist": "宇多田ヒカル",
+			"album": "HEART STATION (2018 Remastered Album)",
+			"durationMs": 250503,
+			"url": "https://music.apple.com/jp/album/fight-the-blues-remastered-2018/1444575348?i=1444575349",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/61/30/ac/6130acf6-8387-0080-b940-77733a0204e3/mzaf_8407367799555330049.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6c/bc/52/6cbc526c-ce69-b94e-5f0e-c130ee0cbd0f/00602577312717.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1678696357",
+			"title": "運命共同体!",
+			"artist": "音莉飴",
+			"album": "運命共同体! - Single",
+			"durationMs": 231231,
+			"url": "https://music.apple.com/jp/album/%E9%81%8B%E5%91%BD%E5%85%B1%E5%90%8C%E4%BD%93/1678696355?i=1678696357",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/ef/d9/59/efd95912-f9b0-e763-3bb4-fb6f3bbe692c/mzaf_11229473004446871432.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/48/f7/d9/48f7d9c5-90e1-e9a9-da5d-9bc406a8d334/4547366615630.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1447573390",
+			"title": "五等分の気持ち",
+			"artist": "中野家の五つ子",
+			"album": "五等分の気持ち - EP",
+			"durationMs": 222227,
+			"url": "https://music.apple.com/jp/album/%E4%BA%94%E7%AD%89%E5%88%86%E3%81%AE%E6%B0%97%E6%8C%81%E3%81%A1/1447573386?i=1447573390",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/25/79/54/257954ea-540d-f7c4-7c16-a245977dfb2a/mzaf_17795763166049594598.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/80/0a/c0/800ac09a-4654-529f-ee3d-68a8cf209ec5/PCCG_01751.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1604335160",
+			"title": "BADモード",
+			"artist": "宇多田ヒカル",
+			"album": "BADモード",
+			"durationMs": 303219,
+			"url": "https://music.apple.com/jp/album/bad%E3%83%A2%E3%83%BC%E3%83%89/1604335159?i=1604335160",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/22/68/c0/2268c009-2951-26fe-4a9d-b458660f9388/mzaf_14554839270687370411.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8a/4f/6c/8a4f6cce-3955-92e1-b566-5c5ff715225b/4547366549522.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1765319256",
+			"title": "ド!ド!ド!",
+			"artist": "みらくらぱーく!",
+			"album": "Dream Believers - EP",
+			"durationMs": 267337,
+			"url": "https://music.apple.com/jp/album/%E3%83%89-%E3%83%89-%E3%83%89/1765319251?i=1765319256",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5c/aa/87/5caa873a-4215-6b5c-b7ab-bf55f5ede0d3/mzaf_10783058932579122595.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/dc/45/e1/dc45e1e8-5be4-1074-9924-1190ca945f53/4540774250455.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1736079433",
+			"title": "Electricity",
+			"artist": "宇多田ヒカル",
+			"album": "SCIENCE FICTION",
+			"durationMs": 261544,
+			"url": "https://music.apple.com/jp/album/electricity/1736076981?i=1736079433",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/11/ea/be/11eabecf-7787-d1cf-f81a-86c4f5d7e364/mzaf_15013704860989946982.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/0a/e9/a2/0ae9a2d9-3276-825b-cc16-ca494011531c/24UMGIM13711.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1725467591",
+			"title": "Party!!",
+			"artist": "緑黄色社会",
+			"album": "Party!! - EP",
+			"durationMs": 258413,
+			"url": "https://music.apple.com/jp/album/party/1725467568?i=1725467591",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/f6/da/e9/f6dae9be-ad8e-8ffa-ce66-f569b458a607/mzaf_14654060215812539029.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/1d/3d/cc/1d3dccd3-0456-82c4-d279-2e21f5664217/4547366665420.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1483937614",
+			"title": "スマイルスキル=スキスキル!",
+			"artist": "赤き誓い",
+			"album": "私、能力は平均値でって言ったよね!オープニングテーマ「スマイルスキル=スキスキル」 - EP",
+			"durationMs": 245933,
+			"url": "https://music.apple.com/jp/album/%E3%82%B9%E3%83%9E%E3%82%A4%E3%83%AB%E3%82%B9%E3%82%AD%E3%83%AB-%E3%82%B9%E3%82%AD%E3%82%B9%E3%82%AD%E3%83%AB/1483937613?i=1483937614",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/68/b6/52/68b65215-32bb-e3bd-daed-9eb27865b5bc/mzaf_6465009012162022776.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/0a/53/96/0a539612-a783-349c-96d7-d3502da5f8df/ANTCD-A0000000470.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1840081736",
+			"title": "JANE DOE",
+			"artist": "米津玄師 & 宇多田ヒカル",
+			"album": "JANE DOE - Single",
+			"durationMs": 235947,
+			"url": "https://music.apple.com/jp/album/jane-doe/1840081735?i=1840081736",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e5/62/c4/e562c413-da81-e035-012b-4b66a15905f3/mzaf_11070624371709155420.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/73/91/aa/7391aabc-81d8-2bcb-3b0f-8e24bc855745/4547366775211.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1891025952",
+			"title": "Dream with You",
+			"artist": "上原歩夢 (CV.大西亜玖璃)",
+			"album": "Dream with You / Poppin' Up! / DIVE!【中須かすみ盤】 - EP",
+			"durationMs": 258107,
+			"url": "https://music.apple.com/jp/album/dream-with-you/1891025951?i=1891025952",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6c/89/38/6c89387e-0f61-4965-e924-b2d5baac9556/mzaf_2608639664110639419.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/00/22/12/002212ca-efbd-0341-d1bd-94ea736a25e6/4540774240531.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1702823583",
+			"title": "SPECIALZ",
+			"artist": "King Gnu",
+			"album": "SPECIALZ - Single",
+			"durationMs": 238987,
+			"url": "https://music.apple.com/jp/album/specialz/1702823577?i=1702823583",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/b0/6a/a2/b06aa243-8ef5-3543-bd63-d313cd92d8e5/mzaf_8532414186904658024.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/aa/33/55/aa335541-9932-d73c-6b1e-62bd484fc83d/4547366642308.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1814850193",
+			"title": "Follow your arrows",
+			"artist": "SSGIRLS(歌:笹倉かな)",
+			"album": "Sing a SonG",
+			"durationMs": 220840,
+			"url": "https://music.apple.com/jp/album/follow-your-arrows/1814850191?i=1814850193",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/eb/88/dd/eb88ddf6-0ba2-ccb5-2075-7fd99390660a/mzaf_17185401937336684366.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f1/52/ef/f152ef32-969f-dd30-4708-8d91a23fd835/5021732642134.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1891023909",
+			"title": "NEO SKY, NEO MAP!",
+			"artist": "虹ヶ咲学園スクールアイドル同好会",
+			"album": "NEO SKY, NEO MAP! - EP",
+			"durationMs": 277773,
+			"url": "https://music.apple.com/jp/album/neo-sky-neo-map/1891023908?i=1891023909",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/33/af/92/33af9254-0fcd-35f0-288d-b37ec252e414/mzaf_5353072362121633438.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/58/3d/fa/583dfae9-d99a-6473-f985-d2d48f02dff6/4540774240517.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1822715460",
+			"title": "Infinity!Our wings!!",
+			"artist": "A・ZU・NA",
+			"album": "Infinity!Our wings!! - EP",
+			"durationMs": 271107,
+			"url": "https://music.apple.com/jp/album/infinity-our-wings/1822715459?i=1822715460",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/35/11/f3/3511f382-544c-e8e3-88fa-7d4a9d48ca2d/mzaf_13460519989127658200.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/0e/06/c9/0e06c937-8545-cd84-6d37-508c150aa1fe/4540774242726.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1759899378",
+			"title": "がらくた - JUNK",
+			"artist": "米津玄師",
+			"album": "LOST CORNER",
+			"durationMs": 237600,
+			"url": "https://music.apple.com/jp/album/%E3%81%8C%E3%82%89%E3%81%8F%E3%81%9F-junk/1759899363?i=1759899378",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c1/c2/69/c1c2693f-59c1-489f-04ac-2daa4b06528f/mzaf_6981362238956792671.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3e/b2/13/3eb21367-be26-2634-d90f-bc8182d3d0b2/4547366699760.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1538286723",
+			"title": "紅蓮華",
+			"artist": "LiSA",
+			"album": "紅蓮華 - EP",
+			"durationMs": 238587,
+			"url": "https://music.apple.com/jp/album/%E7%B4%85%E8%93%AE%E8%8F%AF/1538286722?i=1538286723",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/bf/18/a3/bf18a344-fc40-17b4-28fc-c82ecb193c5a/mzaf_4385169665479594539.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/b3/ae/3b/b3ae3bd0-47cc-6349-1d0d-a01928796a62/jacket_VVXX00432B00Z_550.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1631260681",
+			"title": "Neon",
+			"artist": "ONE OK ROCK",
+			"album": "Luxury Disease",
+			"durationMs": 184544,
+			"url": "https://music.apple.com/jp/album/neon/1631260679?i=1631260681",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/58/30/c3/5830c3a7-cd63-5b39-f42f-f66a3663d7bf/mzaf_13513015092760560892.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/21/ca/f3/21caf318-b247-7c1b-b782-77f569d0b7f2/075679739889.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1802099493",
+			"title": "質問、恋って何でしょうか? (feat. ハコニワリリィ)",
+			"artist": "MARUMOCHI from HoneyWorks",
+			"album": "質問、恋って何でしょうか? (feat. ハコニワリリィ) - EP",
+			"durationMs": 183720,
+			"url": "https://music.apple.com/jp/album/%E8%B3%AA%E5%95%8F-%E6%81%8B%E3%81%A3%E3%81%A6%E4%BD%95%E3%81%A7%E3%81%97%E3%82%87%E3%81%86%E3%81%8B-feat-%E3%83%8F%E3%82%B3%E3%83%8B%E3%83%AF%E3%83%AA%E3%83%AA%E3%82%A3/1802099492?i=1802099493",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2a/29/d2/2a29d2d7-de54-3128-035b-3ca57c77b746/mzaf_7248954187154954008.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ad/c4/ff/adc4ff0e-46e7-b47e-cbca-d83ad8b00e9b/PCSP_06440_A.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1193701392",
+			"title": "Shape of You",
+			"artist": "エド・シーラン",
+			"album": "÷ (Deluxe)",
+			"durationMs": 233713,
+			"url": "https://music.apple.com/jp/album/shape-of-you/1193701079?i=1193701392",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/44/c7/4f/44c74f0d-72dc-6143-d4d0-ba14d661ca0d/mzaf_9566898362556366703.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/15/e6/e8/15e6e8a4-4190-6a8b-86c3-ab4a51b88288/190295851286.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1742492071",
+			"title": "視界の隅 朽ちる音 (新川崎(仮))",
+			"artist": "トゲナシトゲアリ",
+			"album": "視界の隅 朽ちる音 (新川崎(仮)) - Single",
+			"durationMs": 188507,
+			"url": "https://music.apple.com/jp/album/%E8%A6%96%E7%95%8C%E3%81%AE%E9%9A%85-%E6%9C%BD%E3%81%A1%E3%82%8B%E9%9F%B3-%E6%96%B0%E5%B7%9D%E5%B4%8E-%E4%BB%AE/1742492070?i=1742492071",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c7/b7/c7/c7b7c7a5-ef03-03e8-c0f3-c5836c97040e/mzaf_11946345477790009717.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5e/23/df/5e23df18-f169-232a-e13a-426accb05052/24UMGIM43541.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1737134872",
+			"title": "さよーならまたいつか!- Sayonara",
+			"artist": "米津玄師",
+			"album": "さよーならまたいつか!- Sayonara - Single",
+			"durationMs": 201252,
+			"url": "https://music.apple.com/jp/album/%E3%81%95%E3%82%88%E3%83%BC%E3%81%AA%E3%82%89%E3%81%BE%E3%81%9F%E3%81%84%E3%81%A4%E3%81%8B-sayonara/1737134871?i=1737134872",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/01/2c/b2/012cb297-87d9-fd7e-7b3e-5ffcbd13d061/mzaf_16800465843239693045.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/2b/d1/33/2bd13372-77d7-63c0-3f10-65f497c9aec3/4547366679601.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1841346383",
+			"title": "青春のシルエット",
+			"artist": "H△G",
+			"album": "青春のシルエット - Single",
+			"durationMs": 160523,
+			"url": "https://music.apple.com/jp/album/%E9%9D%92%E6%98%A5%E3%81%AE%E3%82%B7%E3%83%AB%E3%82%A8%E3%83%83%E3%83%88/1841346373?i=1841346383",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/29/a9/d2/29a9d25a-73ec-dc0d-82c7-59a2d2315354/mzaf_698481791540609027.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5d/78/83/5d788376-7850-0406-52db-240127a4b9b2/4540774746385.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1441493343",
+			"title": "TKO",
+			"artist": "ジャスティン・ティンバーレイク",
+			"album": "The 20/20 Experience - 2 of 2 (Deluxe)",
+			"durationMs": 424156,
+			"url": "https://music.apple.com/jp/album/tko/1441493266?i=1441493343",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/97/44/b1/9744b18e-3a54-77a0-55d3-8e4fc19eea1f/mzaf_11231044880689889580.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/b8/d4/6e/b8d46eaf-afbf-c90d-9307-e2212177ec33/886444128278.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6764757943",
+			"title": "Dream Believers (B. G. P. Ver.)",
+			"artist": "蓮ノ空女学院スクールアイドルクラブ",
+			"album": "ハナ咲けばユメ駆ける / 光の中で花咲いて - EP",
+			"durationMs": 318440,
+			"url": "https://music.apple.com/jp/album/dream-believers-b-g-p-ver/1895905444?i=6764757943",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4b/6b/21/4b6b2194-18f9-a814-6895-9b8b5e569bc5/mzaf_154229169692245851.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/68/e4/1d/68e41dc0-1413-c964-62ff-6d7650438c38/4540774247172.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1537331532",
+			"title": "世界は恋に落ちている",
+			"artist": "CHiCO with HoneyWorks",
+			"album": "世界は恋に落ちている - EP",
+			"durationMs": 311293,
+			"url": "https://music.apple.com/jp/album/%E4%B8%96%E7%95%8C%E3%81%AF%E6%81%8B%E3%81%AB%E8%90%BD%E3%81%A1%E3%81%A6%E3%81%84%E3%82%8B/1537331528?i=1537331532",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4f/93/d5/4f93d51e-2409-e59b-134d-bce07bd892a2/mzaf_8415565118845692518.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/8a/89/d9/8a89d9a0-0258-8b5a-6879-d9b221d37be4/jacket_SMCL00344B00Z_550.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6767490584",
+			"title": "ガラクタロード",
+			"artist": "初星学園",
+			"album": "ガラクタロード - Single",
+			"durationMs": 223071,
+			"url": "https://music.apple.com/jp/album/%E3%82%AC%E3%83%A9%E3%82%AF%E3%82%BF%E3%83%AD%E3%83%BC%E3%83%89/6767490578?i=6767490584",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e8/b2/13/e8b21355-3fef-7000-9287-a44fc1d0f50f/mzaf_12544593076355312026.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/41/df/44/41df44ef-476f-7d0a-bfa4-21f73738c853/PA00218612_0_246017_jacket.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1891006060",
+			"title": "未来予報ハレルヤ!",
+			"artist": "Liella!",
+			"album": "未来予報ハレルヤ! / Tiny Stars【第1話盤】 - Single",
+			"durationMs": 231686,
+			"url": "https://music.apple.com/jp/album/%E6%9C%AA%E6%9D%A5%E4%BA%88%E5%A0%B1%E3%83%8F%E3%83%AC%E3%83%AB%E3%83%A4/1891006058?i=1891006060",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/0e/65/b7/0e65b793-b074-7ff3-577f-40bd62dc00b4/mzaf_1367858717881915136.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a5/c2/85/a5c28545-96b7-8f7d-2fb5-ad0f3c705803/4540774241415.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1769305461",
+			"title": "仮装狂騒曲",
+			"artist": "初星学園, 倉本千奈, 篠澤 広 & 月村手毬",
+			"album": "仮装狂騒曲 - Single",
+			"durationMs": 193667,
+			"url": "https://music.apple.com/jp/album/%E4%BB%AE%E8%A3%85%E7%8B%82%E9%A8%92%E6%9B%B2/1769305460?i=1769305461",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/99/ff/80/99ff80b7-20e0-53f5-cb35-75c92c8ef943/mzaf_8151848394726934198.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/2c/02/a7/2c02a73a-6953-3802-d897-fcb13025b133/PA00164491_0_202834_jacket.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1789465887",
+			"title": "Plazma",
+			"artist": "米津玄師",
+			"album": "Plazma - Single",
+			"durationMs": 180833,
+			"url": "https://music.apple.com/jp/album/plazma/1789465886?i=1789465887",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e9/eb/4e/e9eb4e82-9529-cda8-7deb-224299c74894/mzaf_5029581961843005353.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c4/c7/15/c4c7150a-c72d-c6ba-f07f-c9c4342ec764/4547366728958.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "838212735",
+			"title": "Little Braver",
+			"artist": "LiSA & VISUAL ARTS / Key",
+			"album": "TVアニメーション『Angel Beats!』劇中歌 Girls Dead Monster「Little Braver」 - Single",
+			"durationMs": 273040,
+			"url": "https://music.apple.com/jp/album/little-braver/838212719?i=838212735",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/9a/18/33/9a1833cb-d6a6-81e9-b504-eab95ec5b566/mzaf_12691107328800029379.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/28/8c/c2/288cc24f-b2fa-9582-6f71-c8ae48023c6f/4933032006039_cover.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "838212736",
+			"title": "Shine Days",
+			"artist": "LiSA & VISUAL ARTS / Key",
+			"album": "TVアニメーション『Angel Beats!』劇中歌 Girls Dead Monster「Little Braver」 - Single",
+			"durationMs": 296640,
+			"url": "https://music.apple.com/jp/album/shine-days/838212719?i=838212736",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/01/54/35/015435f2-0bf0-fb8e-4555-dc396dd576b2/mzaf_17194541801902406154.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/28/8c/c2/288cc24f-b2fa-9582-6f71-c8ae48023c6f/4933032006039_cover.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1734550605",
+			"title": "Happy Funny Lucky",
+			"artist": "イルミネーションスターズ",
+			"album": "THE IDOLM@STER SHINY COLORS GR@DATE WING 02 - Single",
+			"durationMs": 254133,
+			"url": "https://music.apple.com/jp/album/happy-funny-lucky/1734550603?i=1734550605",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/4a/fc/ae/4afcaeb0-c8c5-3e8f-4b08-83f956dd5cb0/mzaf_15343005225666631914.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2c/74/cd/2c74cd39-ed84-e403-f4fb-cdf80216d91b/4540774149834.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1815402988",
+			"title": "Wacha Wacha",
+			"artist": "RIP SLYME",
+			"album": "GREATEST FIVE",
+			"durationMs": 232428,
+			"url": "https://music.apple.com/jp/album/wacha-wacha/1815402986?i=1815402988",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/0a/12/8f/0a128fdd-18bf-ae9f-ec92-bf920875787e/mzaf_9814364295430175274.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a5/87/2d/a5872d72-0613-6f28-9f2d-11300c325eaf/5021732816757.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1703323320",
+			"title": "Make It Out Alive",
+			"artist": "ONE OK ROCK",
+			"album": "Make It Out Alive - Single",
+			"durationMs": 209799,
+			"url": "https://music.apple.com/jp/album/make-it-out-alive/1703323319?i=1703323320",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/9b/fb/7c/9bfb7c06-f8f7-b274-5b7f-2efcf42672e8/mzaf_3456976923762121028.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/37/21/36/3721362a-e5e7-266a-3e56-d03c271f2b0b/075679674906.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1839482507",
+			"title": "Stand Out Fit In",
+			"artist": "ONE OK ROCK",
+			"album": "Eye of the Storm",
+			"durationMs": 213632,
+			"url": "https://music.apple.com/jp/album/stand-out-fit-in/1839482498?i=1839482507",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/67/5b/0e/675b0ef5-59de-a599-1ffb-281c1396d008/mzaf_18128723733381056387.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/11/17/b3/1117b383-44e1-cd43-e8b7-598ea880917e/25UMGIM89658.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1755065771",
+			"title": "Delusion:All",
+			"artist": "ONE OK ROCK",
+			"album": "Delusion:All - Single",
+			"durationMs": 184910,
+			"url": "https://music.apple.com/jp/album/delusion-all/1755065762?i=1755065771",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e4/fa/f0/e4faf0ec-d144-a41e-496b-9f4fcace0207/mzaf_5434086061846295272.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e9/99/8e/e9998ed5-e0b8-9ff2-8641-a0b8412a92d3/075679647436.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1837658529",
+			"title": "IRIS OUT",
+			"artist": "米津玄師",
+			"album": "IRIS OUT - Single",
+			"durationMs": 151573,
+			"url": "https://music.apple.com/jp/album/iris-out/1837658528?i=1837658529",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/90/85/cb/9085cb94-33c8-78bc-b8a6-4750232a210d/mzaf_5526054165895597852.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/f9/f1/e0f9f1f3-a088-b28d-6760-a28accabc705/4547366775181.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1604335301",
+			"title": "Find Love",
+			"artist": "宇多田ヒカル",
+			"album": "BADモード",
+			"durationMs": 277855,
+			"url": "https://music.apple.com/jp/album/find-love/1604335159?i=1604335301",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/e6/d0/55/e6d0553f-8210-d654-8bad-c7c835396d3d/mzaf_14556895527371744297.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8a/4f/6c/8a4f6cce-3955-92e1-b566-5c5ff715225b/4547366549522.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1815403436",
+			"title": "Good Times",
+			"artist": "RIP SLYME",
+			"album": "GREATEST FIVE",
+			"durationMs": 278800,
+			"url": "https://music.apple.com/jp/album/good-times/1815402986?i=1815403436",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/67/ef/4e/67ef4e51-b8e9-0c0c-b366-36e9d59b2624/mzaf_13429960608509349940.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a5/87/2d/a5872d72-0613-6f28-9f2d-11300c325eaf/5021732816757.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1723169959",
+			"title": "New Year's March!",
+			"artist": "虹ヶ咲学園スクールアイドル同好会",
+			"album": "New Year's March! - Single",
+			"durationMs": 244613,
+			"url": "https://music.apple.com/jp/album/new-years-march/1723169957?i=1723169959",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/d5/f1/2f/d5f12f67-8dae-ad52-4006-20b88d193379/mzaf_68808298114808186.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/4e/f4/f6/4ef4f663-3405-0d37-73ec-0b8541583885/4540774739547.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1860538548",
+			"title": "AIZO",
+			"artist": "King Gnu",
+			"album": "AIZO - Single",
+			"durationMs": 215858,
+			"url": "https://music.apple.com/jp/album/aizo/1860538546?i=1860538548",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/29/a2/1a/29a21ac0-9c04-75cc-4b46-d1ec4168c0f0/mzaf_15133126017791169575.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9f/8a/0b/9f8a0bc1-e6ee-5873-4fc9-9a75b0d58e2a/4547366794816.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1734552665",
+			"title": "ビーチブレイバー",
+			"artist": "放課後クライマックスガールズ",
+			"album": "THE IDOLM@STER SHINY COLORS FR@GMENT WING 04 - Single",
+			"durationMs": 235040,
+			"url": "https://music.apple.com/jp/album/%E3%83%93%E3%83%BC%E3%83%81%E3%83%96%E3%83%AC%E3%82%A4%E3%83%90%E3%83%BC/1734552664?i=1734552665",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/36/53/d1/3653d1a2-f70d-d2ec-bf13-048154d11724/mzaf_16065649678097018951.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/84/38/51/84385129-d485-4fcf-1ff2-45b4a4cccfd3/4540774148646.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1445136075",
+			"title": "Bitch Better Have My Money",
+			"artist": "リアーナ",
+			"album": "Bitch Better Have My Money - Single",
+			"durationMs": 219306,
+			"url": "https://music.apple.com/jp/album/bitch-better-have-my-money/1445136072?i=1445136075",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ae/aa/2c/aeaa2c0a-b548-b3f8-eda3-cfecc02c3c8d/mzaf_5935440401444315072.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/f1/a8/79/f1a879f1-3822-cc4c-23c1-abfeb810a6b8/00851365006042.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1647132944",
+			"title": "CHAINSAW BLOOD",
+			"artist": "Vaundy",
+			"album": "CHAINSAW BLOOD - Single",
+			"durationMs": 200997,
+			"url": "https://music.apple.com/jp/album/chainsaw-blood/1647132937?i=1647132944",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/e1/7a/19/e17a1983-253d-6e93-b372-e2079343ed53/mzaf_5055213267370887161.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/c9/de/16/c9de1632-3d12-19c3-2699-22090b4bfcc1/4547366588620.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1454477905",
+			"title": "AIAIAI (feat. 中田ヤスタカ)",
+			"artist": "Kizuna AI (キズナアイ)",
+			"album": "AIAIAI (feat. 中田ヤスタカ) - Single",
+			"durationMs": 193385,
+			"url": "https://music.apple.com/jp/album/aiaiai-feat-%E4%B8%AD%E7%94%B0%E3%83%A4%E3%82%B9%E3%82%BF%E3%82%AB/1454477904?i=1454477905",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/09/df/c8/09dfc8bc-8e8d-df0f-4bcc-378c7ad6e0da/mzaf_3017244039872836326.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/33/1c/eb/331ceb64-474e-9012-6660-6bcaaf860dea/dj.scsxwybl.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "303171368",
+			"title": "Bye Bye Bye",
+			"artist": "イン・シンク",
+			"album": "No Strings Attached",
+			"durationMs": 200400,
+			"url": "https://music.apple.com/jp/album/bye-bye-bye/303171298?i=303171368",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6a/a8/c2/6aa8c264-c7f8-5db7-4b52-808abf96156d/mzaf_15046152716316545247.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/36/22/d6/3622d665-873c-57b8-392b-971292e6086f/012414170224.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1770958213",
+			"title": "Midnight parade!",
+			"artist": "田中摩美々 (CV.菅沼千紗), 白瀬咲耶 (CV.八巻アンナ), 杜野凛世 (CV.丸岡和佳奈), 大崎甜花 (CV.前川涼子) & 和泉愛依 (CV.北原沙弥香)",
+			"album": "Happy Surprise Trick!",
+			"durationMs": 177847,
+			"url": "https://music.apple.com/jp/album/midnight-parade/1770958209?i=1770958213",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/f3/10/55/f3105512-8002-7ae2-11c8-1fd49a8867dd/mzaf_4847049089167571899.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1537451763",
+			"title": "光るなら",
+			"artist": "Goose house",
+			"album": "光るなら - EP",
+			"durationMs": 254133,
+			"url": "https://music.apple.com/jp/album/%E5%85%89%E3%82%8B%E3%81%AA%E3%82%89/1537451762?i=1537451763",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d7/7b/a6/d77ba6d2-e38b-a553-b39d-45d5a53f3250/mzaf_1842760548302899976.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c2/2c/b1/c22cb13e-9724-c1ae-c36e-2e313e077321/jacket_SRCL08640B00Z_550.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1734556469",
+			"title": "相合学舎",
+			"artist": "放課後クライマックスガールズ & ノクチル",
+			"album": "THE IDOLM@STER SHINY COLORS Synthe-Side 02",
+			"durationMs": 265173,
+			"url": "https://music.apple.com/jp/album/%E7%9B%B8%E5%90%88%E5%AD%A6%E8%88%8E/1734556468?i=1734556469",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/27/b1/d1/27b1d1df-3648-09dc-ecb2-a3af721e3ad7/mzaf_16893615714425099705.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/1d/81/00/1d8100f0-1cf3-cfc3-5eff-960c19a7bd42/4540774242450.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1694667921",
+			"title": "コイセカイ",
+			"artist": "ClariS",
+			"album": "コイセカイ - Single",
+			"durationMs": 285458,
+			"url": "https://music.apple.com/jp/album/%E3%82%B3%E3%82%A4%E3%82%BB%E3%82%AB%E3%82%A4/1694667793?i=1694667921",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/5f/9d/0b/5f9d0b41-d6da-baa8-fd6c-ad84b5ff0e3e/mzaf_13685229068495305960.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/e0/bf/fe/e0bffee0-50fe-4b84-5fca-ddf37f05adc4/4547366631364.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1728576114",
+			"title": "Rat A Tat!!!",
+			"artist": "MILLIONSTARS",
+			"album": "THE IDOLM@STER MILLION ANIMATION THE@TER 『Rat A Tat!!!』 - EP",
+			"durationMs": 265533,
+			"url": "https://music.apple.com/jp/album/rat-a-tat/1728576113?i=1728576114",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/a6/49/0f/a6490fd1-fb60-3f89-5c1d-0de9aa71760a/mzaf_15597844651726874531.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/1f/5c/63/1f5c63bb-b541-74a5-f9cf-0fe11c3b695b/4540774244201.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1721298017",
+			"title": "なまらめんこいギャル",
+			"artist": "オーイシマサヨシ",
+			"album": "なまらめんこいギャル - Single",
+			"durationMs": 208765,
+			"url": "https://music.apple.com/jp/album/%E3%81%AA%E3%81%BE%E3%82%89%E3%82%81%E3%82%93%E3%81%93%E3%81%84%E3%82%AE%E3%83%A3%E3%83%AB/1721297716?i=1721298017",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/7f/88/86/7f888679-c4be-f5e6-8cc3-35e33e556838/mzaf_3331753502140172594.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/c3/c6/01/c3c601de-6114-ac92-7d06-c20b29bd8892/dj.qbqzbdje.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1722604244",
+			"title": "ポンポポポン (feat. Pon no Michi ALL STARS)",
+			"artist": "中田花奈",
+			"album": "ポンポポポン (feat. Pon no Michi ALL STARS) - Single",
+			"durationMs": 196667,
+			"url": "https://music.apple.com/jp/album/%E3%83%9D%E3%83%B3%E3%83%9D%E3%83%9D%E3%83%9D%E3%83%B3-feat-pon-no-michi-all-stars/1722604242?i=1722604244",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/f5/ca/5b/f5ca5b0f-ebf6-c9f2-ba2f-1c66197c1def/mzaf_18149738307157622574.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/8d/a0/18/8da018c7-95ab-7445-7fa5-4dc1a22926ad/4547366660777.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1659336142",
+			"title": "ひめごと*クライシスターズ",
+			"artist": "ONIMAI SISTERS(高野麻里佳・石原夏織・金元寿子・津田美波)",
+			"album": "ひめごと*クライシスターズ",
+			"durationMs": 214253,
+			"url": "https://music.apple.com/jp/album/%E3%81%B2%E3%82%81%E3%81%94%E3%81%A8-%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%B7%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%BA/1659336139?i=1659336142",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/a7/73/9e/a7739e00-b227-c7b6-a74d-f0723e059c57/mzaf_10458214790502468009.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/c6/fb/fc/c6fbfc44-4bff-2cb2-5868-b8380e5f7cf1/PCCG_02194_A.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1679278167",
+			"title": "アイドル",
+			"artist": "YOASOBI",
+			"album": "アイドル - Single",
+			"durationMs": 213234,
+			"url": "https://music.apple.com/jp/album/%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB/1679278166?i=1679278167",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f0/db/16/f0db16be-457e-f10f-98b6-f30b11de34e4/mzaf_5189430943078523093.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/3a/17/eb/3a17eb30-eacb-82eb-51df-d1321dbb55bc/197188492205.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1441493350",
+			"title": "Murder (feat. JAŸ-Z)",
+			"artist": "ジャスティン・ティンバーレイク",
+			"album": "The 20/20 Experience - 2 of 2 (Deluxe)",
+			"durationMs": 307559,
+			"url": "https://music.apple.com/jp/album/murder-feat-ja%C3%BF-z/1441493266?i=1441493350",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5e/e1/6a/5ee16a30-2cff-d2fd-523b-01f07f19b9de/mzaf_14140493286414051933.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/b8/d4/6e/b8d46eaf-afbf-c90d-9307-e2212177ec33/886444128278.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1437481021",
+			"title": "LOVE&JOY (TVアニメ「アニマエール!」挿入歌)",
+			"artist": "XAI",
+			"album": "LOVE&JOY (TVアニメ「アニマエール!」挿入歌) - Single",
+			"durationMs": 258645,
+			"url": "https://music.apple.com/jp/album/love-joy-tv%E3%82%A2%E3%83%8B%E3%83%A1-%E3%82%A2%E3%83%8B%E3%83%9E%E3%82%A8%E3%83%BC%E3%83%AB-%E6%8C%BF%E5%85%A5%E6%AD%8C/1437481019?i=1437481021",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/76/09/47/760947c5-5da5-138f-fdad-7a48841400c1/mzaf_4063210957274337580.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music128/v4/bf/42/fe/bf42fe89-c3bb-e6b9-6f40-0b986dd9b791/LOVE_JOY_XAI.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1821382352",
+			"title": "すーぱーびっぐらぶ!",
+			"artist": "天狼群",
+			"album": "すーぱーびっぐらぶ! - Single",
+			"durationMs": 249711,
+			"url": "https://music.apple.com/jp/album/%E3%81%99%E3%83%BC%E3%81%B1%E3%83%BC%E3%81%B3%E3%81%A3%E3%81%90%E3%82%89%E3%81%B6/1821382351?i=1821382352",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ed/01/f3/ed01f3a4-5579-cc21-0cd0-69d20f8a59e1/mzaf_17292202630048303930.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/63/32/7f/63327f81-33fa-28bb-c282-7bbbc2df6177/dj.mstyvdil.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "420878302",
+			"title": "BLACK OUT feat. Lil Wayne & Namie Amuro",
+			"artist": "VERBAL",
+			"album": "VISIONAIR",
+			"durationMs": 223733,
+			"url": "https://music.apple.com/jp/album/black-out-feat-lil-wayne-namie-amuro/420878300?i=420878302",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6c/a8/5b/6ca85bfd-77ea-7428-b413-a5daeb8be560/mzaf_16258647146708210175.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/43/ec/0f/43ec0fe9-eeb6-5eb2-5415-5aab3ed4bb9f/mzi.snzzvjfq.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1720898327",
+			"title": "「僕は...」",
+			"artist": "あたらよ",
+			"album": "「僕は...」 - Single",
+			"durationMs": 239762,
+			"url": "https://music.apple.com/jp/album/%E5%83%95%E3%81%AF/1720898176?i=1720898327",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/95/08/0a/95080aec-b997-b466-4137-3a5df8cff5e1/mzaf_6037085599068075998.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/69/c8/cd/69c8cdb2-06e8-ddec-5189-25ca7b8fbcda/ANTCD-A0000012214.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1792667005",
+			"title": "Abracadabra",
+			"artist": "レディー・ガガ",
+			"album": "MAYHEM",
+			"durationMs": 223398,
+			"url": "https://music.apple.com/jp/album/abracadabra/1792666546?i=1792667005",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7f/f0/f5/7ff0f508-1e7a-fefc-0c78-5bd659286525/mzaf_16241395143868251571.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/be/11/d1/be11d187-1aeb-99f3-01c5-597ed65cdb6a/25UMGIM07433.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1648272180",
+			"title": "KICK BACK",
+			"artist": "米津玄師",
+			"album": "KICK BACK - Single",
+			"durationMs": 193495,
+			"url": "https://music.apple.com/jp/album/kick-back/1648272179?i=1648272180",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ef/35/15/ef3515d7-ec49-a0d5-5941-b312a31d89f9/mzaf_6584056106462089749.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/4e/a8/75/4ea875d1-bdb6-9b83-185a-646391cbffbd/4547366589849.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1839384370",
+			"title": "絶対称賛! (feat. ハコニワリリィ)",
+			"artist": "MARUMOCHI from HoneyWorks",
+			"album": "絶対称賛! (feat. ハコニワリリィ) - EP",
+			"durationMs": 224667,
+			"url": "https://music.apple.com/jp/album/%E7%B5%B6%E5%AF%BE%E7%A7%B0%E8%B3%9B-feat-%E3%83%8F%E3%82%B3%E3%83%8B%E3%83%AF%E3%83%AA%E3%83%AA%E3%82%A3/1839384369?i=1839384370",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a0/b3/f8/a0b3f827-6c94-123b-0d2b-558bcd76998b/mzaf_17018562014311083639.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/16/61/bf/1661bf31-b771-03fa-48cd-0e557e782365/PCSP_06850_A.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1280185646",
+			"title": "Best Friend (feat. NERVO, The Knocks & Alisa Ueno)",
+			"artist": "SOFI TUKKER",
+			"album": "Best Friend (feat. NERVO, The Knocks & Alisa Ueno) - Single",
+			"durationMs": 184880,
+			"url": "https://music.apple.com/jp/album/best-friend-feat-nervo-the-knocks-alisa-ueno/1280185637?i=1280185646",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/6e/6f/09/6e6f09e8-d6d7-8b82-127b-82a7aa197d7a/mzaf_14422057464174680050.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/6b/b2/c9/6bb2c95e-78eb-8bc9-baa4-386ebe9d71d0/0617465898556.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "346713765",
+			"title": "Do Ya Wanna Taste It",
+			"artist": "Wig Wam",
+			"album": "Non Stop Rock'n Roll",
+			"durationMs": 176973,
+			"url": "https://music.apple.com/jp/album/do-ya-wanna-taste-it/346713757?i=346713765",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/2a/6f/1a/2a6f1a84-03e6-d512-eab3-2b8aa750fbbd/mzaf_4899801966877860032.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/74/0b/93/740b9372-bf71-23f0-9087-b7bc073439a7/7332334353938.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1839482501",
+			"title": "Eye of the Storm",
+			"artist": "ONE OK ROCK",
+			"album": "Eye of the Storm",
+			"durationMs": 181533,
+			"url": "https://music.apple.com/jp/album/eye-of-the-storm/1839482498?i=1839482501",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/04/c5/02/04c5028a-d629-3dfd-dc70-92a5dc64eb74/mzaf_7340050713159355834.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/11/17/b3/1117b383-44e1-cd43-e8b7-598ea880917e/25UMGIM89658.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1463236498",
+			"title": "Rescue Me",
+			"artist": "ワンリパブリック",
+			"album": "Rescue Me - Single",
+			"durationMs": 158900,
+			"url": "https://music.apple.com/jp/album/rescue-me/1463236194?i=1463236498",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/0a/12/18/0a1218c5-ba65-47d2-300d-dc90447404a4/mzaf_4089913127713972622.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/0a/cc/7f/0acc7f2a-963c-8d3e-d90d-ced0ec13d71d/19UMGIM42096.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1468058704",
+			"title": "You Need To Calm Down",
+			"artist": "テイラー・スウィフト",
+			"album": "Lover",
+			"durationMs": 171352,
+			"url": "https://music.apple.com/jp/album/you-need-to-calm-down/1468058165?i=1468058704",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e8/80/4f/e8804fa1-6118-74fd-4602-b96969ebef41/mzaf_5457103975229379192.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1734555466",
+			"title": "チョコデート・サンデー",
+			"artist": "園田智代子 (CV.白石晴香)",
+			"album": "THE IDOLM@STER SHINY COLORS COLORFUL FE@THERS -Stella-",
+			"durationMs": 273693,
+			"url": "https://music.apple.com/jp/album/%E3%83%81%E3%83%A7%E3%82%B3%E3%83%87%E3%83%BC%E3%83%88-%E3%82%B5%E3%83%B3%E3%83%87%E3%83%BC/1734555460?i=1734555466",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/31/45/82/314582b3-048e-5fe1-cd27-2a035b8e6340/mzaf_1177212614809449831.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/ba/a3/25/baa3251c-01b8-c670-221a-49085c053ba9/4540774158614.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "78994094",
+			"title": "be your girl",
+			"artist": "河辺千恵子",
+			"album": "brilliance",
+			"durationMs": 271013,
+			"url": "https://music.apple.com/jp/album/be-your-girl/78994172?i=78994094",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/52/82/49/52824914-d457-b48b-97de-c5c6ac27c930/mzaf_2839336465249931978.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/39/97/99/399799d3-b7d7-c12c-e010-a8456dbaf732/4988021815062.png/{w}x{h}bb.jpg"
+		}
+	]
+}

@@ -19,6 +19,7 @@ export type PlaylistTrack = {
 
 export type PlaylistData = {
 	placeholder: boolean;
+	order: number;
 	fetchedAt: string;
 	id: string;
 	storefront: string;

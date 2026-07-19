@@ -1,13 +1,19 @@
 ---
 import AppleMusicPlaylist from "@components/AppleMusicPlaylist.astro";
-import favorites from "../data/playlists/favorites.json";
-import replay2026 from "../data/playlists/replay-2026.json";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 import type { PlaylistData } from "../types/playlist";
 
-const playlists: PlaylistData[] = [favorites, replay2026];
+// src/data/playlists/*.json を自動収集し、fetch-playlists.mjs が書き出す order 順に表示する。
+// プレイリストの追加はスクリプト側の PLAYLISTS 配列 + pnpm fetch-playlists だけで完結する
+const modules = import.meta.glob<{ default: PlaylistData }>(
+	"../data/playlists/*.json",
+	{ eager: true },
+);
+const playlists = Object.values(modules)
+	.map((module) => module.default)
+	.sort((a, b) => a.order - b.order);
 ---
 
 <MainGridLayout
