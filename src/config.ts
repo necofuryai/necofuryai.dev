@@ -66,6 +66,21 @@ export const profileConfig: ProfileConfig = {
 			icon: "fa6-brands:github",
 			url: "https://github.com/necofuryai",
 		},
+		{
+			name: "X",
+			icon: "fa6-brands:x-twitter",
+			url: "https://x.com/necofuryai",
+		},
+		{
+			name: "Kaggle",
+			icon: "fa6-brands:kaggle",
+			url: "https://www.kaggle.com/necofuryai",
+		},
+		{
+			name: "LeetCode",
+			icon: "simple-icons:leetcode",
+			url: "https://leetcode.com/necofuryai",
+		},
 	],
 };
 
