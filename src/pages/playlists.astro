@@ -108,6 +108,14 @@ const playlists = Object.values(modules)
 						audio.setAttribute("data-am-preview-audio", "");
 						audio.addEventListener("ended", stop);
 						audio.addEventListener("error", stop);
+						// メディアキーや Global Media Controls などスクリプト外の一時停止でも
+						// ボタン状態を同期する。トラック切替時はキュー経由の pause イベントが
+						// 届く時点で新しい再生が始まり audio.paused が false のため誤発火しない
+						audio.addEventListener("pause", () => {
+							if (audio.paused) {
+								stop();
+							}
+						});
 						document.body.append(audio);
 					}
 					audio.src = button.getAttribute("data-am-preview-url") ?? "";
