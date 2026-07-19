@@ -37,4 +37,5 @@ export const th: Translation = {
 	[Key.license]: "สัญญาอนุญาต",
 
 	[Key.privacyPolicy]: "นโยบายความเป็นส่วนตัว",
+	[Key.playlists]: "เพลย์ลิสต์",
 };

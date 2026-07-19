@@ -37,4 +37,5 @@ export const tr: Translation = {
 	[Key.license]: "Lisans",
 
 	[Key.privacyPolicy]: "Gizlilik Politikası",
+	[Key.playlists]: "Çalma listeleri",
 };

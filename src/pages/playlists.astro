@@ -1,0 +1,61 @@
+---
+import AppleMusicPlaylist from "@components/AppleMusicPlaylist.astro";
+import favorites from "../data/playlists/favorites.json";
+import replay2026 from "../data/playlists/replay-2026.json";
+import I18nKey from "../i18n/i18nKey";
+import { i18n } from "../i18n/translation";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+import type { PlaylistData } from "../types/playlist";
+
+const playlists: PlaylistData[] = [favorites, replay2026];
+---
+
+<MainGridLayout
+	title={i18n(I18nKey.playlists)}
+	description="Apple Music で聴いているプレイリストの紹介"
+>
+	<div class="flex w-full flex-col gap-4">
+		<div class="card-base px-9 py-6 rounded-[var(--radius-large)]">
+			<h1 class="text-3xl font-bold">{i18n(I18nKey.playlists)}</h1>
+			<p class="mt-2 text-75">
+				Apple Music で聴いているプレイリスト。各曲のリンクから Apple Music で開けます。
+			</p>
+		</div>
+		{playlists.map((playlist) => <AppleMusicPlaylist playlist={playlist} />)}
+		<p class="px-2 text-xs text-30">
+			トラックデータとアートワークは Apple Music API から取得しています。Apple および
+			Apple Music は Apple Inc. の商標です。
+		</p>
+		<!-- facade: クリックで公式埋め込み iframe に差し替える。swup コンテナ内に置くことで
+		     reloadScripts が SPA 遷移到着時にも実行する。ガードで多重登録を防ぐ -->
+		<script is:inline>
+			(() => {
+				if (document.documentElement.hasAttribute("data-am-facade-ready")) {
+					return;
+				}
+				document.documentElement.setAttribute("data-am-facade-ready", "");
+				document.addEventListener("click", (event) => {
+					const origin =
+						event.target instanceof Element
+							? event.target.closest("[data-am-embed-url]")
+							: null;
+					if (!origin) {
+						return;
+					}
+					const iframe = document.createElement("iframe");
+					iframe.src = origin.getAttribute("data-am-embed-url") || "";
+					iframe.title = origin.getAttribute("data-am-title") || "Apple Music";
+					iframe.height = "450";
+					iframe.loading = "lazy";
+					iframe.allow = "autoplay *; encrypted-media *; clipboard-write";
+					iframe.setAttribute(
+						"sandbox",
+						"allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation",
+					);
+					iframe.className = "w-full rounded-lg";
+					origin.replaceWith(iframe);
+				});
+			})();
+		</script>
+	</div>
+</MainGridLayout>

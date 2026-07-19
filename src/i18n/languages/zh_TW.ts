@@ -37,4 +37,5 @@ export const zh_TW: Translation = {
 	[Key.license]: "許可協議",
 
 	[Key.privacyPolicy]: "隱私權政策",
+	[Key.playlists]: "播放清單",
 };

@@ -37,4 +37,5 @@ export const es: Translation = {
 	[Key.license]: "Licencia",
 
 	[Key.privacyPolicy]: "Política de privacidad",
+	[Key.playlists]: "Listas de reproducción",
 };

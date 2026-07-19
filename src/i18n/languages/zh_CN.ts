@@ -37,4 +37,5 @@ export const zh_CN: Translation = {
 	[Key.license]: "许可协议",
 
 	[Key.privacyPolicy]: "隐私政策",
+	[Key.playlists]: "播放列表",
 };
