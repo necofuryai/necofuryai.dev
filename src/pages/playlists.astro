@@ -24,13 +24,14 @@ const playlists = Object.values(modules)
 		<div class="card-base px-9 py-6 rounded-[var(--radius-large)]">
 			<h1 class="text-3xl font-bold">{i18n(I18nKey.playlists)}</h1>
 			<p class="mt-2 text-75">
-				Apple Music で聴いているプレイリスト。各曲のリンクから Apple Music で開けます。
+				Apple Music で聴いているプレイリスト。アートワークの再生ボタンで 30
+				秒試聴でき、各曲のリンクから Apple Music で開けます。
 			</p>
 		</div>
 		{playlists.map((playlist) => <AppleMusicPlaylist playlist={playlist} />)}
 		<p class="px-2 text-xs text-30">
-			トラックデータとアートワークは Apple Music API から取得しています。Apple および
-			Apple Music は Apple Inc. の商標です。
+			トラックデータ、アートワーク、30 秒試聴音源は Apple Music API
+			から取得しています。Apple および Apple Music は Apple Inc. の商標です。
 		</p>
 		<!-- facade: クリックで公式埋め込み iframe に差し替える。swup コンテナ内に置くことで
 		     reloadScripts が SPA 遷移到着時にも実行する。ガードで多重登録を防ぐ -->
@@ -61,6 +62,66 @@ const playlists = Object.values(modules)
 					iframe.className = "w-full rounded-lg";
 					origin.replaceWith(iframe);
 				});
+			})();
+		</script>
+		<!-- 30 秒試聴プレイヤー: 共有 <audio> 1 本を全トラックで使い回す。ガードと配置は
+		     facade スクリプトと同じ方式。audio は body 直下にあり Swup の差し替え対象
+		     (main / #toc) の外で生き続けるため、content:replace で必ず停止する -->
+		<script is:inline>
+			(() => {
+				if (document.documentElement.hasAttribute("data-am-preview-ready")) {
+					return;
+				}
+				document.documentElement.setAttribute("data-am-preview-ready", "");
+				let audio = null;
+				let activeButton = null;
+				const stop = () => {
+					audio?.pause();
+					if (activeButton) {
+						activeButton.removeAttribute("data-am-playing");
+						activeButton.setAttribute("aria-pressed", "false");
+						activeButton = null;
+					}
+				};
+				document.addEventListener("click", (event) => {
+					const target = event.target instanceof Element ? event.target : null;
+					if (!target) {
+						return;
+					}
+					// 埋め込みプレイヤーを開いたら試聴を止めて二重再生を防ぐ
+					if (target.closest("[data-am-embed-url]")) {
+						stop();
+						return;
+					}
+					const button = target.closest("[data-am-preview-url]");
+					if (!button) {
+						return;
+					}
+					if (button === activeButton) {
+						stop();
+						return;
+					}
+					stop();
+					if (!audio) {
+						audio = document.createElement("audio");
+						audio.preload = "none";
+						audio.setAttribute("data-am-preview-audio", "");
+						audio.addEventListener("ended", stop);
+						audio.addEventListener("error", stop);
+						document.body.append(audio);
+					}
+					audio.src = button.getAttribute("data-am-preview-url") ?? "";
+					activeButton = button;
+					button.setAttribute("data-am-playing", "");
+					button.setAttribute("aria-pressed", "true");
+					audio.play().catch(() => {
+						// 別トラックへの切替による中断 (AbortError) では新しい再生を殺さない
+						if (activeButton === button) {
+							stop();
+						}
+					});
+				});
+				document.addEventListener("swup:content:replace", stop);
 			})();
 		</script>
 	</div>
