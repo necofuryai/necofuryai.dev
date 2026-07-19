@@ -19,8 +19,10 @@ import { writeFile } from "node:fs/promises";
 import { z } from "astro/zod";
 
 const PLAYLISTS = [
-	{ slug: "favorites", id: "pl.u-gxblk30u5RvoRr", storefront: "jp" },
+	{ slug: "replay-all-time", id: "pl.rp-M9CMY0pYR", storefront: "jp" },
 	{ slug: "replay-2026", id: "pl.rp-lellcVyY1yj", storefront: "jp" },
+	{ slug: "replay-2025", id: "pl.rp-55w5t6NGXNj", storefront: "jp" },
+	{ slug: "replay-2024", id: "pl.rp-3g58tjR0VRD", storefront: "jp" },
 ];
 
 const API_ORIGIN = "https://api.music.apple.com";
@@ -195,7 +197,7 @@ function toTrack(item) {
 	};
 }
 
-async function fetchPlaylist({ id, storefront }, token) {
+async function fetchPlaylist({ id, storefront }, order, token) {
 	const playlistUrl = `${API_ORIGIN}/v1/catalog/${storefront}/playlists/${id}`;
 	const response = playlistResponseSchema.parse(
 		await fetchJson(playlistUrl, token),
@@ -221,6 +223,7 @@ async function fetchPlaylist({ id, storefront }, token) {
 	const { attributes } = playlist;
 	return {
 		placeholder: false,
+		order,
 		fetchedAt: new Date().toISOString(),
 		id,
 		storefront,
@@ -237,9 +240,9 @@ async function fetchPlaylist({ id, storefront }, token) {
 
 const token = createDeveloperToken();
 const failures = [];
-for (const playlist of PLAYLISTS) {
+for (const [order, playlist] of PLAYLISTS.entries()) {
 	try {
-		const data = await fetchPlaylist(playlist, token);
+		const data = await fetchPlaylist(playlist, order, token);
 		const outFile = new URL(`${playlist.slug}.json`, OUT_DIR);
 		await writeFile(outFile, `${JSON.stringify(data, null, "\t")}\n`);
 		console.log(`OK ${playlist.slug}: ${data.tracks.length} 曲 (${data.name})`);
