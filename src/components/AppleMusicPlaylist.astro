@@ -9,7 +9,7 @@ interface Props {
 
 const { playlist } = Astro.props;
 
-const VISIBLE_TRACKS = 25;
+const VISIBLE_TRACKS = 5;
 const visibleTracks = playlist.tracks.slice(0, VISIBLE_TRACKS);
 const hiddenTracks = playlist.tracks.slice(VISIBLE_TRACKS);
 
