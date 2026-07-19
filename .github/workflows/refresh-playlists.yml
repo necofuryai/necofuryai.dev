@@ -1,6 +1,6 @@
 # Apple Music プレイリストデータの再取得。
-# リプレイ 2026 が自動更新されるため月次 + 手動 (workflow_dispatch) で実行し、
-# 変更があれば PR を作成する。Secrets に Apple Developer Program の
+# Replay All Time / 現行年リプレイは毎週日曜に更新されるため週次 + 手動
+# (workflow_dispatch) で実行し、変更があれば PR を作成する。Secrets に Apple Developer Program の
 # APPLE_MUSIC_TEAM_ID / APPLE_MUSIC_KEY_ID / APPLE_MUSIC_PRIVATE_KEY が必要。
 #
 # 注意: GITHUB_TOKEN で作成した PR は CI (on: pull_request) を自動起動しない
@@ -11,8 +11,9 @@ name: Refresh Apple Music Playlists
 on:
   workflow_dispatch:
   schedule:
-    # 毎月 1 日 21:23 UTC (2 日 06:23 JST)
-    - cron: "23 21 1 * *"
+    # 毎週月曜 13:23 UTC (22:23 JST)。Apple の「日曜更新」のタイムゾーン基準が
+    # 不明なため、全タイムゾーンで日曜が終了した後 (月曜 12:00 UTC 以降) に実行する
+    - cron: "23 13 * * 1"
 
 permissions:
   contents: write
