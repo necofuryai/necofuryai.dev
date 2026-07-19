@@ -13,7 +13,9 @@ import rehypeComponents from "rehype-components"; /* Render the custom directive
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import remarkDirective from "remark-directive"; /* Handle directives */
-import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
+import remarkGithubAdmonitionsToDirectives, {
+	GithubAlertType,
+} from "remark-github-admonitions-to-directives";
 import remarkMath from "remark-math";
 import remarkSectionize from "remark-sectionize";
 import { expressiveCodeConfig } from "./src/config.ts";
@@ -110,7 +112,21 @@ export default defineConfig({
 				remarkMath,
 				remarkReadingTime,
 				remarkExcerpt,
-				remarkGithubAdmonitionsToDirectives,
+				[
+					remarkGithubAdmonitionsToDirectives,
+					{
+						// Directive names must match the rehypeComponents registration below.
+						// The v2 default maps IMPORTANT -> info and CAUTION -> danger,
+						// neither of which is registered there.
+						mapping: {
+							[GithubAlertType.NOTE]: "note",
+							[GithubAlertType.TIP]: "tip",
+							[GithubAlertType.IMPORTANT]: "important",
+							[GithubAlertType.WARNING]: "warning",
+							[GithubAlertType.CAUTION]: "caution",
+						},
+					},
+				],
 				remarkDirective,
 				remarkSectionize,
 				parseDirectiveNode,
