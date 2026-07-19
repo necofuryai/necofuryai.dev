@@ -111,6 +111,23 @@ jobs:
     outputs:
       eligible: ${{ steps.policy.outputs.eligible }}
     steps:
+      # The policy script is taken from the current tip of the protected
+      # main branch, never from the PR head, so this job executes no code
+      # proposed by the PR. A branch name is used instead of
+      # pull_request.base.sha because base.sha is frozen at PR creation time
+      # and would keep outdated policy versions alive for long-lived
+      # Dependabot PRs.
+      - name: Checkout the policy script from main
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+
       - name: Fetch Dependabot metadata
         id: metadata
         continue-on-error: true
@@ -125,16 +142,7 @@ jobs:
           METADATA_OUTCOME: ${{ steps.metadata.outcome }}
           IS_DRAFT: ${{ github.event.pull_request.draft }}
           HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
-          DEPENDENCY_NAME: ${{ steps.metadata.outputs.dependency-names }}
-          DEPENDENCY_TYPE: ${{ steps.metadata.outputs.dependency-type }}
-          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
-          DIRECTORY: ${{ steps.metadata.outputs.directory }}
-          PACKAGE_ECOSYSTEM: ${{ steps.metadata.outputs.package-ecosystem }}
-          TARGET_BRANCH: ${{ steps.metadata.outputs.target-branch }}
-          PREVIOUS_VERSION: ${{ steps.metadata.outputs.previous-version }}
-          NEW_VERSION: ${{ steps.metadata.outputs.new-version }}
-          MAINTAINER_CHANGES: ${{ steps.metadata.outputs.maintainer-changes }}
-          DEPENDENCY_GROUP: ${{ steps.metadata.outputs.dependency-group }}
+          UPDATED_DEPS_JSON: ${{ steps.metadata.outputs.updated-dependencies-json }}
         shell: bash
         run: |
           set -euo pipefail
@@ -148,20 +156,12 @@ jobs:
           [[ "$METADATA_OUTCOME" == "success" ]] || deny
           [[ "$IS_DRAFT" == "false" ]] || deny
           [[ "$HEAD_REPOSITORY" == "$GITHUB_REPOSITORY" ]] || deny
-          [[ "$PACKAGE_ECOSYSTEM" == "npm_and_yarn" ]] || deny
-          [[ "$DIRECTORY" == "/" ]] || deny
-          [[ "$TARGET_BRANCH" == "main" ]] || deny
-          [[ "$DEPENDENCY_TYPE" == "direct:development" ]] || deny
-          [[ "$UPDATE_TYPE" == "version-update:semver-patch" ]] || deny
-          [[ -z "$DEPENDENCY_GROUP" ]] || deny
-          [[ "$MAINTAINER_CHANGES" == "false" ]] || deny
-          [[ "$PREVIOUS_VERSION" =~ ^v?[1-9][0-9]*\.[0-9]+\.[0-9]+$ ]] || deny
-          [[ "$NEW_VERSION" =~ ^v?[1-9][0-9]*\.[0-9]+\.[0-9]+$ ]] || deny
 
-          case "$DEPENDENCY_NAME" in
-            "@astrojs/ts-plugin"|"@biomejs/biome"|"@types/hast"|"@types/markdown-it"|"@types/mdast"|"@types/sanitize-html") ;;
-            *) deny ;;
-          esac
+          # Standalone assignment: a script crash trips errexit and fails
+          # the job loudly, unlike a substitution inside [[ ]].
+          verdict="$(node scripts/ci/evaluate-automerge-policy.mjs)"
+
+          [[ "$verdict" == "true" ]] || deny
 
           echo "eligible=true" >> "$GITHUB_OUTPUT"
 
