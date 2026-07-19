@@ -1,4 +1,8 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig, devices } from "@playwright/test";
+
+const configDir = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
 	testDir: "./tests/vrt",
@@ -15,6 +19,9 @@ export default defineConfig({
 			animations: "disabled",
 			caret: "hide",
 			scale: "css",
+			// 入場アニメーションを撮影中のみ無効化して最終状態に固定する
+			// (理由は tests/vrt/screenshot.css のコメント参照)
+			stylePath: path.join(configDir, "tests/vrt/screenshot.css"),
 		},
 	},
 	use: {
