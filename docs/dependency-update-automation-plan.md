@@ -1360,8 +1360,8 @@ GitHub 側では次を確認する。
 - Claude Action は read-only GitHub token を使い、comment job だけが `pull-requests: write` を持つ。
 - Claude review と screenshot 診断が失敗または省略されても required checks の結論が変わらない。
 - Claude の診断 comment が、失敗した VRT を green に変更しない。
-- allowlist にある direct development dependency の patch 個別 PR にだけ squash auto-merge が設定される。
-- minor、major、0.x、group、indirect、production、GitHub Actions、allowlist 外 package の PR に auto-merge が設定されない。
+- 判定 matrix を満たす PR（patch、または direct development dependency の minor）にだけ squash auto-merge が設定される。
+- major、0.x、pre-release、production と indirect の minor、GitHub Actions、denylist package の PR に auto-merge が設定されない。
 - manifest と lockfile 以外を変更する PR に auto-merge が設定されない。
 - draft 化、maintainer commit、head SHA の変更後は、古い auto-merge request が残っても policy status がマージを止める。
 - auto-merge request の解除確認後だけ policy status が success に戻る。
@@ -1374,11 +1374,11 @@ checks の成功後に squash merge されたことを確認し、通常の Depe
 gh pr view "$PR_URL" --json autoMergeRequest,mergeStateStatus,statusCheckRollup
 ```
 
-最初の minor または GitHub Actions PR では、`autoMergeRequest` が `null` のままであることを確認する。
+最初の production dependency の minor または GitHub Actions PR では、`autoMergeRequest` が `null` のままであることを確認する。
 
-実装前に auto-merge 判定を fixture で検証する。
-positive fixture は allowlist 内の `direct:development`、stable 1.x 以上、patch、root npm、変更ファイル二件以内とする。
-negative fixture は 0.x、minor、production、indirect、group、maintainer change、allowlist 外、追加ファイル、head SHA 不一致を最低一件ずつ含める。
+auto-merge 判定は `scripts/ci/evaluate-automerge-policy.test.mjs` の fixture で検証する。
+positive fixture は各 dependency type の patch、development の minor、全 dependency が patch の group を含める。
+negative fixture は 0.x、pre-release、production と indirect の minor、major、maintainer change、denylist、未知の field 値を最低一件ずつ含める。
 auto-merge request の解除 API が失敗する fixture では、`Dependabot Auto-merge Policy` が失敗し、merge が拒否されることを確認する。
 通常 PR の fixture では同じ context が success になり、Dependabot 専用 policy が通常開発を止めないことを確認する。
 
@@ -1414,11 +1414,12 @@ OAuth token を用意できない、credential leakage fixture が失敗する�
 
 ## 自動マージ範囲を広げる条件
 
-初期自動マージは、type check、production build、stable route smoke test、Dependency Review、Playwright VRT で異常を検出しやすく、変更幅を限定できる allowlist 内の npm patch 個別 PR だけを対象にする。
+初期自動マージは、allowlist 内の npm patch 個別 PR だけを対象にした。
+2026-07-20 の改訂で、対象は「自動マージ条件の緩和」の判定 matrix へ広がった。
 
-allowlist の追加は、少なくとも四週間を観測し、かつ成功した自動マージが十件に達した後に再評価する。
-minor、group、0.x package、production dependency を追加する場合は、対象ごとの failure mode、検出可能な test、rollback を独立した PR で記録する。
-Astro、Svelte、Tailwind CSS、Sharp、GitHub Actions は上記の観測後も自動マージ範囲へ加えず、個別に再評価する。
+production dependency の minor をさらに自動マージへ加える場合は、対象ごとの failure mode、検出可能な test、rollback を独立した PR で記録する。
+GitHub Actions と 0.x package は自動マージ範囲へ加えず、個別に再評価する。
+`@playwright/test` の denylist 解除は、container image digest と VRT baseline の更新を同じ PR で自動化できた場合だけ再評価する。
 
 security update だけを SemVer 方針と分ける必要が生じた場合は、`alert-lookup` のための GitHub App を設計する。
 個人 PAT は失効、権限過多、所有者依存のリスクがあるため既定案にしない。
@@ -1465,6 +1466,49 @@ Claude advisory は required context ではないため、branch protection の�
 
 Dependency Review が GitHub 側の障害で全 PR を止めた場合は、required check を無言で外さない。
 障害、影響、解除時刻、復旧後に戻す条件を Issue に記録したうえで、一時的な保護変更として扱う。
+
+## 自動マージ条件の緩和（2026-07-20 改訂）
+
+本節は「目標とする運用」の「マージ」列と、「実装する変更」の各節にある allowlist を前提とした記述を上書きする。
+「検証コマンド」と「自動マージ範囲を広げる条件」の該当項目は、本改訂に合わせて更新済みである。
+
+### 背景
+
+初期 allowlist の運用では、自動マージが一件も発動しなかった。
+allowlist は direct development dependency 六件の patch 更新だけを対象にしたが、実際に届いた Dependabot PR は production dependency の patch と minor、group 更新、lockfile-only 更新であり、すべて手動マージへ回った。
+
+一方、自動マージの安全性を支える防御は計画どおり稼働している。
+cooldown は patch 3 日、minor 7 日、major 14 日で、公開直後の改ざん版を取り込む窓を狭めている。
+required checks には Dependency Review と、VRT を含む `CI OK` があり、check が一つでも失敗した PR はマージされない。
+`--match-head-commit` により、判定後に commit が追加された PR もマージされない。
+
+この防御を前提に、判定を次の matrix へ緩和する。
+
+### 判定 matrix
+
+| 更新幅 | direct:development | direct:production と indirect |
+|---|---|---|
+| patch | 自動 | 自動 |
+| minor | 自動 | 手動 |
+| major | 手動 | 手動 |
+
+allowlist は廃止し、denylist へ置き換える。
+denylist の初期値は `@playwright/test` 一件である。
+`@playwright/test` は package version、CI container image digest、VRT baseline を同じ手動 PR で揃える運用を維持するためである。
+
+group 化された PR は、含まれるすべての dependency が単独でも条件を満たす場合だけ自動マージする。
+0.x package、pre-release version、maintainer 変更のある更新は引き続き手動とする。
+production dependency の minor を手動に残すのは、VRT が検査する route と表示状態の外側で挙動が変わる余地が patch より大きいためである。
+
+### 実装の変更
+
+判定の入力を fetch-metadata の scalar 出力から `updated-dependencies-json` へ移行する。
+scalar の `dependency-type` と `previous-version` は先頭 dependency の値だけを返すため、group PR と lockfile-only の複数更新を dependency ごとに判定できない。
+
+判定 logic は `scripts/ci/evaluate-automerge-policy.mjs` に分離し、`CI script unit tests` の fixture で検証する。
+metadata job は base branch の commit を checkout して script を実行する。
+PR head の code を実行しない性質は従来どおり保つ。
+deny 理由は job log に出力し、どの規則で手動マージへ回ったかを後から追跡できるようにする。
 
 ## 公式資料
 
