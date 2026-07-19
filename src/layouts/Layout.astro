@@ -82,6 +82,42 @@ const bannerOffsetByPosition = {
 };
 const bannerOffset =
 	bannerOffsetByPosition[siteConfig.banner.position || "center"];
+
+// GA4: 本番ビルドかつ PUBLIC_GA_MEASUREMENT_ID が設定されている場合のみタグを出力する。
+// 計測は手動送信方式: 初回ロードは gtag("config") の自動 page_view、Swup の SPA 遷移は
+// astro:page-load (swup の page:view から dispatch され、タイトル更新後・初回ロードでは
+// 発火しない) からの手動 page_view で page_title を正しく記録する。swup:enable は
+// @swup/astro 1.8 では発火しないため使わないこと。この方式は GA4 管理画面で拡張計測機能の
+// 「ブラウザの履歴イベントに基づくページの変更」を OFF にする運用とセット。
+// ON のままだと SPA 遷移が二重計測になる。
+const rawGaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+if (rawGaMeasurementId && !/^G-[A-Z0-9]+$/.test(rawGaMeasurementId)) {
+	// set:html と script URL に埋め込むため、形式外の値はビルド時に弾く
+	throw new Error(
+		`PUBLIC_GA_MEASUREMENT_ID must match /^G-[A-Z0-9]+$/: ${rawGaMeasurementId}`,
+	);
+}
+const gaMeasurementId = import.meta.env.PROD ? rawGaMeasurementId : undefined;
+// gtag 公式スニペット。JSX 式内の is:inline スクリプトは中括弧が Biome の
+// パースを壊すため、文字列として組み立てて set:html で埋め込む。
+// @swup/astro の reloadScripts (デフォルト true) は遷移ごとにページ内の script を
+// 複製再実行するため data-swup-ignore-script で除外し、保険で再実行ガードも入れる
+// (config が再送されると page_view が二重になる)。
+const gaInlineScript = gaMeasurementId
+	? `if (!window.__gaInitialized) {
+	window.__gaInitialized = true;
+	window.dataLayer = window.dataLayer || [];
+	window.gtag = function () { dataLayer.push(arguments); };
+	gtag("js", new Date());
+	gtag("config", ${JSON.stringify(gaMeasurementId)});
+	document.addEventListener("astro:page-load", function () {
+		gtag("event", "page_view", {
+			page_location: window.location.href,
+			page_title: document.title,
+		});
+	});
+}`
+	: undefined;
 ---
 
 <!DOCTYPE html>
@@ -89,6 +125,13 @@ const bannerOffset =
 	  data-overlayscrollbars-initialize
 >
 	<head>
+
+		{gaMeasurementId && (
+			<>
+				<script is:inline async data-swup-ignore-script src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} />
+				<script is:inline data-swup-ignore-script set:html={gaInlineScript} />
+			</>
+		)}
 
 		<title>{pageTitle}</title>
 

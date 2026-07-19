@@ -42,6 +42,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # The container user differs from the workspace owner, so git
+          # refuses to operate without marking the checkout as safe.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git fetch --quiet origin '+refs/heads/*:refs/remotes/origin/*'
           [[ -n "$(git branch -r --contains "$REQUESTED_SHA")" ]]
 

@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 const cases = [
 	{ path: "/", name: "home", ready: 'a[href="/posts/hello-world/"]' },
 	{ path: "/about/", name: "about", ready: "main h1" },
+	{ path: "/privacy/", name: "privacy", ready: "main h1" },
 	{
 		path: "/archive/",
 		name: "archive",
