@@ -11,14 +11,9 @@ const { track, number } = Astro.props;
 const Element = track.url ? "a" : "div";
 ---
 
-<li>
-	<Element
-		href={track.url ?? undefined}
-		target={track.url ? "_blank" : undefined}
-		rel={track.url ? "noopener" : undefined}
-		class="flex items-center gap-3 rounded-lg px-2 py-1.5 transition hover:bg-[var(--btn-plain-bg-hover)]"
-	>
-		<span class="w-7 shrink-0 text-right text-sm tabular-nums text-30">{number}</span>
+<li class="flex items-center gap-3 rounded-lg px-2 py-1.5 transition hover:bg-[var(--btn-plain-bg-hover)]">
+	<span class="w-7 shrink-0 text-right text-sm tabular-nums text-30">{number}</span>
+	<span class="relative h-10 w-10 shrink-0">
 		{
 			track.artworkUrlTemplate ? (
 				<img
@@ -26,14 +21,53 @@ const Element = track.url ? "a" : "div";
 					width="40"
 					height="40"
 					alt=""
-					class="h-10 w-10 shrink-0 rounded-md"
+					class="h-10 w-10 rounded-md"
 					loading="lazy"
 					decoding="async"
 				/>
 			) : (
-				<span class="h-10 w-10 shrink-0 rounded-md bg-[var(--btn-regular-bg)]" aria-hidden="true" />
+				<span class="block h-10 w-10 rounded-md bg-[var(--btn-regular-bg)]" aria-hidden="true" />
 			)
 		}
+		{
+			track.previewUrl && (
+				<button
+					type="button"
+					data-am-preview-url={track.previewUrl}
+					aria-label={`${track.title} を 30 秒試聴`}
+					aria-pressed="false"
+					class="am-preview absolute inset-0 flex items-center justify-center rounded-md text-white"
+				>
+					<svg
+						class="am-icon-play"
+						viewBox="0 0 16 16"
+						width="16"
+						height="16"
+						fill="currentColor"
+						aria-hidden="true"
+					>
+						<path d="M4.5 2.7a.8.8 0 0 1 1.2-.7l8 5.3a.8.8 0 0 1 0 1.4l-8 5.3a.8.8 0 0 1-1.2-.7z" />
+					</svg>
+					<svg
+						class="am-icon-pause"
+						viewBox="0 0 16 16"
+						width="16"
+						height="16"
+						fill="currentColor"
+						aria-hidden="true"
+					>
+						<path d="M4 2.5h2.8v11H4zM9.2 2.5H12v11H9.2z" />
+					</svg>
+				</button>
+			)
+		}
+	</span>
+	<Element
+		href={track.url ?? undefined}
+		target={track.url ? "_blank" : undefined}
+		rel={track.url ? "noopener" : undefined}
+		class="flex min-w-0 flex-1 items-center gap-3"
+	>
 		<span class="min-w-0 flex-1">
 			<span class="block truncate text-sm font-medium text-75">{track.title}</span>
 			<span class="block truncate text-xs text-50">
@@ -43,3 +77,26 @@ const Element = track.url ? "a" : "div";
 		<span class="shrink-0 text-sm tabular-nums text-30">{formatDuration(track.durationMs)}</span>
 	</Element>
 </li>
+
+<style>
+	.am-preview {
+		background: rgb(0 0 0 / 0.35);
+		transition: background 0.15s;
+	}
+	.am-preview:hover,
+	.am-preview:focus-visible {
+		background: rgb(0 0 0 / 0.55);
+	}
+	.am-preview svg {
+		filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.6));
+	}
+	.am-icon-pause {
+		display: none;
+	}
+	.am-preview[data-am-playing] .am-icon-play {
+		display: none;
+	}
+	.am-preview[data-am-playing] .am-icon-pause {
+		display: block;
+	}
+</style>
