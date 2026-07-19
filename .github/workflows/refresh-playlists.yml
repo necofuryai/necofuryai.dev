@@ -1,0 +1,73 @@
+# Apple Music プレイリストデータの再取得。
+# リプレイ 2026 が自動更新されるため月次 + 手動 (workflow_dispatch) で実行し、
+# 変更があれば PR を作成する。Secrets に Apple Developer Program の
+# APPLE_MUSIC_TEAM_ID / APPLE_MUSIC_KEY_ID / APPLE_MUSIC_PRIVATE_KEY が必要。
+#
+# 注意: GITHUB_TOKEN で作成した PR は CI (on: pull_request) を自動起動しない
+# という GitHub の仕様があるため、作成された PR は一度 close/reopen するか
+# 空コミットを push して CI を起動してからマージする。
+name: Refresh Apple Music Playlists
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 毎月 1 日 21:23 UTC (2 日 06:23 JST)
+    - cron: "23 21 1 * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        with:
+          run_install: false
+
+      # fetch-playlists.mjs は astro/zod (node_modules) に依存するため install が必須
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Fetch playlists
+        env:
+          APPLE_MUSIC_TEAM_ID: ${{ secrets.APPLE_MUSIC_TEAM_ID }}
+          APPLE_MUSIC_KEY_ID: ${{ secrets.APPLE_MUSIC_KEY_ID }}
+          APPLE_MUSIC_PRIVATE_KEY: ${{ secrets.APPLE_MUSIC_PRIVATE_KEY }}
+        run: node scripts/fetch-playlists.mjs
+
+      - name: Create pull request if data changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- src/data/playlists; then
+            echo "プレイリストデータに変更はありません。"
+            exit 0
+          fi
+          branch="data/refresh-playlists-${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add src/data/playlists
+          git commit -m "chore: refresh Apple Music playlist data"
+          git push -u origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "chore: refresh Apple Music playlist data" \
+            --body "$(printf 'scripts/fetch-playlists.mjs による自動更新です。マージ前に次の 2 点の対応が必要です。\n\n1. GITHUB_TOKEN 作成の PR は CI が自動起動しないため、close/reopen して CI を実行する\n2. データ更新で /playlists/ の描画内容が変わるため、vrt-update-baselines.yml (workflow_dispatch) をこのブランチに対して実行し VRT ベースラインを更新する')"

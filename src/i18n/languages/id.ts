@@ -37,4 +37,5 @@ export const id: Translation = {
 	[Key.license]: "Lisensi",
 
 	[Key.privacyPolicy]: "Kebijakan Privasi",
+	[Key.playlists]: "Daftar putar",
 };

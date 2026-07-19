@@ -1,0 +1,121 @@
+---
+import type { PlaylistData } from "../types/playlist";
+import { artworkUrl } from "../utils/playlist-utils";
+import AppleMusicTrackRow from "./AppleMusicTrackRow.astro";
+
+interface Props {
+	playlist: PlaylistData;
+}
+
+const { playlist } = Astro.props;
+
+const VISIBLE_TRACKS = 25;
+const visibleTracks = playlist.tracks.slice(0, VISIBLE_TRACKS);
+const hiddenTracks = playlist.tracks.slice(VISIBLE_TRACKS);
+
+const totalMs = playlist.tracks.reduce(
+	(sum, track) => sum + (track.durationMs ?? 0),
+	0,
+);
+const totalMinutes = Math.round(totalMs / 60000);
+
+// Apple 算出のテーマカラー。欠落時はサイトの hue にフォールバックする
+const headerBg = playlist.artwork?.bgColor
+	? `#${playlist.artwork.bgColor}`
+	: "oklch(0.5 0.09 var(--hue))";
+---
+
+<section class="card-base overflow-hidden rounded-[var(--radius-large)]">
+	<div class="am-header relative px-6 py-6 md:px-8" style={`--am-bg: ${headerBg}`}>
+		<div class="flex flex-col gap-5 sm:flex-row sm:items-end">
+			{
+				playlist.artwork ? (
+					<img
+						src={artworkUrl(playlist.artwork.urlTemplate, 320)}
+						srcset={`${artworkUrl(playlist.artwork.urlTemplate, 320)} 1x, ${artworkUrl(playlist.artwork.urlTemplate, 640)} 2x`}
+						width="160"
+						height="160"
+						alt={`${playlist.name} のアートワーク`}
+						class="h-40 w-40 shrink-0 rounded-xl shadow-lg"
+						loading="lazy"
+						decoding="async"
+					/>
+				) : (
+					<div class="am-artwork-fallback h-40 w-40 shrink-0 rounded-xl shadow-lg" aria-hidden="true" />
+				)
+			}
+			<div class="min-w-0">
+				<h2 class="mb-1 text-2xl font-bold">{playlist.name}</h2>
+				<div class="text-sm text-50">
+					{playlist.curator && <span>{playlist.curator} · </span>}
+					<span>{playlist.tracks.length} 曲</span>
+					{totalMinutes > 0 && <span> · 約 {totalMinutes} 分</span>}
+				</div>
+				{playlist.description && <p class="mt-2 text-sm text-75">{playlist.description}</p>}
+				<a
+					href={playlist.url}
+					target="_blank"
+					rel="noopener"
+					class="btn-regular mt-4 inline-flex rounded-lg px-4 py-2 text-sm font-medium"
+				>
+					Apple Music で聴く
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="px-3 py-3 md:px-4">
+		{
+			playlist.placeholder && (
+				<div class="mb-3 rounded-lg border-l-4 border-[var(--primary)] bg-[var(--btn-regular-bg)] px-4 py-3 text-sm text-75">
+					これはプレースホルダーデータです。<code>pnpm fetch-playlists</code> を実行すると実データに置き換わります。
+				</div>
+			)
+		}
+		<ol class="flex flex-col">
+			{visibleTracks.map((track, index) => <AppleMusicTrackRow track={track} number={index + 1} />)}
+		</ol>
+		{
+			hiddenTracks.length > 0 && (
+				<details class="group mt-1">
+					<summary class="btn-regular cursor-pointer select-none list-none rounded-lg px-4 py-2 text-sm font-medium">
+						<span class="group-open:hidden">残り {hiddenTracks.length} 曲を表示</span>
+						<span class="hidden group-open:inline">折りたたむ</span>
+					</summary>
+					<ol class="mt-1 flex flex-col">
+						{hiddenTracks.map((track, index) => (
+							<AppleMusicTrackRow track={track} number={VISIBLE_TRACKS + index + 1} />
+						))}
+					</ol>
+				</details>
+			)
+		}
+		<div class="mt-3 border-t border-black/10 pt-3 dark:border-white/10">
+			<button
+				type="button"
+				data-am-embed-url={playlist.embedUrl}
+				data-am-title={`Apple Music: ${playlist.name}`}
+				class="btn-regular w-full rounded-lg px-4 py-3 text-sm font-medium"
+			>
+				埋め込みプレイヤーを開く (30 秒プレビュー / 購読者はフル再生)
+			</button>
+		</div>
+	</div>
+</section>
+
+<style>
+	.am-header {
+		background: linear-gradient(
+			160deg,
+			color-mix(in oklab, var(--am-bg) 55%, transparent),
+			color-mix(in oklab, var(--am-bg) 12%, transparent) 65%,
+			transparent
+		);
+	}
+	.am-artwork-fallback {
+		background: linear-gradient(
+			135deg,
+			color-mix(in oklab, var(--am-bg) 80%, black),
+			var(--am-bg)
+		);
+	}
+</style>

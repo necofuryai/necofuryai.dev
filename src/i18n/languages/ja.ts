@@ -37,4 +37,5 @@ export const ja: Translation = {
 	[Key.license]: "ライセンス",
 
 	[Key.privacyPolicy]: "プライバシーポリシー",
+	[Key.playlists]: "Playlists",
 };

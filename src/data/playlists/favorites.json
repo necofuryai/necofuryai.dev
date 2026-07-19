@@ -1,0 +1,44 @@
+{
+	"placeholder": true,
+	"fetchedAt": "2026-07-19T00:00:00.000Z",
+	"id": "pl.u-gxblk30u5RvoRr",
+	"storefront": "jp",
+	"name": "Favorites",
+	"curator": "necofuryai",
+	"description": "プレースホルダーデータです。pnpm fetch-playlists を実行すると Apple Music API から実データを取得します。",
+	"url": "https://music.apple.com/jp/playlist/pl.u-gxblk30u5RvoRr",
+	"embedUrl": "https://embed.music.apple.com/jp/playlist/pl.u-gxblk30u5RvoRr",
+	"artwork": null,
+	"tracks": [
+		{
+			"id": "placeholder-1",
+			"title": "サンプルトラック 1",
+			"artist": "Sample Artist",
+			"album": "Sample Album",
+			"durationMs": 214000,
+			"url": null,
+			"previewUrl": null,
+			"artworkUrlTemplate": null
+		},
+		{
+			"id": "placeholder-2",
+			"title": "サンプルトラック 2",
+			"artist": "Sample Artist",
+			"album": "Sample Album",
+			"durationMs": 187000,
+			"url": null,
+			"previewUrl": null,
+			"artworkUrlTemplate": null
+		},
+		{
+			"id": "placeholder-3",
+			"title": "サンプルトラック 3",
+			"artist": "Sample Artist",
+			"album": "Sample Album",
+			"durationMs": 243000,
+			"url": null,
+			"previewUrl": null,
+			"artworkUrlTemplate": null
+		}
+	]
+}
