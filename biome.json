@@ -13,7 +13,9 @@
 			"!**/src/public/**/*",
 			"!**/dist/**/*",
 			"!**/node_modules/**/*",
-			"!**/.astro/**/*"
+			"!**/.astro/**/*",
+			"!**/playwright-report/**/*",
+			"!**/test-results/**/*"
 		]
 	},
 	"formatter": {

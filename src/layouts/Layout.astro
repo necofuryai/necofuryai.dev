@@ -87,7 +87,8 @@ const bannerOffset =
 // 計測は手動送信方式: 初回ロードは gtag("config") の自動 page_view、Swup の SPA 遷移は
 // astro:page-load (swup の page:view から dispatch され、タイトル更新後・初回ロードでは
 // 発火しない) からの手動 page_view で page_title を正しく記録する。swup:enable は
-// @swup/astro 1.8 では発火しないため使わないこと。この方式は GA4 管理画面で拡張計測機能の
+// swup 初期化時に一度だけ発火するイベントのため、遷移ごとの計測には使えない。
+// この方式は GA4 管理画面で拡張計測機能の
 // 「ブラウザの履歴イベントに基づくページの変更」を OFF にする運用とセット。
 // ON のままだと SPA 遷移が二重計測になる。
 const rawGaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
@@ -506,6 +507,9 @@ const setup = () => {
         }, 200)
 	});
 }
+// swup:enable は swup コアが全フックを `swup:${フック名}` 形式の DOM CustomEvent として
+// ブリッジするイベント (イベント名が動的構築のため node_modules を文字列 grep しても
+// 見つからない)。swup 初期化 (load 後 idle、window.swup 代入後) に一度だけ発火する。
 if (window?.swup?.hooks) {
 	setup()
 } else {
@@ -617,6 +621,7 @@ const setup = () => {
 	)
 }
 
+// swup:enable の発火経路は上の script のコメントを参照
 if (window.swup) {
 	setup()
 } else {

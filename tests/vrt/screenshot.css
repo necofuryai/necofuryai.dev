@@ -1,3 +1,4 @@
+/* biome-ignore-all lint/complexity/noImportantStyles: 撮影中にページ側スタイルへ確実に勝つための意図的な上書き */
 /*
  * toHaveScreenshot の stylePath で撮影中のみ適用されるスタイル。
  * fullPage 撮影時のビューポートリサイズが入場アニメーションを再スタートさせ、
