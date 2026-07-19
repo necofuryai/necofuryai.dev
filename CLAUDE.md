@@ -59,7 +59,7 @@ Astro 7 のデフォルト (Rust 製プロセッサ) ではなく、`markdown.pr
 
 ### アクセス解析 (GA4)
 
-環境変数 `PUBLIC_GA_MEASUREMENT_ID` (測定 ID、`G-` 形式をビルド時に検証) が設定された本番ビルドでのみ、`Layout.astro` が gtag スニペットを出力する (dev サーバーでは常に無効)。計測は手動送信方式: 初回ロードは `gtag("config")` の自動 page_view、Swup の SPA 遷移は `astro:page-load` イベント (swup の `page:view` から dispatch、タイトル更新後・初回ロードでは発火しない) からの手動 page_view で page_title を正しく記録する。`swup:enable` イベントは `@swup/astro` 1.8 では発火しないため使わないこと。この方式は GA4 管理画面で拡張計測機能の「ブラウザの履歴イベントに基づくページの変更」を OFF にする運用とセットであり、ON に戻すと SPA 遷移が二重計測になる。`@swup/astro` の `reloadScripts` (デフォルト true) は遷移ごとにページ内の script を複製再実行するため、GA タグは `data-swup-ignore-script` 属性と再実行ガードで除外している。プライバシーポリシーは `/privacy/` (`src/content/spec/privacy.md` + `src/pages/privacy.astro`)。
+環境変数 `PUBLIC_GA_MEASUREMENT_ID` (測定 ID、`G-` 形式をビルド時に検証) が設定された本番ビルドでのみ、`Layout.astro` が gtag スニペットを出力する (dev サーバーでは常に無効)。計測は手動送信方式: 初回ロードは `gtag("config")` の自動 page_view、Swup の SPA 遷移は `astro:page-load` イベント (swup の `page:view` から dispatch、タイトル更新後・初回ロードでは発火しない) からの手動 page_view で page_title を正しく記録する。`swup:enable` は swup コアが全フックを `swup:<フック名>` 形式の DOM CustomEvent としてブリッジするイベントで、swup 初期化時 (load 後 idle、`window.swup` 代入後) に一度だけ発火する (イベント名が動的構築のため node_modules を文字列 grep しても見つからない)。一度きりのイベントのため遷移ごとの計測には使えず GA は `astro:page-load` を使うが、`Layout.astro` の Swup フック登録 (バナー高さ・TOC・PhotoSwipe 再生成) は `swup:enable` 依存で正常動作している (2026-07-19 Playwright 実測確認済み)。この方式は GA4 管理画面で拡張計測機能の「ブラウザの履歴イベントに基づくページの変更」を OFF にする運用とセットであり、ON に戻すと SPA 遷移が二重計測になる。`@swup/astro` の `reloadScripts` (デフォルト true) は遷移ごとにページ内の script を複製再実行するため、GA タグは `data-swup-ignore-script` 属性と再実行ガードで除外している。プライバシーポリシーは `/privacy/` (`src/content/spec/privacy.md` + `src/pages/privacy.astro`)。
 
 ### ページ遷移 (Swup)
 
