@@ -1,0 +1,19 @@
+---
+interface Props {
+	class?: string;
+}
+
+const className = Astro.props.class;
+---
+
+<!-- Legal disclosure (景表法ステマ規制対応): keep the wording in Japanese
+     and keep it clearly readable — do not shrink or fade this text. -->
+<div
+	class:list={[
+		"flex items-center gap-2 rounded-xl border border-[var(--line-divider)] px-4 py-2.5",
+		"text-sm text-black/75 dark:text-white/75",
+		className,
+	]}
+>
+	本記事はプロモーション (紹介リンク) を含みます
+</div>
