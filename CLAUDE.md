@@ -39,6 +39,16 @@ pnpm test:vrt         # Playwright 視覚回帰テスト (下記参照)
 - webServer が `pnpm preview` を起動するため、実行前に `pnpm build` が必要。
 - 絞り込み: `pnpm test:vrt --grep <パターン>` / `pnpm test:vrt --project=desktop-light`
 
+## リリース前チェック
+
+完了宣言・PR 作成の前に確認する (実行結果を証拠として示すこと):
+
+1. `pnpm check` と `pnpm build` が通る (検索 (Pagefind) の動作確認は `pnpm build && pnpm preview` でのみ可能)
+2. VRT ベースラインはローカルで更新しない — 意図的な描画変更は `vrt-update-baselines.yml` (workflow_dispatch、commit_sha 必須)、プレイリストデータ更新は `refresh-playlists.yml` の update-vrt-baselines ジョブが自動処理
+3. フィードに影響する変更時: ビルド後の `dist/rss.xml` が XML として妥当で、収益リンク開示が本文に存続していること
+4. レイアウト・スクリプト変更時: GA4 ガード (`data-swup-ignore-script` + 手動 page_view 方式) が無傷で、追加した inline script が Swup の script 再実行に耐えること
+5. 内部リンクは末尾スラッシュ付き、`draft: true` の記事は本番ビルドから除外されたまま
+
 ## アーキテクチャ
 
 スタック: Astro 7 + Svelte 5 (インタラクティブ部分のみ島として使用) + Tailwind CSS 4 (`@tailwindcss/vite` 経由) + Stylus (一部スタイル) + Biome 2。
