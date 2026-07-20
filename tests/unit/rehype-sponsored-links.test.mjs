@@ -51,3 +51,27 @@ test("ignores anchors without href", () => {
 	run(tree, { domains: ["app.usespeak.com"] });
 	assert.equal(tree.children[0].properties.rel, undefined);
 });
+
+test("leaves mailto links untouched", () => {
+	const tree = {
+		type: "root",
+		children: [link("mailto:someone@example.com")],
+	};
+	run(tree, { domains: ["app.usespeak.com"] });
+	assert.equal(tree.children[0].properties.rel, undefined);
+	assert.equal(tree.children[0].properties.target, undefined);
+});
+
+test("matches configured domains regardless of case", () => {
+	const tree = {
+		type: "root",
+		children: [link("https://app.usespeak.com/jp-ja/i/LGZDMD")],
+	};
+	run(tree, { domains: ["App.Usespeak.com"] });
+	assert.deepEqual(tree.children[0].properties.rel, [
+		"sponsored",
+		"nofollow",
+		"noopener",
+	]);
+	assert.equal(tree.children[0].properties.target, "_blank");
+});

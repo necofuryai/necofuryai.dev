@@ -9,7 +9,7 @@ import { visit } from "unist-util-visit";
  * @returns {(tree: import("hast").Root) => void}
  */
 export function rehypeSponsoredLinks(options = {}) {
-	const domains = new Set(options.domains ?? []);
+	const domains = new Set((options.domains ?? []).map((d) => d.toLowerCase()));
 	return (tree) => {
 		visit(tree, "element", (node) => {
 			if (node.tagName !== "a") return;
