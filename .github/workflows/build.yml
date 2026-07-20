@@ -167,6 +167,9 @@ jobs:
       - name: Run CI script unit tests
         run: node --test scripts/ci/*.test.mjs
 
+      - name: Run unit tests
+        run: pnpm test:unit
+
   # Aggregate job so branch protection only needs a single required check name
   ci-ok:
     name: CI OK
