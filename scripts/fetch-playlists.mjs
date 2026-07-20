@@ -7,22 +7,38 @@
  * - APPLE_MUSIC_KEY_ID:     Media ID 用に作成したキーの Key ID
  * - APPLE_MUSIC_PRIVATE_KEY: .p8 秘密鍵の中身 (PEM 全文。改行は実改行でも "\n" 表記でもよい)
  *
- * 実行: pnpm fetch-playlists
+ * 実行: pnpm fetch-playlists (全件) / pnpm fetch-playlists --weekly (週次更新分のみ)
  *
  * developer token は実行のたびに 1 時間有効のものを ES256 で署名生成するため、
  * 長期トークンの保管やローテーション運用は発生しない。
  * ビルドの決定性を保つため、意図的に pnpm build には組み込んでいない。
- * 失敗したプレイリストは既存 JSON を保持し、全滅した場合のみ exit 1 で終了する。
+ * 失敗したプレイリストは既存 JSON を保持し、対象が全滅した場合のみ exit 1 で終了する。
+ * fetchedAt 以外に変更がないプレイリストは書き込みをスキップする
+ * (週次 CI が無意味な diff で PR を作らないようにするため)。
  */
 import { execFileSync } from "node:child_process";
 import { createPrivateKey, sign } from "node:crypto";
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { z } from "astro/zod";
+import { isSamePlaylistContent, selectPlaylists } from "./playlist-utils.mjs";
 
+// weekly: Apple が毎週日曜に更新するのは Replay All Time と現行年のみで、
+// 過去年は凍結されるため週次 CI (--weekly) では取得しない。
+// 年替わり時は PLAYLISTS の入替とあわせて weekly の付け替えも行うこと。
 const PLAYLISTS = [
-	{ slug: "replay-all-time", id: "pl.rp-M9CMY0pYR", storefront: "jp" },
-	{ slug: "replay-2026", id: "pl.rp-lellcVyY1yj", storefront: "jp" },
+	{
+		slug: "replay-all-time",
+		id: "pl.rp-M9CMY0pYR",
+		storefront: "jp",
+		weekly: true,
+	},
+	{
+		slug: "replay-2026",
+		id: "pl.rp-lellcVyY1yj",
+		storefront: "jp",
+		weekly: true,
+	},
 	{ slug: "replay-2025", id: "pl.rp-55w5t6NGXNj", storefront: "jp" },
 	{ slug: "replay-2024", id: "pl.rp-3g58tjR0VRD", storefront: "jp" },
 ];
@@ -241,11 +257,23 @@ async function fetchPlaylist({ id, storefront }, order, token) {
 }
 
 const token = createDeveloperToken();
+const targets = selectPlaylists(PLAYLISTS, {
+	weeklyOnly: process.argv.includes("--weekly"),
+});
 const failures = [];
-for (const [order, playlist] of PLAYLISTS.entries()) {
+for (const { playlist, order } of targets) {
 	try {
 		const data = await fetchPlaylist(playlist, order, token);
 		const outFile = new URL(`${playlist.slug}.json`, OUT_DIR);
+		const existing = await readFile(outFile, "utf8")
+			.then(JSON.parse)
+			.catch(() => null);
+		if (isSamePlaylistContent(existing, data)) {
+			console.log(
+				`OK ${playlist.slug}: 変更なし (fetchedAt のみ)。書き込みをスキップします。`,
+			);
+			continue;
+		}
 		await writeFile(outFile, `${JSON.stringify(data, null, "\t")}\n`);
 		console.log(`OK ${playlist.slug}: ${data.tracks.length} 曲 (${data.name})`);
 	} catch (error) {
@@ -264,6 +292,6 @@ execFileSync(
 	{ stdio: "inherit", cwd: fileURLToPath(new URL("../", import.meta.url)) },
 );
 
-if (failures.length === PLAYLISTS.length) {
+if (targets.length > 0 && failures.length === targets.length) {
 	process.exitCode = 1;
 }
