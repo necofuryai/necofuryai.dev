@@ -14,12 +14,7 @@
 		"width": 4320,
 		"height": 1080,
 		"bgColor": "26ddb2",
-		"textColors": [
-			"ffffff",
-			"ffffff",
-			"0b3834",
-			"193d31"
-		]
+		"textColors": ["ffffff", "ffffff", "0b3834", "193d31"]
 	},
 	"tracks": [
 		{
