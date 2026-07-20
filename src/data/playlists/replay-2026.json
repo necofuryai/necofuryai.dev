@@ -1,7 +1,7 @@
 {
 	"placeholder": false,
 	"order": 1,
-	"fetchedAt": "2026-07-19T09:24:25.986Z",
+	"fetchedAt": "2026-07-20T21:38:55.679Z",
 	"id": "pl.rp-lellcVyY1yj",
 	"storefront": "jp",
 	"name": "リプレイ2026",
@@ -14,7 +14,12 @@
 		"width": 4320,
 		"height": 1080,
 		"bgColor": "fd891d",
-		"textColors": ["ffffff", "120f0b", "35220b", "35220e"]
+		"textColors": [
+			"ffffff",
+			"120f0b",
+			"35220b",
+			"35220e"
+		]
 	},
 	"tracks": [
 		{

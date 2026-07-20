@@ -1,7 +1,7 @@
 {
 	"placeholder": false,
 	"order": 2,
-	"fetchedAt": "2026-07-19T09:24:26.431Z",
+	"fetchedAt": "2026-07-20T21:38:55.894Z",
 	"id": "pl.rp-55w5t6NGXNj",
 	"storefront": "jp",
 	"name": "リプレイ：2025年",
@@ -14,7 +14,12 @@
 		"width": 4320,
 		"height": 1080,
 		"bgColor": "feb902",
-		"textColors": ["ffffff", "ffffff", "45350d", "443610"]
+		"textColors": [
+			"ffffff",
+			"ffffff",
+			"45350d",
+			"443610"
+		]
 	},
 	"tracks": [
 		{
