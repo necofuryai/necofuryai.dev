@@ -19,6 +19,7 @@ import remarkGithubAdmonitionsToDirectives, {
 import remarkMath from "remark-math";
 import remarkSectionize from "remark-sectionize";
 import { expressiveCodeConfig } from "./src/config.ts";
+import { SPONSORED_LINK_DOMAINS } from "./src/constants/sponsored-domains.mjs";
 import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-copy-button.js";
 import { pluginLanguageBadge } from "./src/plugins/expressive-code/language-badge.ts";
 import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
@@ -174,9 +175,9 @@ export default defineConfig({
 				[
 					rehypeSponsoredLinks,
 					{
-						// Promotion-link domains: anchors to these hosts get
-						// rel="sponsored nofollow noopener" at build time.
-						domains: ["app.usespeak.com"],
+						// Anchors to these hosts get rel="sponsored nofollow noopener"
+						// at build time. The list is shared with the RSS feed renderer.
+						domains: SPONSORED_LINK_DOMAINS,
 					},
 				],
 			],
