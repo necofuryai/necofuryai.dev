@@ -17,6 +17,7 @@
 		"format": "biome format --write .",
 		"lint": "biome check --write .",
 		"test:vrt": "playwright test",
+		"test:unit": "node --test tests/unit/*.test.mjs",
 		"preinstall": "node scripts/check-package-manager.js"
 	},
 	"dependencies": {
