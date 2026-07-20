@@ -14,8 +14,10 @@
  * ビルドの決定性を保つため、意図的に pnpm build には組み込んでいない。
  * 失敗したプレイリストは既存 JSON を保持し、全滅した場合のみ exit 1 で終了する。
  */
+import { execFileSync } from "node:child_process";
 import { createPrivateKey, sign } from "node:crypto";
 import { writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import { z } from "astro/zod";
 
 const PLAYLISTS = [
@@ -254,6 +256,14 @@ for (const [order, playlist] of PLAYLISTS.entries()) {
 		console.error(error instanceof Error ? error.message : error);
 	}
 }
+// JSON.stringify のタブ整形は Biome スタイル (行幅に収まる配列の 1 行化など) と
+// 一致せず CI の Biome チェックが落ちるため、書き出し後にここで整形まで済ませる
+execFileSync(
+	fileURLToPath(new URL("../node_modules/.bin/biome", import.meta.url)),
+	["format", "--write", fileURLToPath(OUT_DIR)],
+	{ stdio: "inherit", cwd: fileURLToPath(new URL("../", import.meta.url)) },
+);
+
 if (failures.length === PLAYLISTS.length) {
 	process.exitCode = 1;
 }
