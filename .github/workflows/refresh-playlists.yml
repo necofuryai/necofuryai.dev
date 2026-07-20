@@ -1,6 +1,9 @@
 # Apple Music プレイリストデータの再取得。
-# Replay All Time / 現行年リプレイは毎週日曜に更新されるため週次 + 手動
-# (workflow_dispatch) で実行し、変更があれば PR を作成する。Secrets に Apple Developer Program の
+# Apple が毎週日曜に更新するのは Replay All Time と現行年リプレイのみ (過去年は凍結)
+# のため、週次実行は --weekly でこの 2 本だけ取得する。fetchedAt 以外に変更がない週は
+# スクリプトが書き込みをスキップするため PR は作られない。全件取得は workflow_dispatch
+# の scope=all (年替わりで PLAYLISTS 配列を入れ替えた時など) か手動 pnpm fetch-playlists。
+# Secrets に Apple Developer Program の
 # APPLE_MUSIC_TEAM_ID / APPLE_MUSIC_KEY_ID / APPLE_MUSIC_PRIVATE_KEY が必要。
 #
 # データ更新は /playlists/ の描画内容を変えるため、update-vrt-baselines ジョブが
@@ -13,6 +16,14 @@ name: Refresh Apple Music Playlists
 
 on:
   workflow_dispatch:
+    inputs:
+      scope:
+        description: "取得範囲。weekly = 週次更新される Replay All Time + 現行年のみ / all = 全プレイリスト (年替わり時など)"
+        type: choice
+        options:
+          - weekly
+          - all
+        default: weekly
   schedule:
     # 毎週月曜 13:23 UTC (22:23 JST)。Apple の「日曜更新」のタイムゾーン基準が
     # 不明なため、全タイムゾーンで日曜が終了した後 (月曜 12:00 UTC 以降) に実行する
@@ -55,7 +66,14 @@ jobs:
           APPLE_MUSIC_TEAM_ID: ${{ secrets.APPLE_MUSIC_TEAM_ID }}
           APPLE_MUSIC_KEY_ID: ${{ secrets.APPLE_MUSIC_KEY_ID }}
           APPLE_MUSIC_PRIVATE_KEY: ${{ secrets.APPLE_MUSIC_PRIVATE_KEY }}
-        run: node scripts/fetch-playlists.mjs
+          # schedule イベントでは inputs が空のため weekly に倒す
+          FETCH_SCOPE: ${{ inputs.scope || 'weekly' }}
+        run: |
+          if [ "$FETCH_SCOPE" = "all" ]; then
+            node scripts/fetch-playlists.mjs
+          else
+            node scripts/fetch-playlists.mjs --weekly
+          fi
 
       - name: Create pull request if data changed
         id: create_pr
