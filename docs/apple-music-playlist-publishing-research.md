@@ -323,7 +323,7 @@ Q1: Apple Developer Program（99 USD/年）に加入する？
 ### セキュリティと検証
 
 - 将来 `_headers` で CSP を導入する場合の許可先：`img-src` に `*.mzstatic.com`、`frame-src` に `embed.music.apple.com`、プレビュー導入時は `media-src` に `*.mzstatic.com` と `audio-ssl.itunes.apple.com`
-- VRT（`tests/vrt/pages.spec.ts`）に新ページを追加し、facade のクリック前状態をスクリーンショット対象にする
+- UI smoke（`tests/ui/pages.spec.ts`）に新ページを追加し、主要要素の表示と操作を semantic assertion で検証する
 - 帰属表示：フッターに「Apple and Apple Music are trademarks of Apple Inc., registered in the U.S. and other countries」のクレジットライン、プレビュー導入時は「provided courtesy of iTunes」を追加
 
 ## 未解決の論点

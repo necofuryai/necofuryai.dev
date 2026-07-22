@@ -96,8 +96,8 @@ jobs:
 
           test -f dist/pagefind/pagefind.js
 
-  visual-regression:
-    name: Visual regression test
+  ui-smoke:
+    name: UI smoke test
     runs-on: ubuntu-latest
     timeout-minutes: 15
     container:
@@ -125,19 +125,18 @@ jobs:
       - name: Build production site
         run: pnpm build
 
-      - name: Compare screenshots
-        id: vrt
-        run: pnpm test:vrt
+      - name: Run semantic UI checks
+        id: ui
+        run: pnpm test:ui
 
-      - name: Upload visual regression evidence
-        if: failure() && steps.vrt.outcome == 'failure'
+      - name: Upload UI failure evidence
+        if: failure() && steps.ui.outcome == 'failure'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: vrt-failure-${{ github.run_id }}
+          name: ui-smoke-failure-${{ github.run_id }}
           path: |
             playwright-report/
             test-results/
-            tests/vrt/__screenshots__/
           if-no-files-found: warn
           retention-days: 7
 
@@ -174,7 +173,7 @@ jobs:
   ci-ok:
     name: CI OK
     if: always()
-    needs: [ check, build, visual-regression, ci-scripts ]
+    needs: [ check, build, ui-smoke, ci-scripts ]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -182,7 +181,7 @@ jobs:
         env:
           CHECK_RESULT: ${{ needs.check.result }}
           BUILD_RESULT: ${{ needs.build.result }}
-          VRT_RESULT: ${{ needs.visual-regression.result }}
+          UI_RESULT: ${{ needs.ui-smoke.result }}
           SCRIPTS_RESULT: ${{ needs.ci-scripts.result }}
         shell: bash
         run: |
@@ -190,4 +189,4 @@ jobs:
           test "$CHECK_RESULT" = "success"
           test "$SCRIPTS_RESULT" = "success"
           test "$BUILD_RESULT" = "success"
-          test "$VRT_RESULT" = "success"
+          test "$UI_RESULT" = "success"

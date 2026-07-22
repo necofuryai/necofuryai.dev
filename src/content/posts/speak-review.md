@@ -12,7 +12,7 @@ promotion: true
 
 <!-- 執筆メモ: 各節の本文は体験に基づいて執筆する。この雛形のまま公開しない。
 公開手順: (1) 体験パートを執筆 (2) タイトルの「(仮)」を除去 (3) published を公開日に更新
-(4) draft: true を削除 (5) マージ後に vrt-update-baselines.yml (workflow_dispatch) で VRT ベースライン更新 -->
+(4) draft: true を削除 (5) desktop / mobile / dark を目視確認し pnpm test:ui を実行 -->
 
 ## 英語学習の背景
 

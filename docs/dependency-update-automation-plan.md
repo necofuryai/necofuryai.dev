@@ -7,6 +7,8 @@
 - 実装担当：Claude Code
 - 採用方式：Dependabot
 
+> **2026-07-22 運用変更:** 以下の VRT、ベースライン画像、画像診断に関する記述は初期設計の記録として残す。現在の必須 CI は Playwright の semantic UI smoke を使用し、ピクセル比較・基準画像・VRT artifact sanitizer は廃止した。現行手順は `CLAUDE.md`、`.github/workflows/build.yml`、`tests/ui/pages.spec.ts` を正とする。
+
 ## 結論
 
 依存ライブラリと GitHub Actions の更新には、GitHub 組み込みの **Dependabot version updates** と **Dependabot security updates** を採用する。

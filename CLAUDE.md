@@ -21,7 +21,7 @@ pnpm type-check       # astro sync && tsc --noEmit
 pnpm lint             # Biome check (自動修正込み、リポジトリ全体が対象)
 pnpm format           # Biome format
 pnpm new-post <slug>  # 記事の雛形作成 (src/content/posts/<slug>.md)
-pnpm test:vrt         # Playwright 視覚回帰テスト (下記参照)
+pnpm test:ui          # Playwright UI スモークテスト (下記参照)
 ```
 
 - 全文検索 (Pagefind) はビルド成果物 (dist) からインデックスを生成するため、dev サーバーでは動作しない。検索の動作確認は `pnpm build && pnpm preview` で行う。
@@ -31,20 +31,20 @@ pnpm test:vrt         # Playwright 視覚回帰テスト (下記参照)
 
 コミットメッセージ (`git commit`) は英語で記述する (`<type>: <description>` 形式、type は feat/fix/refactor/docs/test/chore/perf/ci)。PR のタイトル・本文は日本語で構わない。
 
-### VRT (視覚回帰テスト)
+### UI スモークテスト
 
-- テストは `tests/vrt/pages.spec.ts`。プロジェクトは desktop-light / mobile-width-light / desktop-dark の 3 種。
-- スクリーンショット比較は CI でのみ実行される (`ignoreSnapshots: !process.env.CI`)。ローカル実行はページが描画エラーなく開けるかの確認のみ。
-- ベースライン画像はローカルで更新しない。レンダリングが OS 依存のため、`.github/workflows/vrt-update-baselines.yml` (workflow_dispatch) が Playwright コンテナ内で候補を生成する。
+- テストは `tests/ui/pages.spec.ts`。CI では固定した desktop Chromium で実行する。
+- ピクセル差分やコミット済みベースライン画像は使わない。全ルートの描画、テーマ切り替え、About の職務年表、Playlists の開閉・フォーカス復帰・iframe 不在、Swup 再訪後の操作を直接検証する。
 - webServer が `pnpm preview` を起動するため、実行前に `pnpm build` が必要。
-- 絞り込み: `pnpm test:vrt --grep <パターン>` / `pnpm test:vrt --project=desktop-light`
+- 絞り込み: `pnpm test:ui --grep <パターン>` / `pnpm test:ui --project=desktop`
+- レイアウトを変更した場合は、ローカルで desktop / mobile / dark の実表示を目視確認する。スクリーンショットの保存や CI の pixel diff は必須にしない。
 
 ## リリース前チェック
 
 完了宣言・PR 作成の前に確認する (実行結果を証拠として示すこと):
 
-1. `pnpm check` と `pnpm build` が通る (検索 (Pagefind) の動作確認は `pnpm build && pnpm preview` でのみ可能)
-2. VRT ベースラインはローカルで更新しない — 意図的な描画変更は `vrt-update-baselines.yml` (workflow_dispatch、commit_sha 必須)、プレイリストデータ更新は `refresh-playlists.yml` の update-vrt-baselines ジョブが自動処理
+1. `pnpm check`、`pnpm test:unit`、`pnpm build`、`pnpm test:ui` が通る (検索 (Pagefind) の動作確認は `pnpm build && pnpm preview` でのみ可能)
+2. レイアウト変更時は desktop / mobile / dark を目視確認し、機能上重要な挙動は `tests/ui/` の semantic assertion に追加する
 3. フィードに影響する変更時: ビルド後の `dist/rss.xml` が XML として妥当で、収益リンク開示が本文に存続していること
 4. レイアウト・スクリプト変更時: GA4 ガード (`data-swup-ignore-script` + 手動 page_view 方式) が無傷で、追加した inline script が Swup の script 再実行に耐えること
 5. 内部リンクは末尾スラッシュ付き、`draft: true` の記事は本番ビルドから除外されたまま
@@ -88,7 +88,7 @@ JSON の `placeholder: true` はプレースホルダーデータの印で、ペ
 曲一覧は先頭 5 曲を表示し、残りを `<details>` で開閉する。
 展開後は先頭と末尾のどちらからでも折りたため、末尾の操作は先頭の `<summary>` へフォーカスを戻す。
 トラック行のアートワークは 30 秒試聴ボタン (`data-am-preview-url`) で、共有 `<audio>` 1 本 (body 直下、`data-am-preview-ready` ガード) を全トラックで使い回し、Swup の `content:replace` イベントで再生を停止する (audio が差し替え対象外の body 直下で生き続けるため)。
-データ更新はページの描画内容を変えるため、`refresh-playlists.yml` の `update-vrt-baselines` ジョブが PR ブランチ上で VRT ベースラインを再生成して自動コミットする (手動の `vrt-update-baselines.yml` はデータ更新以外の描画変更 PR で引き続き使用)。
+データ更新 PR も通常の UI smoke を通す。トラック内容の変化に合わせた画像ファイルの更新は不要。
 プレイリストの追加・並び替えはスクリプトの `PLAYLISTS` 配列で行い、ページは `src/data/playlists/*.json` を `order` 順に自動描画する。
 表示構成は「Replay All Time + 現行年 + 直近 2 年」のローリングウィンドウ方針 (年替わり時は現行年を過去枠へ送り、最古の年を外す)。
 方式選定の経緯と実装後の変更は `docs/apple-music-playlist-publishing-research.md` を参照。

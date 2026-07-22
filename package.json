@@ -16,7 +16,7 @@
 		"fetch-playlists": "node --env-file-if-exists=.env scripts/fetch-playlists.mjs",
 		"format": "biome format --write .",
 		"lint": "biome check --write .",
-		"test:vrt": "playwright test",
+		"test:ui": "playwright test",
 		"test:unit": "node --test tests/unit/*.test.mjs",
 		"preinstall": "node scripts/check-package-manager.js"
 	},

@@ -26,7 +26,6 @@ const MAX_ARRAY_ITEMS = 10;
 const STRING_FIELD = "update_impact";
 const ARRAY_FIELDS = [
 	"release_note_checks",
-	"visual_diff_locations",
 	"related_components",
 	"human_followups",
 ];
@@ -132,7 +131,6 @@ function validateString(field, value) {
  * @returns {{
  * 	update_impact: string,
  * 	release_note_checks: string[],
- * 	visual_diff_locations: string[],
  * 	related_components: string[],
  * 	human_followups: string[],
  * }}
@@ -228,10 +226,6 @@ function renderBody(data) {
 		"### リリースノートで確認すべき点",
 		"",
 		renderItems(data.release_note_checks),
-		"",
-		"### 画像差分の位置",
-		"",
-		renderItems(data.visual_diff_locations),
 		"",
 		"### 関連コンポーネントの候補",
 		"",

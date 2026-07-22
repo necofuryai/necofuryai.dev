@@ -4,7 +4,7 @@
 
 **Goal:** 収益リンクを含む記事への PR 表記と `rel="sponsored"` 付与の共通基盤を作り、スピーク体験記事の雛形 (draft) を置く。
 
-**Architecture:** frontmatter フラグ `promotion` で記事単位に PR 表記を出し分け、rehype プラグインで指定ドメインへのリンクに `rel` 属性をビルド時に自動付与する。記事雛形は `draft: true` でコミットし、本番ビルドと VRT に影響させない。
+**Architecture:** frontmatter フラグ `promotion` で記事単位に PR 表記を出し分け、rehype プラグインで指定ドメインへのリンクに `rel` 属性をビルド時に自動付与する。記事雛形は `draft: true` でコミットし、本番ビルドと UI smoke に影響させない。
 
 **Tech Stack:** Astro 7 (unified ベースの Markdown パイプライン)、Zod (content schema)、node:test (unit テスト、追加依存なし)
 
@@ -179,7 +179,7 @@ test("ignores anchors without href", () => {
 
 - [ ] **Step 2: package.json に test:unit スクリプトを追加**
 
-`package.json` の scripts で `"test:vrt"` の行の直後に追加する。
+`package.json` の scripts で `"test:ui"` の行の直後に追加する。
 
 ```json
 		"test:unit": "node --test tests/unit/",
@@ -417,10 +417,10 @@ ls dist/posts/ | grep speak-review || echo "not in production build (expected)"
 
 Expected: `not in production build (expected)` (draft: true は本番ビルドから除外される)
 
-- [ ] **Step 3: VRT をローカル実行**
+- [ ] **Step 3: UI smoke をローカル実行**
 
-Run: `pnpm test:vrt`
-Expected: 全テスト PASS (ローカルはスクリーンショット比較なし、描画エラー検出のみ。draft 記事は preview 対象外のためベースライン更新は不要)
+Run: `pnpm test:ui`
+Expected: 全テスト PASS (draft 記事は production preview の対象外)
 
 - [ ] **Step 4: 修正が出た場合はコミット**
 
