@@ -27,7 +27,6 @@ export type PlaylistData = {
 	curator: string | null;
 	description: string | null;
 	url: string;
-	embedUrl: string;
 	artwork: PlaylistArtwork | null;
 	tracks: PlaylistTrack[];
 };

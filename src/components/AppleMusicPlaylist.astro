@@ -79,26 +79,23 @@ const headerBg = playlist.artwork?.bgColor
 				<details class="group mt-1">
 					<summary class="btn-regular cursor-pointer select-none list-none rounded-lg px-4 py-2 text-sm font-medium">
 						<span class="group-open:hidden">残り {hiddenTracks.length} 曲を表示</span>
-						<span class="hidden group-open:inline">折りたたむ</span>
+						<span class="hidden group-open:inline">曲一覧を折りたたむ</span>
 					</summary>
 					<ol class="mt-1 flex flex-col">
 						{hiddenTracks.map((track, index) => (
 							<AppleMusicTrackRow track={track} number={VISIBLE_TRACKS + index + 1} />
 						))}
 					</ol>
+					<button
+						type="button"
+						data-am-collapse-tracks
+						class="btn-regular mt-1 hidden w-full rounded-lg px-4 py-2 text-sm font-medium group-open:block"
+					>
+						曲一覧を折りたたむ
+					</button>
 				</details>
 			)
 		}
-		<div class="mt-3 border-t border-black/10 pt-3 dark:border-white/10">
-			<button
-				type="button"
-				data-am-embed-url={playlist.embedUrl}
-				data-am-title={`Apple Music: ${playlist.name}`}
-				class="btn-regular w-full rounded-lg px-4 py-3 text-sm font-medium"
-			>
-				埋め込みプレイヤーを開く (30 秒プレビュー / 購読者はフル再生)
-			</button>
-		</div>
 	</div>
 </section>
 

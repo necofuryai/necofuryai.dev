@@ -8,7 +8,6 @@
 	"curator": "ねこふりゃいさんのApple Music",
 	"description": "あなたがこれまでに一番よく聴いた楽曲をまとめて振り返ろう。",
 	"url": "https://music.apple.com/jp/playlist/%E3%83%AA%E3%83%97%E3%83%AC%E3%82%A4-%E3%82%AA%E3%83%BC%E3%83%AB%E3%82%BF%E3%82%A4%E3%83%A0/pl.rp-M9CMY0pYR",
-	"embedUrl": "https://embed.music.apple.com/jp/playlist/pl.rp-M9CMY0pYR",
 	"artwork": {
 		"urlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Features/v4/7b/30/77/7b3077fb-7bee-4c36-68bb-967162a2389c/9a5bcd3b-34e1-4ad3-893b-669728225286.png/{w}x{h}cc.jpg",
 		"width": 4320,

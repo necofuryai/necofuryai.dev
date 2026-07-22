@@ -79,7 +79,7 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "LeetCode",
 			icon: "simple-icons:leetcode",
-			url: "https://leetcode.com/necofuryai",
+			url: "https://leetcode.com/u/necofuryai/",
 		},
 	],
 };

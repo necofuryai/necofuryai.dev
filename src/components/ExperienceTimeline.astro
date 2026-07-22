@@ -1,0 +1,51 @@
+---
+import { experienceItems } from "../data/experience";
+---
+
+<section class="mt-10" aria-labelledby="experience-heading">
+	<h2 id="experience-heading" class="text-2xl font-bold text-90">
+		Experience
+	</h2>
+	<p class="mt-2 text-sm leading-6 text-50">
+		Employer names, project identifiers, and exact scale are intentionally
+		generalized.
+	</p>
+
+	<ol class="mt-7 list-none p-0">
+		{
+			experienceItems.map((item, index) => (
+				<li class="grid grid-cols-[5rem_1.5rem_minmax(0,1fr)] md:grid-cols-[7rem_2.5rem_minmax(0,1fr)]">
+					<div class="pt-0.5 text-right text-sm font-bold leading-5 text-75 md:text-base">
+						{item.period}
+					</div>
+
+					<div class="relative flex justify-center" aria-hidden="true">
+						{index < experienceItems.length - 1 && (
+							<span class="absolute top-3 -bottom-3 left-1/2 -translate-x-1/2 border-l-2 border-dashed border-[var(--line-color)]" />
+						)}
+						<span class="relative mt-1 h-3 w-3 rounded-full bg-[var(--card-bg)] outline outline-3 -outline-offset-[2px] outline-[var(--primary)]" />
+					</div>
+
+					<div
+						class:list={[
+							"min-w-0",
+							index < experienceItems.length - 1 ? "pb-8" : "pb-0",
+						]}
+					>
+						<h3 class="m-0 text-base font-bold leading-6 text-75">
+							{item.title}
+						</h3>
+						<p class="mt-1 mb-0 text-sm leading-6 text-75">
+							{item.description}
+						</p>
+					</div>
+				</li>
+			))
+		}
+	</ol>
+
+	<p class="mt-7 text-sm leading-6 text-75">
+		Alongside this work, I maintain an applied machine-learning practice through
+		competitions in forecasting, classification, and reinforcement learning.
+	</p>
+</section>

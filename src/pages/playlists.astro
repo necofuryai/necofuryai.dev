@@ -33,40 +33,37 @@ const playlists = Object.values(modules)
 			トラックデータ、アートワーク、30 秒試聴音源は Apple Music API
 			から取得しています。Apple および Apple Music は Apple Inc. の商標です。
 		</p>
-		<!-- facade: クリックで公式埋め込み iframe に差し替える。swup コンテナ内に置くことで
-		     reloadScripts が SPA 遷移到着時にも実行する。ガードで多重登録を防ぐ -->
+		<!-- 長い曲一覧の末尾から折りたたみ、先頭の summary へフォーカスを戻す。
+		     document へのイベント委譲とガードにより、Swup 遷移後も多重登録せず動作する -->
 		<script is:inline>
 			(() => {
-				if (document.documentElement.hasAttribute("data-am-facade-ready")) {
+				if (document.documentElement.hasAttribute("data-am-track-list-ready")) {
 					return;
 				}
-				document.documentElement.setAttribute("data-am-facade-ready", "");
+				document.documentElement.setAttribute("data-am-track-list-ready", "");
+
 				document.addEventListener("click", (event) => {
-					const origin =
-						event.target instanceof Element
-							? event.target.closest("[data-am-embed-url]")
-							: null;
-					if (!origin) {
+					const target = event.target instanceof Element ? event.target : null;
+					const button = target?.closest("[data-am-collapse-tracks]");
+					if (!button) {
 						return;
 					}
-					const iframe = document.createElement("iframe");
-					iframe.src = origin.getAttribute("data-am-embed-url") || "";
-					iframe.title = origin.getAttribute("data-am-title") || "Apple Music";
-					iframe.height = "450";
-					iframe.loading = "lazy";
-					iframe.allow = "autoplay *; encrypted-media *; clipboard-write";
-					iframe.setAttribute(
-						"sandbox",
-						"allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation",
-					);
-					iframe.className = "w-full rounded-lg";
-					origin.replaceWith(iframe);
+					const details = button.closest("details");
+					if (!(details instanceof HTMLDetailsElement)) {
+						return;
+					}
+					details.open = false;
+					const summary = details.querySelector("summary");
+					if (summary instanceof HTMLElement) {
+						summary.focus();
+					}
 				});
 			})();
 		</script>
-		<!-- 30 秒試聴プレイヤー: 共有 <audio> 1 本を全トラックで使い回す。ガードと配置は
-		     facade スクリプトと同じ方式。audio は body 直下にあり Swup の差し替え対象
-		     (main / #toc) の外で生き続けるため、content:replace で必ず停止する -->
+		<!-- 30 秒試聴プレイヤー: 共有 <audio> 1 本を全トラックで使い回す。
+		     ガードと document へのイベント委譲により、Swup 再訪後も多重登録しない。
+		     audio は body 直下にあり Swup の差し替え対象 (main / #toc) の外で
+		     生き続けるため、content:replace で必ず停止する -->
 		<script is:inline>
 			(() => {
 				if (document.documentElement.hasAttribute("data-am-preview-ready")) {
@@ -86,11 +83,6 @@ const playlists = Object.values(modules)
 				document.addEventListener("click", (event) => {
 					const target = event.target instanceof Element ? event.target : null;
 					if (!target) {
-						return;
-					}
-					// 埋め込みプレイヤーを開いたら試聴を止めて二重再生を防ぐ
-					if (target.closest("[data-am-embed-url]")) {
-						stop();
 						return;
 					}
 					const button = target.closest("[data-am-preview-url]");
