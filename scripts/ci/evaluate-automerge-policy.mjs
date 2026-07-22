@@ -28,8 +28,8 @@
 const MAX_INPUT_BYTES = 1024 * 1024;
 const MAX_DEPENDENCIES = 100;
 
-// Updating @playwright/test requires bumping the pinned CI container image
-// digest and regenerating VRT baselines in the same manually reviewed PR.
+// Updating @playwright/test requires reviewing and bumping the pinned CI
+// container image digest in the same manual PR.
 const DENYLIST = new Set(["@playwright/test"]);
 
 // Stable releases only. SemVer allows breaking changes in any 0.x release,
@@ -106,7 +106,7 @@ function checkDependency(entry, index) {
 	}
 	if (DENYLIST.has(name)) {
 		reasons.push(
-			`${label} (${name}): denylisted; update it in a manual PR together with the CI container image and VRT baselines`,
+			`${label} (${name}): denylisted; update it in a manual PR together with the pinned CI container image`,
 		);
 	}
 	if (!isStableVersion(dep.prevVersion)) {

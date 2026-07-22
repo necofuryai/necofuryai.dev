@@ -6,12 +6,8 @@
 # Secrets に Apple Developer Program の
 # APPLE_MUSIC_TEAM_ID / APPLE_MUSIC_KEY_ID / APPLE_MUSIC_PRIVATE_KEY が必要。
 #
-# データ更新は /playlists/ の描画内容を変えるため、update-vrt-baselines ジョブが
-# PR ブランチ上で VRT ベースラインを再生成して自動コミットする。
-#
-# 注意: GITHUB_TOKEN で作成した PR / push は CI (on: pull_request) を自動起動しない
-# という GitHub の仕様があるため、作成された PR はベースラインコミットの push を
-# 待ってから一度 close/reopen して CI を起動し、マージする。
+# 注意: GITHUB_TOKEN で作成した PR / push は CI (on: pull_request) を自動起動しない。
+# 作成された PR は一度 close/reopen し、UI smoke を含む required checks を起動して確認する。
 name: Refresh Apple Music Playlists
 
 on:
@@ -41,8 +37,6 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    outputs:
-      branch: ${{ steps.create_pr.outputs.branch }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -76,7 +70,6 @@ jobs:
           fi
 
       - name: Create pull request if data changed
-        id: create_pr
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -95,64 +88,4 @@ jobs:
           git push -u origin "$branch"
           gh pr create --base main --head "$branch" \
             --title "chore: refresh Apple Music playlist data" \
-            --body "$(printf 'scripts/fetch-playlists.mjs による自動更新です。VRT ベースラインは update-vrt-baselines ジョブがこのブランチへ自動コミットします。\n\nマージ前の手順:\n\n1. update-vrt-baselines ジョブの完了 (ベースラインコミットの push) を待つ\n2. GITHUB_TOKEN による PR / push は CI が自動起動しないため、close/reopen して CI を実行する')"
-          echo "branch=$branch" >> "$GITHUB_OUTPUT"
-
-  # データ更新は /playlists/ の描画内容を変えるため、CI の VRT 比較 (build.yml) と
-  # 同じ Playwright コンテナでベースラインを再生成し PR ブランチへコミットする。
-  # レンダリングが OS 依存のためコンテナ外で生成した画像は使えない
-  # (イメージのピンは build.yml / vrt-update-baselines.yml と一致させること)。
-  update-vrt-baselines:
-    needs: refresh
-    if: needs.refresh.outputs.branch != ''
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    container:
-      image: mcr.microsoft.com/playwright:v1.61.1-noble@sha256:5b8f294aff9041b7191c34a4bab3ac270157a28774d4b0660e9743297b697e48
-      options: --ipc=host
-    steps:
-      # persist-credentials: false で write トークンを .git/config に残さない
-      # (install / build / Playwright がサードパーティコードを実行するため)。
-      # push に必要なトークンは最終ステップの env にだけ渡す
-      - name: Checkout PR branch
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ needs.refresh.outputs.branch }}
-          persist-credentials: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 24
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
-        with:
-          run_install: false
-
-      - name: Install and build
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm build
-
-      - name: Regenerate baselines
-        run: pnpm test:vrt --update-snapshots
-
-      - name: Commit updated baselines to the PR branch
-        env:
-          BRANCH: ${{ needs.refresh.outputs.branch }}
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          # コンテナのユーザーとワークスペースの所有者が異なるため safe.directory が必要
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git add -A tests/vrt/__screenshots__
-          if git diff --cached --quiet; then
-            echo "ベースラインに変更はありません。"
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "test: update VRT baselines for refreshed playlist data"
-          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:$BRANCH"
+            --body "$(printf 'scripts/fetch-playlists.mjs による自動更新です。\n\nGITHUB_TOKEN による PR / push では CI が自動起動しないため、マージ前にこの PR を一度 close/reopen して UI smoke を含む required checks を実行してください。')"

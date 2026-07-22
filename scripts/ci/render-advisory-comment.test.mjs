@@ -26,7 +26,6 @@ function validPayload(overrides = {}) {
 	return {
 		update_impact: "patch 更新で、破壊的変更は見当たらない。",
 		release_note_checks: ["CHANGELOG の 1.2.3 節を確認する"],
-		visual_diff_locations: [],
 		related_components: ["src/components/Navbar.astro"],
 		human_followups: [],
 		...overrides,
@@ -73,7 +72,7 @@ test("valid input renders the fixed template with the marker first", () => {
 
 test("empty arrays render as なし", () => {
 	const body = renderOk(validPayload());
-	assert.ok(body.includes(`### 画像差分の位置${LF}${LF}なし`));
+	assert.ok(body.includes(`### 関連コンポーネントの候補${LF}${LF}`));
 	assert.ok(body.includes(`### 人間の確認事項${LF}${LF}なし`));
 });
 
@@ -84,13 +83,9 @@ test("rejects a field exceeding 2000 UTF-8 bytes", () => {
 });
 
 test("rejects input whose decoded size exceeds 64 KiB", () => {
-	const big = Array.from({ length: 10 }, () => "y".repeat(1900));
 	expectRejected(
 		validPayload({
-			release_note_checks: big,
-			visual_diff_locations: big,
-			related_components: big,
-			human_followups: big,
+			oversized_unknown_field: "y".repeat(70 * 1024),
 		}),
 	);
 });
