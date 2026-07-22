@@ -250,7 +250,6 @@ async function fetchPlaylist({ id, storefront }, order, token) {
 		description: attributes.description?.standard ?? null,
 		url:
 			attributes.url ?? `https://music.apple.com/${storefront}/playlist/${id}`,
-		embedUrl: `https://embed.music.apple.com/${storefront}/playlist/${id}`,
 		artwork: toArtwork(attributes.artwork),
 		tracks: items.map(toTrack),
 	};

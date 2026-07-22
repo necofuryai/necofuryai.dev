@@ -1,6 +1,7 @@
 ---
 
 import { getEntry, render } from "astro:content";
+import ExperienceTimeline from "@components/ExperienceTimeline.astro";
 import Markdown from "@components/misc/Markdown.astro";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
@@ -14,12 +15,25 @@ if (!aboutPost) {
 
 const { Content } = await render(aboutPost);
 ---
-<MainGridLayout title={i18n(I18nKey.about)} description={i18n(I18nKey.about)}>
-    <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
-        <div class="card-base z-10 px-9 py-6 relative w-full ">
-            <Markdown class="mt-2">
-                <Content />
-            </Markdown>
-        </div>
-    </div>
+
+<MainGridLayout
+	title={i18n(I18nKey.about)}
+	description="About necofuryai, a backend and cloud engineer focused on reliable systems and automation."
+>
+	<div
+		class="relative flex min-h-32 w-full overflow-hidden rounded-[var(--radius-large)]"
+	>
+		<div class="card-base relative z-10 w-full px-9 py-6" lang="en">
+			<Markdown class="mt-2">
+				<Content />
+			</Markdown>
+			<ExperienceTimeline />
+			<p class="mt-10 border-t border-[var(--line-color)] pt-6 text-sm leading-6 text-50">
+				Built with <a class="link-underline text-[var(--primary)]" href="https://astro.build">Astro</a>
+				on the <a class="link-underline text-[var(--primary)]" href="https://github.com/saicaca/fuwari">fuwari</a>
+				template. If you spot an error, please open a
+				<a class="link-underline text-[var(--primary)]" href="https://github.com/necofuryai/necofuryai.dev/issues">GitHub issue</a>.
+			</p>
+		</div>
+	</div>
 </MainGridLayout>

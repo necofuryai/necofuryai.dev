@@ -1,10 +1,7 @@
 # About
 
-necofuryai の技術ブログです。
+I’m **necofuryai**, a software engineer with **8+ years of experience** building reliable backend and cloud systems. My work spans application development, cloud infrastructure, CI/CD, observability, security, and data systems.
 
-日々の開発で得た知見、技術メモ、開発記録を書いています。
+Alongside enterprise work, I build and operate independent products end to end. This site collects technical notes, implementation details, and lessons learned from building and operating software.
 
 - GitHub: [@necofuryai](https://github.com/necofuryai)
-
-このサイトは [Astro](https://astro.build) 製テンプレート [fuwari](https://github.com/saicaca/fuwari) をベースに構築しています。
-記事の誤りは [Issue](https://github.com/necofuryai/necofuryai.dev/issues) からご指摘ください。
