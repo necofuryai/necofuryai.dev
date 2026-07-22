@@ -1,0 +1,64 @@
+---
+import { Icon } from "astro-icon/components";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+import { url } from "../utils/url-utils";
+---
+
+<MainGridLayout
+	title="ページが見つかりません"
+	description="お探しのページは見つかりませんでした。"
+>
+	<meta slot="head" name="robots" content="noindex" />
+
+	<section
+		class="card-base relative isolate flex min-h-[30rem] items-center justify-center overflow-hidden px-6 py-14 text-center md:px-12"
+	>
+		<div
+			aria-hidden="true"
+			class="absolute -left-20 -top-24 h-64 w-64 rounded-full bg-[var(--primary)] opacity-[0.08] blur-3xl"
+		></div>
+		<div
+			aria-hidden="true"
+			class="absolute -bottom-28 -right-16 h-72 w-72 rounded-full bg-[var(--primary)] opacity-[0.08] blur-3xl"
+		></div>
+
+		<div class="relative z-10 flex max-w-2xl flex-col items-center">
+			<p
+				aria-hidden="true"
+				class="select-none text-[clamp(5rem,15vw,9rem)] font-bold leading-none tracking-[-0.08em] text-[var(--primary)] opacity-20"
+			>
+				404
+			</p>
+			<div
+				class="-mt-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--btn-regular-bg)] text-[var(--primary)]"
+				aria-hidden="true"
+			>
+				<Icon name="material-symbols:travel-explore-rounded" class="text-[2rem]" />
+			</div>
+
+			<h1 class="mt-6 text-2xl font-bold text-90 md:text-3xl">
+				ページが見つかりません
+			</h1>
+			<p class="mt-3 max-w-lg text-sm leading-7 text-75 md:text-base">
+				URLが変更されたか、ページが削除された可能性があります。
+			</p>
+
+			<div class="mt-8 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
+				<a
+					href={url("/")}
+					class="btn-regular inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-5 py-2.5 font-medium"
+				>
+					<Icon name="material-symbols:home-outline-rounded" class="text-xl" />
+					ホームへ戻る
+				</a>
+				<a
+					href={url("/archive/")}
+					class="btn-plain inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[var(--line-color)] px-5 py-2.5 font-medium"
+				>
+					<Icon name="material-symbols:archive-outline-rounded" class="text-xl" />
+					記事を探す
+				</a>
+			</div>
+		</div>
+	</section>
+</MainGridLayout>

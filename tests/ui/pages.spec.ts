@@ -30,6 +30,31 @@ for (const item of cases) {
 	});
 }
 
+test("custom 404 returns not found and offers recovery links", async ({
+	page,
+}) => {
+	const response = await page.goto("/missing-page/", { waitUntil: "load" });
+	expect(response?.status()).toBe(404);
+
+	await expect(
+		page.getByRole("heading", {
+			level: 1,
+			name: "ページが見つかりません",
+		}),
+	).toBeVisible();
+	await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+		"content",
+		"noindex",
+	);
+	await expect(
+		page.getByRole("link", { name: "ホームへ戻る" }),
+	).toHaveAttribute("href", "/");
+	await expect(page.getByRole("link", { name: "記事を探す" })).toHaveAttribute(
+		"href",
+		"/archive/",
+	);
+});
+
 test("theme switch enables dark mode and persists it", async ({ page }) => {
 	await page.addInitScript(() => {
 		if (localStorage.getItem("theme") === null) {
