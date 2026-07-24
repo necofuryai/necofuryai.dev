@@ -30,6 +30,138 @@ for (const item of cases) {
 	});
 }
 
+test("search fields expose stable form metadata and accessible names", async ({
+	page,
+}) => {
+	await page.goto("/", { waitUntil: "load" });
+
+	const desktopSearch = page.locator("#search-bar input");
+	const mobileSearch = page.locator("#search-bar-inside input");
+	await expect(desktopSearch).toHaveAttribute("id", "site-search-desktop");
+	await expect(mobileSearch).toHaveAttribute("id", "site-search-mobile");
+	await expect(desktopSearch).toHaveAttribute("type", "search");
+	await expect(mobileSearch).toHaveAttribute("type", "search");
+	await expect(desktopSearch).toHaveAccessibleName("検索");
+	await page.setViewportSize({ width: 390, height: 844 });
+	await expect(mobileSearch).toBeVisible();
+	await expect(mobileSearch).toHaveAccessibleName("検索");
+});
+
+test("desktop search clears results when its query is emptied", async ({
+	page,
+}) => {
+	await page.goto("/", { waitUntil: "load" });
+
+	const searchInput = page.locator("#search-bar input");
+	const searchPanel = page.locator("#search-panel");
+	const helloWorldResult = searchPanel.locator('a[href="/posts/hello-world/"]');
+	await expect(searchInput).toBeVisible();
+
+	await searchInput.fill("Hello");
+	await expect(helloWorldResult).toBeVisible();
+
+	await searchInput.fill("");
+	await expect(helloWorldResult).toHaveCount(0);
+	await expect(searchPanel).toHaveClass(/float-panel-closed/);
+});
+
+test("mobile search clears results without closing its input panel", async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto("/", { waitUntil: "load" });
+
+	const searchSwitch = page.locator("#search-switch");
+	const searchInput = page.locator("#site-search-mobile");
+	const searchPanel = page.locator("#search-panel");
+	const helloWorldResult = searchPanel.locator('a[href="/posts/hello-world/"]');
+	await expect(searchSwitch).toBeVisible();
+	await searchSwitch.click();
+	await expect(searchInput).toBeVisible();
+
+	await searchInput.fill("Hello");
+	await expect(helloWorldResult).toBeVisible();
+
+	await searchInput.fill("");
+	await expect(helloWorldResult).toHaveCount(0);
+	await expect(searchPanel).not.toHaveClass(/float-panel-closed/);
+	await expect(searchInput).toBeVisible();
+});
+
+test("desktop search ignores a stale result after its query is cleared", async ({
+	page,
+}) => {
+	await page.goto("/", { waitUntil: "load" });
+
+	const searchInput = page.locator("#search-bar input");
+	const searchPanel = page.locator("#search-panel");
+	const helloWorldResult = searchPanel.locator('a[href="/posts/hello-world/"]');
+	await searchInput.fill("Hello");
+	await expect(helloWorldResult).toBeVisible();
+	await searchInput.fill("");
+	await expect(helloWorldResult).toHaveCount(0);
+
+	await page.evaluate(() => {
+		const testWindow = window as Window & {
+			__releaseSearch?: () => void;
+			__searchStarted?: Promise<void>;
+		};
+		let markSearchStarted: () => void = () => {};
+		let releaseSearch: () => void = () => {};
+		testWindow.__searchStarted = new Promise<void>((resolve) => {
+			markSearchStarted = resolve;
+		});
+		const searchRelease = new Promise<void>((resolve) => {
+			releaseSearch = resolve;
+		});
+		testWindow.__releaseSearch = releaseSearch;
+		window.pagefind = {
+			search: async () => ({
+				results: [
+					{
+						data: async () => {
+							markSearchStarted();
+							await searchRelease;
+							return {
+								url: "/posts/hello-world/",
+								meta: { title: "Hello World" },
+								excerpt: "Hello World",
+							};
+						},
+					},
+				],
+			}),
+		};
+	});
+
+	await searchInput.fill("Delayed");
+	await page.evaluate(
+		() =>
+			(
+				window as Window & {
+					__searchStarted?: Promise<void>;
+				}
+			).__searchStarted,
+	);
+	await searchInput.fill("");
+	await page.evaluate(() => {
+		(
+			window as Window & {
+				__releaseSearch?: () => void;
+			}
+		).__releaseSearch?.();
+	});
+	await page.evaluate(
+		() =>
+			new Promise<void>((resolve) => {
+				requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+			}),
+	);
+
+	await expect(helloWorldResult).toHaveCount(0);
+	await expect(searchPanel).toHaveClass(/float-panel-closed/);
+});
+
 test("custom 404 returns not found and offers recovery links", async ({
 	page,
 }) => {

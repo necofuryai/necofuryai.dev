@@ -11,6 +11,7 @@ let keywordMobile = "";
 let result: SearchResult[] = [];
 let pagefindLoaded = false;
 let initialized = false;
+let latestSearchRequest = 0;
 
 const fakeResult: SearchResult[] = [
 	{
@@ -47,6 +48,8 @@ const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
 };
 
 const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
+	const requestId = ++latestSearchRequest;
+
 	if (!keyword) {
 		setPanelVisibility(false, isDesktop);
 		result = [];
@@ -62,6 +65,7 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 
 		if (import.meta.env.PROD && pagefindLoaded && window.pagefind) {
 			const response = await window.pagefind.search(keyword);
+			if (requestId !== latestSearchRequest) return;
 			searchResults = await Promise.all(
 				response.results.map((item) => item.data()),
 			);
@@ -72,9 +76,11 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 			console.error("Pagefind is not available in production environment.");
 		}
 
+		if (requestId !== latestSearchRequest) return;
 		result = searchResults;
 		setPanelVisibility(result.length > 0, isDesktop);
 	} catch (error) {
+		if (requestId !== latestSearchRequest) return;
 		console.error("Search error:", error);
 		result = [];
 		setPanelVisibility(false, isDesktop);
@@ -120,17 +126,11 @@ onMount(() => {
 	}
 });
 
-$: if (initialized && keywordDesktop) {
-	(async () => {
-		await search(keywordDesktop, true);
-	})();
-}
-
-$: if (initialized && keywordMobile) {
-	(async () => {
-		await search(keywordMobile, false);
-	})();
-}
+const handleSearchInput = (event: Event, isDesktop: boolean): void => {
+	const input = event.currentTarget;
+	if (!(input instanceof HTMLInputElement)) return;
+	void search(input.value, isDesktop);
+};
 </script>
 
 <!-- search bar for desktop view -->
@@ -139,7 +139,9 @@ $: if (initialized && keywordMobile) {
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
 ">
     <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-    <input placeholder="{i18n(I18nKey.search)}" bind:value={keywordDesktop} on:focus={() => search(keywordDesktop, true)}
+    <label class="sr-only" for="site-search-desktop">{i18n(I18nKey.search)}</label>
+    <input id="site-search-desktop" type="search" placeholder="{i18n(I18nKey.search)}" bind:value={keywordDesktop}
+           on:input={(event) => handleSearchInput(event, true)} on:focus={() => search(keywordDesktop, true)}
            class="transition-all pl-10 text-sm bg-transparent outline-0
          h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50"
     >
@@ -161,7 +163,9 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
   ">
         <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-        <input placeholder="Search" bind:value={keywordMobile}
+        <label class="sr-only" for="site-search-mobile">{i18n(I18nKey.search)}</label>
+        <input id="site-search-mobile" type="search" placeholder="{i18n(I18nKey.search)}" bind:value={keywordMobile}
+               on:input={(event) => handleSearchInput(event, false)}
                class="pl-10 absolute inset-0 text-sm bg-transparent outline-0
                focus:w-60 text-black/50 dark:text-white/50"
         >
