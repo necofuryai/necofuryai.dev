@@ -18,6 +18,13 @@ interface Props {
 }
 const className = Astro.props.class;
 const style = Astro.props.style;
+
+// aria-label には見えているテキスト (カテゴリ名 + 件数バッジ) をそのまま含める。
+// WCAG 2.5.3 Label in Name / Lighthouse の label-content-name-mismatch は、
+// 画面に見えている文字列どおりに音声入力しても操作できることを求めるため、
+// 件数を落とした「View all posts in the General category」だと不一致になる。
+const getCategoryLabel = (name: string, count: number) =>
+	`${name} ${count} ${i18n(count === 1 ? I18nKey.postCount : I18nKey.postsCount)}`;
 ---
 
 <WidgetLayout name={i18n(I18nKey.categories)} id="categories" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT}
@@ -27,7 +34,7 @@ const style = Astro.props.style;
         <ButtonLink
             url={c.url}
             badge={String(c.count)}
-            label={`View all posts in the ${c.name.trim()} category`}
+            label={getCategoryLabel(c.name.trim(), c.count)}
         >
             {c.name.trim()}
         </ButtonLink>
