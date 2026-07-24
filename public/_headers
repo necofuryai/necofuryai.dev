@@ -17,3 +17,29 @@
 # プリロードリストを持たない古いクライアント向けに残している。
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# キャッシュ期間。Workers Static Assets のデフォルトは全アセット一律の
+# `public, max-age=0, must-revalidate` で、ファイル名にハッシュを持つビルド成果物まで
+# 毎回条件付きリクエスト (304 の往復) が発生する。_headers の指定はこれを上書きする。
+# URL パターンが複数マッチした場合は全ルールのヘッダーが合成されるため、
+# 上の /* の HSTS はここで上書きされずそのまま残る。
+#
+# /_astro/* は Astro がコンテンツハッシュ付きのファイル名で出力する
+# (例: Layout.DO1FcFzZ.css)。内容が変わればファイル名も変わるので、
+# 再検証なしの immutable で 1 年間キャッシュさせて安全。
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Pagefind も index / fragment 配下だけはコンテンツハッシュ付き
+# (例: ja_9f4e319.pf_index)。ハッシュを持たない pagefind.js や
+# それらを参照する pagefind-entry.json は古いままだと壊れるので、
+# デフォルトの毎回再検証のままにしておくこと。
+/pagefind/index/*
+  Cache-Control: public, max-age=31536000, immutable
+/pagefind/fragment/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# favicon はファイル名にハッシュを持たないため immutable にはできない。
+# 更新頻度が極めて低い一方で全ページから参照されるので、1 週間だけ再検証を省く。
+/favicon/*
+  Cache-Control: public, max-age=604800

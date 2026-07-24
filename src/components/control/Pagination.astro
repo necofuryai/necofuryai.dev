@@ -52,7 +52,11 @@ const getPageUrl = (p: number) => {
 ---
 
 <div class:list={[className, "flex flex-row gap-3 justify-center"]} style={style}>
-    <a href={page.url.prev || ""} aria-label={page.url.prev ? "Previous Page" : null}
+    <!-- 前後のページが無いときは href ごと落とす。href="" だと現在のページを指す
+         リンクとしてタブ順に残り、アクセシブルな名前も持たないため
+         Lighthouse の link-name に落ちる (.disabled の pointer-events: none は
+         マウス操作しか止められない)。href の無い <a> はリンクとして公開されない。 -->
+    <a href={page.url.prev} aria-label={page.url.prev ? "Previous Page" : null}
        class:list={["btn-card overflow-hidden rounded-lg text-[var(--primary)] w-11 h-11",
            {"disabled": page.url.prev === undefined}
        ]}
@@ -74,7 +78,7 @@ const getPageUrl = (p: number) => {
             >{p}</a>
         })}
     </div>
-    <a href={page.url.next || ""} aria-label={page.url.next ? "Next Page" : null}
+    <a href={page.url.next} aria-label={page.url.next ? "Next Page" : null}
        class:list={["btn-card overflow-hidden rounded-lg text-[var(--primary)] w-11 h-11",
            {"disabled": page.url.next === undefined}
        ]}

@@ -6,9 +6,12 @@ import { url } from "@utils/url-utils.ts";
 import { onMount } from "svelte";
 import type { SearchResult } from "@/global";
 
-let keywordDesktop = "";
-let keywordMobile = "";
-let result: SearchResult[] = [];
+// テンプレートから参照する値だけを $state にする。
+// pagefindLoaded / initialized / latestSearchRequest は描画に使わない内部フラグなので
+// リアクティブにする必要がない。
+let keywordDesktop = $state("");
+let keywordMobile = $state("");
+let result = $state<SearchResult[]>([]);
 let pagefindLoaded = false;
 let initialized = false;
 let latestSearchRequest = 0;
@@ -94,7 +97,6 @@ onMount(() => {
 			typeof window !== "undefined" &&
 			!!window.pagefind &&
 			typeof window.pagefind.search === "function";
-		console.log("Pagefind status on init:", pagefindLoaded);
 		if (keywordDesktop) search(keywordDesktop, true);
 		if (keywordMobile) search(keywordMobile, false);
 	};
@@ -141,14 +143,14 @@ const handleSearchInput = (event: Event, isDesktop: boolean): void => {
     <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
     <label class="sr-only" for="site-search-desktop">{i18n(I18nKey.search)}</label>
     <input id="site-search-desktop" type="search" placeholder="{i18n(I18nKey.search)}" bind:value={keywordDesktop}
-           on:input={(event) => handleSearchInput(event, true)} on:focus={() => search(keywordDesktop, true)}
+           oninput={(event) => handleSearchInput(event, true)} onfocus={() => search(keywordDesktop, true)}
            class="transition-all pl-10 text-sm bg-transparent outline-0
          h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50"
     >
 </div>
 
 <!-- toggle btn for phone/tablet view -->
-<button type="button" on:click={togglePanel} aria-label="Search Panel" id="search-switch"
+<button type="button" onclick={togglePanel} aria-label="Search Panel" id="search-switch"
         class="btn-plain scale-animation lg:hidden! rounded-lg w-11 h-11 active:scale-90">
     <Icon icon="material-symbols:search" class="text-[1.25rem]"></Icon>
 </button>
@@ -165,7 +167,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
         <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
         <label class="sr-only" for="site-search-mobile">{i18n(I18nKey.search)}</label>
         <input id="site-search-mobile" type="search" placeholder="{i18n(I18nKey.search)}" bind:value={keywordMobile}
-               on:input={(event) => handleSearchInput(event, false)}
+               oninput={(event) => handleSearchInput(event, false)}
                class="pl-10 absolute inset-0 text-sm bg-transparent outline-0
                focus:w-60 text-black/50 dark:text-white/50"
         >

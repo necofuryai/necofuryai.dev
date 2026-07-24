@@ -194,7 +194,10 @@ test("theme switch enables dark mode and persists it", async ({ page }) => {
 		}
 	});
 	await page.goto("/", { waitUntil: "load" });
-	const switchButton = page.getByRole("menuitem", {
+	// ネイティブの button ロール。以前は role="menuitem" が付いていたが、
+	// 親に role="menu" が必要になり (menu の子は menuitem 系のみ許される)、
+	// パネル内のテーマ選択ボタンが不正な子として aria-required-children に落ちていた。
+	const switchButton = page.getByRole("button", {
 		name: "Light/Dark Mode",
 	});
 	await expect(switchButton).toHaveCount(1);
