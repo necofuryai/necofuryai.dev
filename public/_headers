@@ -1,0 +1,19 @@
+# Cloudflare Workers Static Assets のヘッダー定義 (dist/_headers として配信設定に使われる)。
+#
+# HSTS: HTTPS で一度アクセスしたブラウザに、以降の HTTP アクセスを自動で HTTPS へ
+# 昇格させる。Cloudflare 側の "Always Use HTTPS" (HTTP -> HTTPS の 301) と併用する。
+#
+# HSTS の設定はこのファイルに一本化し、Cloudflare ダッシュボードの
+# SSL/TLS > エッジ証明書 > HSTS は有効にしないこと。両方から
+# Strict-Transport-Security が出たときの合成挙動 (上書き / 2 本並列 / カンマ結合) は
+# Cloudflare 側に記述がなく、カンマ結合された場合は RFC 6797 の ABNF に反するため
+# ブラウザがヘッダーごと無視する = HSTS が黙って無効化される。
+#
+# preload は付けない。.dev は Chromium の HSTS プリロードリストに TLD 単位で
+# force-https / include_subdomains 付きで登録済み
+# ({ "name": "dev", "policy": "public-suffix", ... } / transport_security_state_static.json)
+# のため、preload ディレクティブを足しても主要ブラウザの挙動は変わらない。
+# 同じ理由で includeSubDomains もプリロード対応ブラウザには追加効果がないが、
+# プリロードリストを持たない古いクライアント向けに残している。
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
