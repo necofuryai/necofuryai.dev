@@ -5,13 +5,18 @@ import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import { getPostUrlBySlug } from "../utils/url-utils";
 
-export let tags: string[] = [];
-export let categories: string[] = [];
-export let sortedPosts: Post[] = [];
+interface Props {
+	sortedPosts?: Post[];
+}
 
+const { sortedPosts = [] }: Props = $props();
+
+// 絞り込み条件は URL のクエリ文字列だけが入力元。以前は tags / categories も
+// export let で受けていたが、受けた直後にここで必ず上書きしていたため
+// プロップとして機能しておらず、呼び出し側 (archive.astro) も渡していない。
 const params = new URLSearchParams(window.location.search);
-tags = params.has("tag") ? params.getAll("tag") : [];
-categories = params.has("category") ? params.getAll("category") : [];
+const tags = params.has("tag") ? params.getAll("tag") : [];
+const categories = params.has("category") ? params.getAll("category") : [];
 const uncategorized = params.get("uncategorized");
 
 interface Post {
@@ -29,7 +34,7 @@ interface Group {
 	posts: Post[];
 }
 
-let groups: Group[] = [];
+let groups = $state<Group[]>([]);
 
 function formatDate(date: Date) {
 	const month = (date.getMonth() + 1).toString().padStart(2, "0");
