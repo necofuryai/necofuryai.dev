@@ -148,7 +148,12 @@ try {
 // 上流の取得失敗などの運用エラー。CI が「上流更新あり」(exit 1) と取り違えて
 // Issue を立ててしまわないよう、別の終了コードで区別する。
 if (failure) {
-	console.error(`検査を完了できませんでした: ${failure.message}`);
+	// fetch の失敗は message が一律 "fetch failed" になり原因が分からないため cause も出す
+	// (DNS 解決不能、証明書エラー、プロキシ経由が必要、などの区別がこれで付く)
+	const cause = failure.cause?.message ?? failure.cause;
+	console.error(
+		`検査を完了できませんでした: ${failure.message}${cause ? ` (${cause})` : ""}`,
+	);
 	process.exit(2);
 }
 
