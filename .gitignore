@@ -33,3 +33,10 @@ yarn.lock
 # ide
 .idea
 *.iml
+
+# claude code
+# .claude/skills/ はデプロイ先 (Workers Static Assets) に紐づいた知識なので追跡する。
+# .claude/launch.json は意図的に追跡しない (dev/preview のコマンドは CLAUDE.md に既出で、
+# 固有情報は preview を 4322 に逃がす作業習慣だけ)。ローカル除外は .git/info/exclude 側。
+.claude/settings.local.json
+.claude/.cc-writes/
