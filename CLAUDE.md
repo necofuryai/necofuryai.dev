@@ -142,4 +142,4 @@ JSON の `placeholder: true` はプレースホルダーデータの印で、ペ
 
 `package.json` の `pnpm.overrides` は脆弱性対応のためのピン留め (Dependabot alerts 0 件を維持)。上流の推移的依存にパッチが行き渡るまで削除しない。
 
-`@swup/plugin@<4` と `minimatch@<10.2.2` はバージョン固定ではなく、脆弱な brace-expansion を引き込む依存経路を断つための迂回。同様に削除しない。特に `minimatch@<10.2.2` は、brace-expansion 5.x を default import する古い minimatch がツリーに入るのを防いでおり、`brace-expansion@<5.0.8` のピン留めが安全に成立する前提になっている。
+`@swup/plugin@<4` / `minimatch@<10.2.2` / `brace-expansion@<5.0.8` の 3 つはバージョン固定ではなく、脆弱な brace-expansion の依存経路を断つためのセット。個別に消すとビルドが壊れる。
