@@ -15,7 +15,10 @@
 			"!**/node_modules/**/*",
 			"!**/.astro/**/*",
 			"!**/playwright-report/**/*",
-			"!**/test-results/**/*"
+			"!**/test-results/**/*",
+			"!**/.claude/settings.local.json",
+			"!**/.claude/launch.json",
+			"!**/.claude/.cc-writes/**/*"
 		]
 	},
 	"formatter": {

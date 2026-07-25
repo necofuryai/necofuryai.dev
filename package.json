@@ -14,6 +14,7 @@
 		"type-check": "astro sync && tsc --noEmit",
 		"new-post": "node scripts/new-post.js",
 		"fetch-playlists": "node --env-file-if-exists=.env scripts/fetch-playlists.mjs",
+		"diff-skills": "node scripts/diff-cloudflare-skills.mjs",
 		"format": "biome format --write .",
 		"lint": "biome check --write .",
 		"test:ui": "playwright test",
