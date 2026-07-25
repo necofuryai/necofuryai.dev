@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-necofuryai の技術ブログ (日本語)。[fuwari](https://github.com/saicaca/fuwari) テンプレート (commit `6d39b0d` 時点) をベースにした Astro 製静的サイト。デプロイ先は Cloudflare Workers Static Assets (予定)。
+necofuryai の技術ブログ (日本語)。[fuwari](https://github.com/saicaca/fuwari) テンプレート (commit `6d39b0d` 時点) をベースにした Astro 製静的サイト。Cloudflare Workers Static Assets で稼働中 (`wrangler.jsonc` の `custom_domain` で apex を配信)。
 
 ライセンスは二重構成: コードは MIT、記事本文 (`src/content/` 以下) は CC BY-NC-SA 4.0。
 
@@ -21,7 +21,9 @@ pnpm type-check       # astro sync && tsc --noEmit
 pnpm lint             # Biome check (自動修正込み、リポジトリ全体が対象)
 pnpm format           # Biome format
 pnpm new-post <slug>  # 記事の雛形作成 (src/content/posts/<slug>.md)
+pnpm test:unit        # node --test (tests/unit/*.test.mjs)
 pnpm test:ui          # Playwright UI スモークテスト (下記参照)
+pnpm diff-skills      # .claude/skills/ にベンダリングした cloudflare/skills と上流の差分確認
 ```
 
 - 全文検索 (Pagefind) はビルド成果物 (dist) からインデックスを生成するため、dev サーバーでは動作しない。検索の動作確認は `pnpm build && pnpm preview` で行う。
@@ -79,7 +81,12 @@ Astro 7 のデフォルト (Rust 製プロセッサ) ではなく、`markdown.pr
 
 ### アクセス解析 (GA4)
 
-環境変数 `PUBLIC_GA_MEASUREMENT_ID` (測定 ID、`G-` 形式をビルド時に検証) が設定された本番ビルドでのみ、`Layout.astro` が gtag スニペットを出力する (dev サーバーでは常に無効)。計測は手動送信方式: 初回ロードは `gtag("config")` の自動 page_view、Swup の SPA 遷移は `astro:page-load` イベント (swup の `page:view` から dispatch、タイトル更新後・初回ロードでは発火しない) からの手動 page_view で page_title を正しく記録する。`swup:enable` は swup コアが全フックを `swup:<フック名>` 形式の DOM CustomEvent としてブリッジするイベントで、swup 初期化時 (load 後 idle、`window.swup` 代入後) に一度だけ発火する (イベント名が動的構築のため node_modules を文字列 grep しても見つからない)。一度きりのイベントのため遷移ごとの計測には使えず GA は `astro:page-load` を使うが、`Layout.astro` の Swup フック登録 (バナー高さ・TOC・PhotoSwipe 再生成) は `swup:enable` 依存で正常動作している (2026-07-19 Playwright 実測確認済み)。この方式は GA4 管理画面で拡張計測機能の「ブラウザの履歴イベントに基づくページの変更」を OFF にする運用とセットであり、ON に戻すと SPA 遷移が二重計測になる。`@swup/astro` の `reloadScripts` (デフォルト true) は遷移ごとにページ内の script を複製再実行するため、GA タグは `data-swup-ignore-script` 属性と再実行ガードで除外している。プライバシーポリシーは `/privacy/` (`src/content/spec/privacy.md` + `src/pages/privacy.astro`)。
+- **出力条件** — 環境変数 `PUBLIC_GA_MEASUREMENT_ID` (測定 ID、`G-` 形式をビルド時に検証) が設定された本番ビルドでのみ `Layout.astro` が gtag スニペットを出力する (dev サーバーでは常に無効)。
+- **計測は手動送信方式** — 初回ロードは `gtag("config")` の自動 page_view、Swup の SPA 遷移は `astro:page-load` イベントからの手動 page_view で page_title を正しく記録する。`astro:page-load` は swup の `page:view` から dispatch され、タイトル更新後に発火する (初回ロードでは発火しない)。
+- **GA4 管理画面の設定とセット** — 拡張計測機能の「ブラウザの履歴イベントに基づくページの変更」を OFF にする運用が前提。ON に戻すと SPA 遷移が二重計測になる。
+- **script 再実行からの除外** — `@swup/astro` の `reloadScripts` (デフォルト true) は遷移ごとにページ内の script を複製再実行するため、GA タグは `data-swup-ignore-script` 属性と再実行ガードで除外している。
+- **`swup:enable` の正体** — swup コアが全フックを `swup:<フック名>` 形式の DOM CustomEvent としてブリッジするイベント。swup 初期化時 (load 後 idle、`window.swup` 代入後) に一度だけ発火する (イベント名が動的構築のため node_modules を文字列 grep しても見つからない)。一度きりのため遷移ごとの計測には使えず GA は `astro:page-load` を使うが、`Layout.astro` の Swup フック登録 (バナー高さ・TOC・PhotoSwipe 再生成) は `swup:enable` 依存で正常動作している (2026-07-19 Playwright 実測確認済み)。
+- プライバシーポリシーは `/privacy/` (`src/content/spec/privacy.md` + `src/pages/privacy.astro`)。
 
 ### プレイリストページ (/playlists/)
 
@@ -91,8 +98,6 @@ Apple Music のプレイリストをビルド時データで静的表示する�
 全件再取得は workflow_dispatch の scope=all か手動 `pnpm fetch-playlists`。
 年替わり時は `PLAYLISTS` 配列の入替とあわせて `weekly` 印を新しい現行年へ付け替える。
 JSON の `placeholder: true` はプレースホルダーデータの印で、ページ上に注意書きが表示される。
-曲一覧は先頭 5 曲を表示し、残りを `<details>` で開閉する。
-展開後は先頭と末尾のどちらからでも折りたため、末尾の操作は先頭の `<summary>` へフォーカスを戻す。
 トラック行のアートワークは 30 秒試聴ボタン (`data-am-preview-url`) で、共有 `<audio>` 1 本 (body 直下、`data-am-preview-ready` ガード) を全トラックで使い回し、Swup の `content:replace` イベントで再生を停止する (audio が差し替え対象外の body 直下で生き続けるため)。
 データ更新 PR も通常の UI smoke を通す。トラック内容の変化に合わせた画像ファイルの更新は不要。
 プレイリストの追加・並び替えはスクリプトの `PLAYLISTS` 配列で行い、ページは `src/data/playlists/*.json` を `order` 順に自動描画する。
@@ -104,6 +109,27 @@ JSON の `placeholder: true` はプレースホルダーデータの印で、ペ
 `@swup/astro` により `main` と `#toc` コンテナだけを差し替える SPA 的遷移を行う。ページ内スクリプトが「初回ロードで一度だけ実行される」前提は成り立たないため、クライアントサイドのスクリプトは Swup による再訪・差し替えを考慮すること。
 
 `trailingSlash: "always"` 設定のため、内部リンクは必ず末尾スラッシュ付きで書く。
+
+### Cloudflare ダッシュボード設定 (2026-07-25 時点)
+
+リポジトリで表現できない設定はダッシュボード側にある。プランは Free。
+
+有効にしている機能:
+
+- **Speed Brain** (Speed > コンテンツの最適化) — ドキュメントにある「Worker ルートではプリフェッチしない」は Workers Static Assets には該当せず、実際に動作する。確認は `curl -sI https://necofuryai.dev/about/` に `speculation-rules` ヘッダーが載るか。
+- **継続的なスクリプト監視** (セキュリティ > クライアント側の不正使用) — Page Shield。Free はスクリプト監視のみ。収集用の `content-security-policy-report-only` は HTML レスポンスのサンプルにしか付かないため、curl で観測できなくても異常ではない。`public/_headers` に CSP を足す場合は衝突に注意。
+- **0-RTT 接続の再開** (Speed > プロトコルの最適化)、**常に HTTPS を使用** (SSL/TLS > エッジ証明書)。後者は `public/_headers` の HSTS と併用する前提。
+- WAF 管理ルールセットと HTTP DDoS 攻撃からの保護は常時アクティブ (無効化できない)。
+
+意図的に無効のまま (有効化を提案しないこと):
+
+- **HSTS** — `public/_headers` に一本化する方針。理由は同ファイル冒頭のコメント。
+- **Bot Fight モード** — JS 検出が強制有効になり全 HTML にスクリプトが注入されるうえ、Free では WAF カスタムルールや Page Rules で除外できない。攻撃対策は上記の WAF と DDoS 保護で足りている。
+- **AI ボットのブロック / AI ラビリンス / 管理された robots.txt** — LLM の学習を防がない方針。コンテンツ シグナル ポリシーは `ai-train=no` を送るため方針と矛盾する。
+- **Precursor / 漏洩した資格情報の検出 / メールアドレスの難読化 / ホットリンク保護** — 静的サイトに保護対象が無い。難読化は Cloudflare のデフォルト有効を 2026-07-25 に無効化した (`mailto:` が無く、記事のコード例中のアドレスを書き換える副作用だけが残るため)。ホットリンク保護は OGP や RSS 経由の画像参照を壊す。
+- **Cloudflare Fonts / Early Hints** — 前者はフォントを `@fontsource` でセルフホストしているため対象が無く、後者はオリジンが `Link` ヘッダーを返さないため中身が空になる。
+
+概要画面の「速度の最適化」トグルは単独機能ではなく Speed > 設定 > 推奨事項の一括適用ショートカットで、Early Hints だけが無効なため点灯しない (仕様どおり)。
 
 ### Biome
 
