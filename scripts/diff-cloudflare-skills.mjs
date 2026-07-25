@@ -9,9 +9,13 @@
  * 上流の更新は自動では降ってこない。更新を取り込むかどうかを判断するために使う。
  *
  * 意図的にローカル改変しているファイル (LOCALLY_MODIFIED) は差分が出て当然なので
- * 終了コードには影響させない。それ以外のファイルに差分が出た場合、
- * それは上流側の更新なので exit 1 で知らせる。
- * 改変の内容は .claude/skills/README.md の「上流からの改変点」に記録している。
+ * 終了コードには影響させない。改変の内容は .claude/skills/README.md の
+ * 「上流からの改変点」に記録している。
+ *
+ * 終了コード (.github/workflows/skills-drift.yml がこの区別に依存している):
+ * - 0: 対応不要 (完全一致、またはローカル改変のみ)
+ * - 1: 要対応 (上流が更新された、またはファイルが欠落している)
+ * - 2: 検査自体が失敗した (上流の取得エラーなど)。1 と取り違えると誤報になるため分けている
  */
 import { execFileSync } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -103,6 +107,7 @@ async function printDiff(workDir, name, upstream, local) {
 const workDir = await mkdtemp(join(tmpdir(), "cf-skills-"));
 let upstreamDrift = 0;
 let expectedDrift = 0;
+let failure = null;
 
 try {
 	for (const [name, upstreamPath] of FILES) {
@@ -134,8 +139,17 @@ try {
 			await printDiff(workDir, name, upstream, local);
 		}
 	}
+} catch (error) {
+	failure = error;
 } finally {
 	await rm(workDir, { recursive: true, force: true });
+}
+
+// 上流の取得失敗などの運用エラー。CI が「上流更新あり」(exit 1) と取り違えて
+// Issue を立ててしまわないよう、別の終了コードで区別する。
+if (failure) {
+	console.error(`検査を完了できませんでした: ${failure.message}`);
+	process.exit(2);
 }
 
 console.log();

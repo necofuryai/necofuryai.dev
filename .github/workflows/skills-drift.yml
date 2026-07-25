@@ -1,0 +1,126 @@
+# .claude/skills/ にベンダリングした cloudflare/skills (Apache-2.0) と上流の乖離を検出する。
+# これらのスキルはプラグイン経由ではなく手動コピーのため上流更新が自動で降ってこず、放置すると
+# .claude/skills/README.md の「上流からの改変点」(Apache-2.0 第 4 条 (b) の変更告知) が実態とずれる。
+#
+# 乖離には性質の異なる 2 種類があり、トリガーごとに扱いを変える:
+# - pull_request (.claude/skills/ を触った PR のみ): ベンダリングファイルの改変は PR の責任なので
+#   ジョブを失敗させる。改変するなら LOCALLY_MODIFIED への登録と README への記録が要る、という強制。
+# - schedule / workflow_dispatch: 上流更新は誰の PR の責任でもないため失敗させず、Issue に記録する。
+#   Actions タブを恒常的に赤くせず、かつ通知メールのように流れて消えないようにするための選択。
+#
+# verify と report を分けているのは権限の分離のため。verify は pull_request でチェックアウトした
+# ブランチのコードを実行するので書き込み権限を持たせない。report は issues: write を持つが、
+# チェックアウトを一切行わずリポジトリのコードを実行しない。
+name: Vendored skills drift
+
+on:
+  pull_request:
+    paths:
+      - ".claude/skills/**"
+      - "scripts/diff-cloudflare-skills.mjs"
+      - ".github/workflows/skills-drift.yml"
+  workflow_dispatch:
+  schedule:
+    # 毎週月曜 06:17 UTC (15:17 JST)。Refresh Apple Music Playlists (13:23 UTC) と時間帯をずらす
+    - cron: "17 6 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      drift: ${{ steps.check.outputs.drift }}
+      report: ${{ steps.check.outputs.report }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        with:
+          run_install: false
+
+      # diff-cloudflare-skills.mjs は Node 組み込みモジュールのみで動くため install は不要。
+      # 依存を足す場合はここに pnpm install --frozen-lockfile を追加すること。
+      #
+      # 終了コード 2 (検査自体の失敗) を 1 (上流更新あり) と区別する。混同すると
+      # 上流の一時的な取得エラーで「更新あり」の Issue が立つ。
+      - name: Check for drift
+        id: check
+        shell: bash
+        run: |
+          set -uo pipefail
+          report=$(pnpm --silent run diff-skills 2>&1)
+          rc=$?
+          echo "$report"
+          case "$rc" in
+            0) drift=false ;;
+            1) drift=true ;;
+            *)
+              echo "::error::diff-skills が想定外の終了コード ${rc} で終了しました。"
+              exit "$rc"
+              ;;
+          esac
+          echo "drift=${drift}" >> "$GITHUB_OUTPUT"
+          {
+            echo "report<<DRIFT_REPORT_EOF"
+            echo "$report"
+            echo "DRIFT_REPORT_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Fail the pull request on drift
+        if: github.event_name == 'pull_request' && steps.check.outputs.drift == 'true'
+        run: |
+          echo "::error::ベンダリングしたスキルが上流と乖離しています。改変が意図的なら scripts/diff-cloudflare-skills.mjs の LOCALLY_MODIFIED に登録し、.claude/skills/README.md の「上流からの改変点」に追記してください。"
+          exit 1
+
+  # 週次実行で上流更新を見つけた場合の記録係。チェックアウトしないので
+  # issues: write を持った状態でリポジトリのコードが動くことはない。
+  report:
+    needs: verify
+    if: github.event_name != 'pull_request' && needs.verify.outputs.drift == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      # 同じ内容で毎週 Issue が増えないよう、未クローズのものがあればコメントを足すだけにする
+      - name: Report upstream drift as an issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TITLE: "chore: cloudflare/skills の上流更新を取り込む"
+          REPORT: ${{ needs.verify.outputs.report }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          body=$(printf '%s\n\n```\n%s\n```\n\n%s\n\n%s\n' \
+            "[cloudflare/skills](https://github.com/cloudflare/skills) に \`.claude/skills/\` へ未反映の更新があります。" \
+            "$REPORT" \
+            "取り込む手順は \`.claude/skills/README.md\` の「上流への再同期」を参照してください。差分本文は \`pnpm diff-skills --diff\` で確認できます。ローカル改変済みの 2 ファイルは上流更新が「改変」表示に埋もれるため、目視での確認が要ります。" \
+            "実行ログ: ${RUN_URL}")
+          existing=$(gh issue list --state open --search "in:title \"${TITLE}\"" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+            echo "既存の Issue #${existing} にコメントしました。"
+          else
+            gh issue create --title "$TITLE" --body "$body"
+          fi
