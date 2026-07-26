@@ -120,3 +120,5 @@ JSON の `placeholder: true` はプレースホルダーデータの印で、ペ
 ### 依存関係
 
 `package.json` の `pnpm.overrides` は脆弱性対応のためのピン留め (Dependabot alerts 0 件を維持)。上流の推移的依存にパッチが行き渡るまで削除しない。
+
+`@swup/plugin@<4` / `minimatch@<10.2.2` / `brace-expansion@<5.0.8` の 3 つはバージョン固定ではなく、脆弱な brace-expansion の依存経路を断つためのセット。個別に消すとビルドが壊れる。
