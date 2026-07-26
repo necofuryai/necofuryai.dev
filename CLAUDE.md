@@ -110,27 +110,6 @@ JSON の `placeholder: true` はプレースホルダーデータの印で、ペ
 
 `trailingSlash: "always"` 設定のため、内部リンクは必ず末尾スラッシュ付きで書く。
 
-### Cloudflare ダッシュボード設定 (2026-07-25 時点)
-
-リポジトリで表現できない設定はダッシュボード側にある。プランは Free。
-
-有効にしている機能:
-
-- **Speed Brain** (Speed > コンテンツの最適化) — ドキュメントにある「Worker ルートではプリフェッチしない」は Workers Static Assets には該当せず、実際に動作する。確認は `curl -sI https://necofuryai.dev/about/` に `speculation-rules` ヘッダーが載るか。
-- **継続的なスクリプト監視** (セキュリティ > クライアント側の不正使用) — Page Shield。Free はスクリプト監視のみ。収集用の `content-security-policy-report-only` は HTML レスポンスのサンプルにしか付かないため、curl で観測できなくても異常ではない。`public/_headers` に CSP を足す場合は衝突に注意。
-- **0-RTT 接続の再開** (Speed > プロトコルの最適化)、**常に HTTPS を使用** (SSL/TLS > エッジ証明書)。後者は `public/_headers` の HSTS と併用する前提。
-- WAF 管理ルールセットと HTTP DDoS 攻撃からの保護は常時アクティブ (無効化できない)。
-
-意図的に無効のまま (有効化を提案しないこと):
-
-- **HSTS** — `public/_headers` に一本化する方針。理由は同ファイル冒頭のコメント。
-- **Bot Fight モード** — JS 検出が強制有効になり全 HTML にスクリプトが注入されるうえ、Free では WAF カスタムルールや Page Rules で除外できない。攻撃対策は上記の WAF と DDoS 保護で足りている。
-- **AI ボットのブロック / AI ラビリンス / 管理された robots.txt** — LLM の学習を防がない方針。コンテンツ シグナル ポリシーは `ai-train=no` を送るため方針と矛盾する。
-- **Precursor / 漏洩した資格情報の検出 / メールアドレスの難読化 / ホットリンク保護** — 静的サイトに保護対象が無い。難読化は Cloudflare のデフォルト有効を 2026-07-25 に無効化した (`mailto:` が無く、記事のコード例中のアドレスを書き換える副作用だけが残るため)。ホットリンク保護は OGP や RSS 経由の画像参照を壊す。
-- **Cloudflare Fonts / Early Hints** — 前者はフォントを `@fontsource` でセルフホストしているため対象が無く、後者はオリジンが `Link` ヘッダーを返さないため中身が空になる。
-
-概要画面の「速度の最適化」トグルは単独機能ではなく Speed > 設定 > 推奨事項の一括適用ショートカットで、Early Hints だけが無効なため点灯しない (仕様どおり)。
-
 ### Biome
 
 - 対象はリポジトリ全体。タブインデント、ダブルクォート。
