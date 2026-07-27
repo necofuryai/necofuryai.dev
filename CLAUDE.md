@@ -122,3 +122,5 @@ JSON の `placeholder: true` はプレースホルダーデータの印で、ペ
 `package.json` の `pnpm.overrides` は脆弱性対応のためのピン留め (Dependabot alerts 0 件を維持)。上流の推移的依存にパッチが行き渡るまで削除しない。
 
 `@swup/plugin@<4` / `minimatch@<10.2.2` / `brace-expansion@<5.0.8` の 3 つはバージョン固定ではなく、脆弱な brace-expansion の依存経路を断つためのセット。個別に消すとビルドが壊れる。
+
+Dependabot PR の CI が全ジョブ `ERR_PNPM_BROKEN_LOCKFILE` (duplicated mapping key) で全滅した場合、原因は PR ではなく GitHub のテストマージ (古い main 基準の PR と main が同じ推移的依存を lockfile に追加し、テキストマージで重複キー化)。PR head の lockfile が健全なことを確認し (`git show origin/<branch>:pnpm-lock.yaml` で該当キーを grep)、人間名義で `@dependabot recreate` コメントを打つ。lockfile を手動修復して push しない (追加コミットを push すると以後その PR の自動 rebase が止まる)。bot 名義 (GITHUB_TOKEN) の `@dependabot` コマンドは拒否されるため自動化には使えない。
