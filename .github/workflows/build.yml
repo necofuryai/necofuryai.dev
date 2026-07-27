@@ -15,17 +15,14 @@ permissions:
 
 jobs:
   check:
-    strategy:
-      matrix:
-        node: [ 22, 24 ]
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    name: Astro Check for Node.js ${{ matrix.node }}
+    name: Astro Check
     steps:
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: ${{ matrix.node }} # Use LTS
+          node-version: 24
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -47,17 +44,14 @@ jobs:
         run: pnpm type-check
 
   build:
-    strategy:
-      matrix:
-        node: [ 22, 24 ]
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    name: Astro Build for Node.js ${{ matrix.node }} # Corrected job name
+    name: Astro Build
     steps:
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 24
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -76,7 +70,6 @@ jobs:
         run: pnpm build
 
       - name: Smoke test stable routes
-        if: matrix.node == 24
         shell: bash
         run: |
           set -euo pipefail
