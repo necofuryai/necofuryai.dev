@@ -56,6 +56,16 @@ updates:
           - "@types/*"
         update-types:
           - "minor"
+      # 上記グループに該当しない minor/patch の受け皿。同時に open になる
+      # lockfile PR の数を減らし、テストマージ由来の lockfile 重複キー破損
+      # (CLAUDE.md「依存関係」参照) の発生機会を抑える。major は個別 PR のまま。
+      catch-all-minor-patch:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: "github-actions"
     directory: "/"
