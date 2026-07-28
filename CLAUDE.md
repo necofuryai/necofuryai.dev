@@ -29,9 +29,9 @@ pnpm diff-skills      # .claude/skills/ にベンダリングした cloudflare/s
 - 全文検索 (Pagefind) はビルド成果物 (dist) からインデックスを生成するため、dev サーバーでは動作しない。検索の動作確認は `pnpm build && pnpm preview` で行う。
 - PR 前に `pnpm check` と `pnpm build` が通ることを確認する (CONTRIBUTING.md の要件)。
 
-## コミットメッセージ
+## コミットメッセージと PR
 
-コミットメッセージ (`git commit`) は英語で記述する (`<type>: <description>` 形式、type は feat/fix/refactor/docs/test/chore/perf/ci)。PR のタイトル・本文は日本語で構わない。
+IMPORTANT: コミットメッセージ (`git commit`) と PR タイトルは必ず英語で記述する (`<type>: <description>` 形式、type は feat/fix/refactor/docs/test/chore/perf/ci)。セッションの応答言語が日本語でも、この規則が常に優先される。PR 本文は日本語で書く。squash マージは PR タイトルをそのまま main のコミット subject に使うため、タイトルの言語がそのまま履歴の言語になる。
 
 ### UI スモークテスト
 
