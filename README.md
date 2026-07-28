@@ -2,7 +2,7 @@
 
 necofuryai の技術ブログです。日々の開発で得た知見、技術メモ、開発記録を書いています。
 
-- サイト: https://necofuryai.dev/ (準備中)
+- サイト: https://necofuryai.dev/
 - 記事の誤りのご指摘や修正提案は [Issues](https://github.com/necofuryai/necofuryai.dev/issues) / Pull Request で歓迎します
 
 ## 技術スタック
@@ -11,7 +11,7 @@ necofuryai の技術ブログです。日々の開発で得た知見、技術メ
 - [Tailwind CSS](https://tailwindcss.com) — スタイリング
 - [Svelte](https://svelte.dev) — インタラクティブコンポーネント
 - [Pagefind](https://pagefind.app/) — 全文検索
-- デプロイ先: Cloudflare Workers (Static Assets、予定)
+- デプロイ先: Cloudflare Workers (Static Assets)
 
 ## 開発
 
