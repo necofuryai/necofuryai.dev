@@ -1,7 +1,7 @@
 {
 	"placeholder": false,
 	"order": 1,
-	"fetchedAt": "2026-07-20T21:48:49.344Z",
+	"fetchedAt": "2026-08-03T15:59:50.922Z",
 	"id": "pl.rp-lellcVyY1yj",
 	"storefront": "jp",
 	"name": "リプレイ2026",
@@ -57,16 +57,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/62/92/44/6292441c-7aab-7b51-e444-1dac97a9ce1f/4540774248216.png/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "6767490584",
-			"title": "ガラクタロード",
-			"artist": "初星学園",
-			"album": "ガラクタロード - Single",
-			"durationMs": 223071,
-			"url": "https://music.apple.com/jp/album/%E3%82%AC%E3%83%A9%E3%82%AF%E3%82%BF%E3%83%AD%E3%83%BC%E3%83%89/6767490578?i=6767490584",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e8/b2/13/e8b21355-3fef-7000-9287-a44fc1d0f50f/mzaf_12544593076355312026.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/41/df/44/41df44ef-476f-7d0a-bfa4-21f73738c853/PA00218612_0_246017_jacket.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1770958215",
 			"title": "Poison Berry Daughters",
 			"artist": "シャイニーカラーズ",
@@ -75,6 +65,16 @@
 			"url": "https://music.apple.com/jp/album/poison-berry-daughters/1770958209?i=1770958215",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7e/e8/18/7ee818b7-c69b-3c5d-94f8-5300ec863c28/mzaf_1987438423260884614.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6767490584",
+			"title": "ガラクタロード",
+			"artist": "初星学園",
+			"album": "ガラクタロード - Single",
+			"durationMs": 223071,
+			"url": "https://music.apple.com/jp/album/%E3%82%AC%E3%83%A9%E3%82%AF%E3%82%BF%E3%83%AD%E3%83%BC%E3%83%89/6767490578?i=6767490584",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e8/b2/13/e8b21355-3fef-7000-9287-a44fc1d0f50f/mzaf_12544593076355312026.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/41/df/44/41df44ef-476f-7d0a-bfa4-21f73738c853/PA00218612_0_246017_jacket.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1886240225",
@@ -117,16 +117,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9f/8a/0b/9f8a0bc1-e6ee-5873-4fc9-9a75b0d58e2a/4547366794816.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1765319256",
-			"title": "ド!ド!ド!",
-			"artist": "みらくらぱーく!",
-			"album": "Dream Believers - EP",
-			"durationMs": 267337,
-			"url": "https://music.apple.com/jp/album/%E3%83%89-%E3%83%89-%E3%83%89/1765319251?i=1765319256",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5c/aa/87/5caa873a-4215-6b5c-b7ab-bf55f5ede0d3/mzaf_10783058932579122595.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/dc/45/e1/dc45e1e8-5be4-1074-9924-1190ca945f53/4540774250455.png/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1869843669",
 			"title": "私は、わたしの事が好き。",
 			"artist": "HoneyWorks & かぐや(cv.夏吉ゆうこ)",
@@ -135,16 +125,6 @@
 			"url": "https://music.apple.com/jp/album/%E7%A7%81%E3%81%AF-%E3%82%8F%E3%81%9F%E3%81%97%E3%81%AE%E4%BA%8B%E3%81%8C%E5%A5%BD%E3%81%8D/1869843536?i=1869843669",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/23/a7/05/23a70572-879e-a356-ba26-3faaf9715952/mzaf_14772113849473714523.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1603372204",
-			"title": "凸凹",
-			"artist": "吉岡 聖恵",
-			"album": "凸凹 - Single",
-			"durationMs": 229640,
-			"url": "https://music.apple.com/jp/album/%E5%87%B8%E5%87%B9/1603372203?i=1603372204",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/87/ec/84/87ec84e3-893f-3380-9f17-143fa01ad564/mzaf_13928801954312581158.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8a/55/12/8a551298-2be5-35e5-b51f-29541182ec93/4547366547481.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1888137027",
@@ -157,6 +137,46 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2f/62/3a/2f623ab5-c6fd-0848-918d-ed825b358199/4547366816051.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1869843676",
+			"title": "ワールドイズマイン (かぐや&月見ヤチヨ ver.) [CPK! Remix]",
+			"artist": "ryo (supercell), かぐや(cv.夏吉ゆうこ) & 月見ヤチヨ(cv.早見沙織)",
+			"album": "超かぐや姫!",
+			"durationMs": 226734,
+			"url": "https://music.apple.com/jp/album/%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E3%82%A4%E3%82%BA%E3%83%9E%E3%82%A4%E3%83%B3-%E3%81%8B%E3%81%90%E3%82%84-%E6%9C%88%E8%A6%8B%E3%83%A4%E3%83%81%E3%83%A8-ver-cpk-remix/1869843536?i=1869843676",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3a/87/c7/3a87c7f4-399a-1f5e-2926-d8cb1023a539/mzaf_6346679346938156730.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1765319256",
+			"title": "ド!ド!ド!",
+			"artist": "みらくらぱーく!",
+			"album": "Dream Believers - EP",
+			"durationMs": 267337,
+			"url": "https://music.apple.com/jp/album/%E3%83%89-%E3%83%89-%E3%83%89/1765319251?i=1765319256",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5c/aa/87/5caa873a-4215-6b5c-b7ab-bf55f5ede0d3/mzaf_10783058932579122595.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/dc/45/e1/dc45e1e8-5be4-1074-9924-1190ca945f53/4540774250455.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6784369010",
+			"title": "Stella",
+			"artist": "SEKAI NO OWARI",
+			"album": "Stella - Single",
+			"durationMs": 231133,
+			"url": "https://music.apple.com/jp/album/stella/6784368653?i=6784369010",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3c/c8/41/3cc84150-821a-9f7d-3b7c-fec877ecd418/mzaf_7068252172229240759.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/eb/fb/6d/ebfb6d9d-8e2f-631a-3c14-96019f9cc117/26UMGIM73140.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1603372204",
+			"title": "凸凹",
+			"artist": "吉岡 聖恵",
+			"album": "凸凹 - Single",
+			"durationMs": 229640,
+			"url": "https://music.apple.com/jp/album/%E5%87%B8%E5%87%B9/1603372203?i=1603372204",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/87/ec/84/87ec84e3-893f-3380-9f17-143fa01ad564/mzaf_13928801954312581158.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/8a/55/12/8a551298-2be5-35e5-b51f-29541182ec93/4547366547481.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1889076498",
 			"title": "君のせいで愛してる",
 			"artist": "CHiCO with HoneyWorks",
@@ -167,14 +187,14 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/53/73/e3/5373e38a-fb97-9202-ab36-6bf038bab07c/4571614182230.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1869843676",
-			"title": "ワールドイズマイン (かぐや&月見ヤチヨ ver.) [CPK! Remix]",
-			"artist": "ryo (supercell), かぐや(cv.夏吉ゆうこ) & 月見ヤチヨ(cv.早見沙織)",
-			"album": "超かぐや姫!",
-			"durationMs": 226734,
-			"url": "https://music.apple.com/jp/album/%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E3%82%A4%E3%82%BA%E3%83%9E%E3%82%A4%E3%83%B3-%E3%81%8B%E3%81%90%E3%82%84-%E6%9C%88%E8%A6%8B%E3%83%A4%E3%83%81%E3%83%A8-ver-cpk-remix/1869843536?i=1869843676",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3a/87/c7/3a87c7f4-399a-1f5e-2926-d8cb1023a539/mzaf_6346679346938156730.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
+			"id": "6794271993",
+			"title": "GO GHOST",
+			"artist": "King Gnu",
+			"album": "GO GHOST - Single",
+			"durationMs": 170100,
+			"url": "https://music.apple.com/jp/album/go-ghost/6794271990?i=6794271993",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b5/94/11/b59411d9-986a-ba04-f305-935f249a835f/mzaf_6316876655859296881.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/47/f3/49/47f3490b-4395-28ba-e6a9-88c9dd7be8fa/4547366841732.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1890364501",
@@ -257,6 +277,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a5/1e/da/a51edaea-dc4d-1abe-76c4-3fd86e78523e/4550752049414_cover.png/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1869843680",
+			"title": "Ex-Otogibanashi",
+			"artist": "ryo (supercell), かぐや(cv.夏吉ゆうこ) & 月見ヤチヨ(cv.早見沙織)",
+			"album": "超かぐや姫!",
+			"durationMs": 218841,
+			"url": "https://music.apple.com/jp/album/ex-otogibanashi/1869843536?i=1869843680",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/51/61/6c/51616ca9-4f37-f977-72a4-6a5299cea5d2/mzaf_17933705570527889606.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1809290598",
 			"title": "マジで世界変えちゃう5秒前",
 			"artist": "ORANGE RANGE",
@@ -297,24 +327,24 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ae/09/0b/ae090bdd-11b3-38f5-3f7d-84d4cdf1df51/4547366747669.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "6784369010",
-			"title": "Stella",
-			"artist": "SEKAI NO OWARI",
-			"album": "Stella - Single",
-			"durationMs": 231133,
-			"url": "https://music.apple.com/jp/album/stella/6784368653?i=6784369010",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3c/c8/41/3cc84150-821a-9f7d-3b7c-fec877ecd418/mzaf_7068252172229240759.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/eb/fb/6d/ebfb6d9d-8e2f-631a-3c14-96019f9cc117/26UMGIM73140.rgb.jpg/{w}x{h}bb.jpg"
+			"id": "1659369387",
+			"title": "マリオネットの心 (M@STER VERSION)",
+			"artist": "星井美希 (CV.長谷川明子)",
+			"album": "THE IDOLM@STER 765PRO ALLSTARS+ GRE@TEST BEST! -COOL&BITTER!-",
+			"durationMs": 247613,
+			"url": "https://music.apple.com/jp/album/%E3%83%9E%E3%83%AA%E3%82%AA%E3%83%8D%E3%83%83%E3%83%88%E3%81%AE%E5%BF%83-m-ster-version/1659369256?i=1659369387",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/cf/e5/54/cfe5548b-ecac-fb8e-7b3c-0b7a2bbbb5cc/mzaf_18198538901422748669.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/21/d5/28/21d528d7-7cb6-e2e9-3f2a-6eeb37652832/COCX-38073.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1869843680",
-			"title": "Ex-Otogibanashi",
-			"artist": "ryo (supercell), かぐや(cv.夏吉ゆうこ) & 月見ヤチヨ(cv.早見沙織)",
-			"album": "超かぐや姫!",
-			"durationMs": 218841,
-			"url": "https://music.apple.com/jp/album/ex-otogibanashi/1869843536?i=1869843680",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/51/61/6c/51616ca9-4f37-f977-72a4-6a5299cea5d2/mzaf_17933705570527889606.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
+			"id": "6776969582",
+			"title": "終宵",
+			"artist": "マカロニえんぴつ",
+			"album": "終宵 - Single",
+			"durationMs": 229373,
+			"url": "https://music.apple.com/jp/album/%E7%B5%82%E5%AE%B5/6776969581?i=6776969582",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/67/40/94/67409469-530c-7df7-9d7c-815c35d5f829/mzaf_7232735065893337692.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/ec/01/aeec011c-b4c2-0e80-e032-472679eec7c2/4517331101260.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1765301212",
@@ -365,6 +395,16 @@
 			"url": "https://music.apple.com/jp/album/%E9%A2%A8%E7%A5%9E/1771366340?i=1771366342",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6b/44/62/6b4462d3-3228-0d5b-6543-430e3688b746/mzaf_6897321255098812112.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0b/4b/ad/0b4bad05-20fa-8e6e-9528-aa0a9fe44722/4547366712674.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1869843691",
+			"title": "Reply",
+			"artist": "KZ & かぐや(cv.夏吉ゆうこ)",
+			"album": "超かぐや姫!",
+			"durationMs": 269343,
+			"url": "https://music.apple.com/jp/album/reply/1869843536?i=1869843691",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b0/f1/8b/b0f18b4d-4188-fbfe-147c-9514834380d5/mzaf_4669912705375990672.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1837841073",
@@ -477,16 +517,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/aa/33/55/aa335541-9932-d73c-6b1e-62bd484fc83d/4547366642308.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "6776969582",
-			"title": "終宵",
-			"artist": "マカロニえんぴつ",
-			"album": "終宵 - Single",
-			"durationMs": 229373,
-			"url": "https://music.apple.com/jp/album/%E7%B5%82%E5%AE%B5/6776969581?i=6776969582",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/67/40/94/67409469-530c-7df7-9d7c-815c35d5f829/mzaf_7232735065893337692.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/ec/01/aeec011c-b4c2-0e80-e032-472679eec7c2/4517331101260.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1858848141",
 			"title": "あいらびゅ♡",
 			"artist": "HoneyWorks, 水萌汐(CV:久住琳), 火威灯(CV:芹澤優), 月見るな(CV:平塚紗依) & 日向春(CV:山本悠有希)",
@@ -567,6 +597,26 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/09/89/00/09890002-b2de-3637-39b2-f6c2d34d0e93/197189854859.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1869843665",
+			"title": "星降る海",
+			"artist": "Aqu3ra & 月見ヤチヨ(cv.早見沙織)",
+			"album": "超かぐや姫!",
+			"durationMs": 253441,
+			"url": "https://music.apple.com/jp/album/%E6%98%9F%E9%99%8D%E3%82%8B%E6%B5%B7/1869843536?i=1869843665",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/70/f0/df/70f0dff7-6b18-00d3-8fbb-45a40b8eaef3/mzaf_14265079470440979249.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1734552062",
+			"title": "トライアングル",
+			"artist": "イルミネーションスターズ",
+			"album": "THE IDOLM@STER SHINY COLORS FR@GMENT WING 02 - Single",
+			"durationMs": 273693,
+			"url": "https://music.apple.com/jp/album/%E3%83%88%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%82%B0%E3%83%AB/1734552060?i=1734552062",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ea/2a/a6/ea2aa636-b310-2131-94a7-0acd80f1662b/mzaf_13305163270351229990.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/d4/e1/10/d4e11047-904c-cf42-00c5-3f3d9a217c04/4540774148622.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1869843682",
 			"title": "ハッピーシンセサイザ (Cover)",
 			"artist": "かぐや(cv.夏吉ゆうこ)",
@@ -577,13 +627,13 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1869843691",
-			"title": "Reply",
-			"artist": "KZ & かぐや(cv.夏吉ゆうこ)",
+			"id": "1869843659",
+			"title": "Remember",
+			"artist": "yuigot & 月見ヤチヨ(cv.早見沙織)",
 			"album": "超かぐや姫!",
-			"durationMs": 269343,
-			"url": "https://music.apple.com/jp/album/reply/1869843536?i=1869843691",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b0/f1/8b/b0f18b4d-4188-fbfe-147c-9514834380d5/mzaf_4669912705375990672.plus.aac.p.m4a",
+			"durationMs": 232617,
+			"url": "https://music.apple.com/jp/album/remember/1869843536?i=1869843659",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/48/03/32/480332c2-fb79-9c44-9072-353f9f477040/mzaf_5310244352703848222.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
 		},
 		{
@@ -607,6 +657,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6b/50/9c/6b509c4b-6550-40f7-2086-008eaed86c5f/jacket_SRCL07315B00Z_550.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1884244908",
+			"title": "Dogs",
+			"artist": "羊文学",
+			"album": "Dogs - Single",
+			"durationMs": 296912,
+			"url": "https://music.apple.com/jp/album/dogs/1884244907?i=1884244908",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/36/4d/43/364d43b5-651a-f211-8d9f-0abe8fd90d76/mzaf_1698364775632233773.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/4b/ef/ba/4befba54-93ec-a986-4937-faeebb89d949/4547366812398.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1815403436",
 			"title": "Good Times",
 			"artist": "RIP SLYME",
@@ -627,14 +687,14 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2c/74/cd/2c74cd39-ed84-e403-f4fb-cdf80216d91b/4540774149834.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1659369387",
-			"title": "マリオネットの心 (M@STER VERSION)",
-			"artist": "星井美希 (CV.長谷川明子)",
-			"album": "THE IDOLM@STER 765PRO ALLSTARS+ GRE@TEST BEST! -COOL&BITTER!-",
-			"durationMs": 247613,
-			"url": "https://music.apple.com/jp/album/%E3%83%9E%E3%83%AA%E3%82%AA%E3%83%8D%E3%83%83%E3%83%88%E3%81%AE%E5%BF%83-m-ster-version/1659369256?i=1659369387",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/cf/e5/54/cfe5548b-ecac-fb8e-7b3c-0b7a2bbbb5cc/mzaf_18198538901422748669.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/21/d5/28/21d528d7-7cb6-e2e9-3f2a-6eeb37652832/COCX-38073.jpg/{w}x{h}bb.jpg"
+			"id": "1821656927",
+			"title": "Feel",
+			"artist": "羊文学",
+			"album": "Feel / mild days - Single",
+			"durationMs": 245840,
+			"url": "https://music.apple.com/jp/album/feel/1821656926?i=1821656927",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b0/d3/f6/b0d3f6e4-2b0e-4537-dee9-61d5dbff319d/mzaf_17226342504095358552.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/43/33/7b/43337bca-c308-bc0a-23e0-aaec37562611/4547366759075.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1828134663",
@@ -717,6 +777,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/74/0b/93/740b9372-bf71-23f0-9087-b7bc073439a7/7332334353938.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1821657229",
+			"title": "mild days",
+			"artist": "羊文学",
+			"album": "Feel / mild days - Single",
+			"durationMs": 188613,
+			"url": "https://music.apple.com/jp/album/mild-days/1821656926?i=1821657229",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/53/72/05/5372055e-1b9b-4a25-3f37-5b0f53b20319/mzaf_11515931476483762577.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/43/33/7b/43337bca-c308-bc0a-23e0-aaec37562611/4547366759075.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1837658529",
 			"title": "IRIS OUT",
 			"artist": "米津玄師",
@@ -735,6 +805,16 @@
 			"url": "https://music.apple.com/jp/album/%E3%83%88%E3%83%A2%E3%83%80%E3%83%81%E3%81%AB%E3%81%AA%E3%82%8C%E3%82%8B%E5%A0%B4%E6%89%80/1883618561?i=1883618562",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2f/8d/d4/2f8dd48b-61fd-f4c3-9144-645991b9fc2b/mzaf_10751085373729855211.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/33/37/62/33376210-c831-370d-4460-8777a2314ab4/4540774248179.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1811807101",
+			"title": "I'm Outta Time",
+			"artist": "オアシス",
+			"album": "Dig Out Your Soul",
+			"durationMs": 250013,
+			"url": "https://music.apple.com/jp/album/im-outta-time/1811807096?i=1811807101",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6b/06/58/6b06588e-784e-1ea6-1ea6-8a21bce4c05c/mzaf_16954965830940360890.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ae/09/0b/ae090bdd-11b3-38f5-3f7d-84d4cdf1df51/4547366747669.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1888044479",
@@ -757,16 +837,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/da/fc/d4/dafcd4b2-2792-ded2-e37d-74ea5cc40bb3/4540774159369.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1734552062",
-			"title": "トライアングル",
-			"artist": "イルミネーションスターズ",
-			"album": "THE IDOLM@STER SHINY COLORS FR@GMENT WING 02 - Single",
-			"durationMs": 273693,
-			"url": "https://music.apple.com/jp/album/%E3%83%88%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%82%B0%E3%83%AB/1734552060?i=1734552062",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ea/2a/a6/ea2aa636-b310-2131-94a7-0acd80f1662b/mzaf_13305163270351229990.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/d4/e1/10/d4e11047-904c-cf42-00c5-3f3d9a217c04/4540774148622.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1770958211",
 			"title": "OPEN the New world",
 			"artist": "風野灯織 (CV.近藤玲奈), 月岡恋鐘 (CV.礒部花凜), 有栖川夏葉 (CV.涼本あきほ) & 芹沢あさひ (CV.田中有紀)",
@@ -775,6 +845,16 @@
 			"url": "https://music.apple.com/jp/album/open-the-new-world/1770958209?i=1770958211",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2f/26/82/2f268251-bc38-044c-11f3-1061329807be/mzaf_14474870241311092615.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6763656876",
+			"title": "hate that i made you love me",
+			"artist": "アリアナ・グランデ",
+			"album": "petal",
+			"durationMs": 197950,
+			"url": "https://music.apple.com/jp/album/hate-that-i-made-you-love-me/1895420989?i=6763656876",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/02/41/f3/0241f307-2ec2-f817-3953-78df5f80f63d/mzaf_525670659940588152.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/7e/e6/82/7ee682bd-1b17-6adc-be63-b5af1bdff369/26UMGIM51126.rgb.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1878680048",
