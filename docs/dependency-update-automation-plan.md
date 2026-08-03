@@ -1300,6 +1300,9 @@ Claude Workflow の PR を merge しない場合は、先に追加した三つ�
 Dependabot が `packageManager` field の pnpm version を更新しない場合は、四半期ごとの手動確認を運用に加える。
 この不足だけを理由に Renovate と併用しない。
 
+観測の実績は `docs/dependency-update-observation-log.md` に記録する。
+VRT に関する項目は 2026-07-22 の運用変更で対象が消滅したため、UI smoke test の失敗と不安定挙動として読み替えて記録する。
+
 ## 検証コマンド
 
 Claude Code は各 PR で、実行したコマンド、終了コード、警告を PR 本文へ記録する。
