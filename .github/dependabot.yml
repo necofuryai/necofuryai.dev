@@ -59,10 +59,15 @@ updates:
       # 上記グループに該当しない minor/patch の受け皿。同時に open になる
       # lockfile PR の数を減らし、テストマージ由来の lockfile 重複キー破損
       # (AGENTS.md の「Dependencies」参照) の発生機会を抑える。major は個別 PR のまま。
+      # @playwright/test は build.yml の container image と対で更新する必要があり、
+      # group に載せると無関係な更新を CI failure に巻き込むため個別 PR に分離する
+      # (docs/dependency-update-automation-plan.md の 2026-08-03 改訂を参照)。
       catch-all-minor-patch:
         applies-to: "version-updates"
         patterns:
           - "*"
+        exclude-patterns:
+          - "@playwright/test"
         update-types:
           - "minor"
           - "patch"

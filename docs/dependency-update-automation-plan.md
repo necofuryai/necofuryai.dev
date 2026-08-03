@@ -1512,6 +1512,67 @@ metadata job は base branch の commit を checkout して script を実行す�
 PR head の code を実行しない性質は従来どおり保つ。
 deny 理由は job log に出力し、どの規則で手動マージへ回ったかを後から追跡できるようにする。
 
+## `@playwright/test` と container image の更新運用（2026-08-03 改訂）
+
+本節は「実装する変更」の `.github/dependabot.yml` にある group 定義へ除外を追加し、「自動マージ範囲を広げる条件」の `@playwright/test` に関する再評価条件を上書きする。
+
+### 背景
+
+2026-08-03 の PR #89 で、`@playwright/test` の 1.61.1 から 1.62.0 への更新が、catch-all-minor-patch group の五件更新の一つとして届いた。
+`build.yml` の UI smoke job は digest 固定した `mcr.microsoft.com/playwright` container で実行され、Playwright は browser binary を package version 固有の path から探すため、package だけを更新した PR では browser の起動に失敗し、UI smoke の全 test が落ちた。
+「自動マージ条件の緩和」が `@playwright/test` を denylist に残した理由はこの対の更新の必要性だったが、denylist は auto-merge の判定にだけ作用し、PR の grouping には作用しない。
+その結果、container image と無関係な他の四件の更新が、同じ group PR の failure に巻き込まれた。
+PR #89 は、container image を v1.62.0 へ上げる commit を同じ branch に積んで green にし、merge した。
+
+### group からの除外
+
+catch-all-minor-patch group に `exclude-patterns` を追加し、`@playwright/test` を個別 PR に分離する。
+
+```yaml
+      catch-all-minor-patch:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@playwright/test"
+        update-types:
+          - "minor"
+          - "patch"
+```
+
+pattern と exclude-pattern の両方に一致する dependency は group から除外されるため、`@playwright/test` は受け皿 group に入らず個別 PR として届く。
+これにより、container image の更新はその個別 PR の中だけで完結し、他の依存更新を巻き込まない。
+denylist による自動マージの除外は従来どおり維持する。
+[Dependabot の groups 設定](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference#groups)
+
+### container image の更新手順
+
+`@playwright/test` の個別 PR には、次の手順で container image の更新 commit を積む。
+
+1. 新しい tag の digest を registry の manifest API で取得する。
+2. 同じ方法で現行 tag を照会し、返る digest が `build.yml` の既存 pin と一致することを確かめる。manifest 種別の指定を誤ると別の digest が返るため、取得方法の検証を採用より先に行う。
+3. `build.yml` の `container.image` を新しい tag と digest へ書き換え、`ci` type の commit として Dependabot PR の branch へ push する。
+
+digest は次の command の `Docker-Content-Digest` header から取得する。
+
+```sh
+curl -sI \
+  -H "Accept: application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.oci.image.index.v1+json" \
+  "https://mcr.microsoft.com/v2/playwright/manifests/<tag>" | grep -i docker-content-digest
+```
+
+maintainer の commit を積んだ Dependabot PR は自動 rebase が止まるため、CI の成功後は速やかに merge する。
+
+### 自動化の見送り
+
+Dependabot の docker ecosystem は Dockerfile などの manifest を対象とし、Workflow ファイルの `jobs.<job_id>.container.image` は更新できない。
+この機能は dependabot-core への feature request として 2026-06 時点でも open のままである。
+したがって、`.github/dependabot.yml` へ docker ecosystem を追加しても、本節の更新手順は自動化できない。
+[dependabot-core#5819](https://github.com/dependabot/dependabot-core/issues/5819)
+
+「自動マージ範囲を広げる条件」が挙げた denylist 解除の再評価条件のうち、VRT baseline の同時更新は 2026-07-22 の運用変更で前提ごと消滅した。
+残る条件は container image digest 更新の自動化であり、#5819 の解決かそれに相当する仕組みを導入した時点で再評価する。
+
 ## 公式資料
 
 - [Dependabot supported ecosystems and repositories](https://docs.github.com/en/code-security/reference/supply-chain-security/supported-ecosystems-and-repositories)
