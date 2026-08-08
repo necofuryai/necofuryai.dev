@@ -52,9 +52,9 @@ jobs:
           node-version: 24
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        uses: pnpm/setup@4700d737c3d7a2e7199f3d42a920f0bf7f34e411 # v2.0.1
         with:
-          run_install: false
+          install: false
 
       # diff-cloudflare-skills.mjs は Node 組み込みモジュールのみで動くため install は不要。
       # 依存を足す場合はここに pnpm install --frozen-lockfile を追加すること。

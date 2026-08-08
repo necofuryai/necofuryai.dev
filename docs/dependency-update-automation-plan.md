@@ -1159,7 +1159,7 @@ Claude Code が `gh api` などで変更する場合は、外部状態を書き�
 16. Dependabot security updates を有効にする。
 
 Actions の allowlist は `github_owned_allowed: false`、`verified_allowed: false` とする。
-core automation の `patterns_allowed` には `actions/checkout@*`、`actions/setup-node@*`、`actions/dependency-review-action@*`、`actions/upload-artifact@*`、`pnpm/action-setup@*`、`dependabot/fetch-metadata@*` だけを指定する。
+core automation の `patterns_allowed` には `actions/checkout@*`、`actions/setup-node@*`、`actions/dependency-review-action@*`、`actions/upload-artifact@*`、`pnpm/setup@*`、`dependabot/fetch-metadata@*` だけを指定する。
 Claude advisory を有効にする maintenance window で、`anthropics/claude-code-action@*`、その composite Action が呼ぶ `oven-sh/setup-bun@*`、sanitized bundle 用の `actions/download-artifact@*` を追加する。
 固定予定の Claude Action は `oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6` を内部で呼ぶため、この verified full SHA も source review の対象にする。
 `actions/download-artifact` は verified commit `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` の v8.0.1 に固定する。

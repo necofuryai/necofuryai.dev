@@ -10,7 +10,7 @@ The repository uses dual licensing: source code is licensed under MIT, while art
 
 ## Commands
 
-Use pnpm. The `preinstall` hook in `scripts/check-package-manager.js` enforces it. Node.js 22.12.0 or later is required.
+Use pnpm. The `preinstall` hook in `scripts/check-package-manager.js` enforces it. Node.js 22.13.0 or later is required.
 
 ```sh
 pnpm dev              # Start the development server at localhost:4321
@@ -121,7 +121,7 @@ Because `trailingSlash` is set to `"always"`, always include trailing slashes in
 
 ### Dependencies
 
-The `pnpm.overrides` entries in `package.json` pin transitive dependencies to address vulnerabilities and keep Dependabot alerts at zero. Do not remove them until patched versions have propagated through the upstream dependency graph.
+The `overrides` entries in `pnpm-workspace.yaml` pin transitive dependencies to address vulnerabilities and keep Dependabot alerts at zero. Do not remove them until patched versions have propagated through the upstream dependency graph.
 
 The three overrides for `@swup/plugin@<4`, `minimatch@<10.2.2`, and `brace-expansion@<5.0.9` are a coordinated set rather than independent version pins. Together they remove the dependency path to the vulnerable version of `brace-expansion`; removing any one of them breaks the build.
 

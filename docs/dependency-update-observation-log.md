@@ -3,7 +3,7 @@
 - 対象：`necofuryai/necofuryai.dev`
 - 位置づけ：`docs/dependency-update-automation-plan.md` のフェーズ 5「四週間の観測」の記録
 - 観測開始：2026-07-20（Dependabot の初回週次実行）
-- 記録時点：2026-08-03
+- 記録時点：2026-08-08
 - 進捗：第 1 週から第 3 週まで記録済み。第 4 週は 2026-08-10 の週次実行で確定する
 
 計画が求める観測項目は、作成された PR 数、grouping の妥当性、CI failure の原因、手作業で lockfile または manifest を修正した回数、更新後に revert した回数、自動マージと手動マージの件数、`packageManager` の pnpm version が更新対象になるか、Claude advisory の成功率と実行時間と有用性である。
@@ -145,9 +145,14 @@ Dependabot は 3 週間で一度も更新を提案しなかった。
 21 件すべての差分を検査しても `packageManager` への変更は 0 件である。
 計画の予測は成り立った。
 
-現在の pin は `pnpm@10.34.5` で、上流の最新は 11.18.0 である。
-この値が 9.14.4 から動いたのは 2026-07-22 の人手のコミットで、依存更新とは無関係な作業の副産物だった。
-計画が求める四半期ごとの手動確認は、まだ運用として実施されていない。
+2026-08-08 に手動確認を行い、pin を `pnpm@10.34.5` から当時の最新安定版である `pnpm@11.20.0` へ更新した。
+pnpm 11 が要求する Node.js 22.13.0 以上に、ローカル開発要件も揃えた。
+pnpm 11 は `package.json` の `pnpm` field を読まないため、`allowBuilds` と `overrides` を `pnpm-workspace.yaml` へ移した。
+この更新は Dependabot の対象外であり、計画どおり人手で実施した。
+
+直前の脆弱性対応で lockfile に入った `nanoid@3.3.18` は、pnpm 11 が既定で求める公開後 24 時間を経過していなかった。
+サプライチェーン保護を全体で無効にせず、このバージョンだけを `minimumReleaseAgeExclude` に追加した。
+今後公開される nanoid のバージョンには 24 時間の待機期間が適用される。
 
 ### UI smoke test
 
@@ -183,7 +188,7 @@ preflight で拒否された 92 回は中央値 9 秒、analyze まで到達し�
 ## 継続課題
 
 1. `@playwright/test` 1.62.1 が未適用である。PR #91 の除外設定により、次回の週次実行で個別 PR として届く見込みである。
-2. `packageManager` の pnpm が 1 メジャー遅れている。四半期ごとの手動確認を運用に組み込む必要がある。
+2. Dependabot は `packageManager` の pnpm を更新しない。2026-08-08 に `pnpm@11.20.0` へ手動更新したため、以後も四半期ごとの確認が必要である。
 3. 計画本文と実装が食い違っている箇所が 3 つある。Node.js 22 と 24 の matrix（PR #79 で Node 22 を廃止）、Actions による PR 作成と承認の可否（プレイリスト週次 PR のため有効化済み）、`--max-turns` の値（4 と記載、実装は 12）。いずれも実装が正で、計画の記述が古い。
 4. 自動マージのゲート job が、rebase による concurrency キャンセルを failure として記録する。第 1 週に 6 件の監査ノイズを生んだ。マージ可否には影響しない。
 
