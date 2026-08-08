@@ -13,7 +13,8 @@ overrides:
   serialize-javascript@<7.0.5: 7.0.5
   '@swup/plugin@<4': ^4.0.0
   minimatch@<10.2.2: ^10.2.5
-  brace-expansion@<5.0.8: ^5.0.8
+  brace-expansion@<5.0.9: ^5.0.9
+  undici@<6.28.0: ^6.28.0
 
 importers:
 
@@ -1685,8 +1686,8 @@ packages:
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
 
-  brace-expansion@5.0.8:
-    resolution: {integrity: sha512-JZyDyq3D4AUifKTPOB7DELf6XsB3WdPuNxCtob1vFXPsSXhdAiHBWJ/tJ8HAc9aH84BK+5JFZLNkJKx3G9kzQg==}
+  brace-expansion@5.0.9:
+    resolution: {integrity: sha512-ScQ4IuvIEF1TMlP7Zt+vjJ//9zlPb2SDcxWxM3bk8s6t6GGdJ7KO1dCcTidOPJKePW30LE/2cT7wCyPho9/Wxg==}
     engines: {node: 20 || >=22}
 
   buffer-crc32@0.2.13:
@@ -3287,8 +3288,8 @@ packages:
   undici-types@7.18.2:
     resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
 
-  undici@6.27.0:
-    resolution: {integrity: sha512-YmfV3YnEDzXRC5lZ2jWtWWHKGUm1zIt8AhesR1tens+HTNv+YZlN/dp6G727LOvMJ8xjP9Be7Y2Sdr96LDm+pg==}
+  undici@6.28.0:
+    resolution: {integrity: sha512-LIY910g9TI13YS95lrMFrs8Rm/u/irgHeTWoKCoteeJ04CUJ92eEfj0rVn+7VKMPBpUPiUoBKfhNyLI23EE/KA==}
     engines: {node: '>=18.17'}
 
   unified@11.0.5:
@@ -5147,7 +5148,7 @@ snapshots:
 
   boolbase@1.0.0: {}
 
-  brace-expansion@5.0.8:
+  brace-expansion@5.0.9:
     dependencies:
       balanced-match: 4.0.4
 
@@ -5191,7 +5192,7 @@ snapshots:
       parse5: 7.3.0
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 6.27.0
+      undici: 6.28.0
       whatwg-mimetype: 4.0.0
 
   chokidar@4.0.3:
@@ -6418,7 +6419,7 @@ snapshots:
 
   minimatch@10.2.5:
     dependencies:
-      brace-expansion: 5.0.8
+      brace-expansion: 5.0.9
 
   minipass@4.2.8: {}
 
@@ -7179,7 +7180,7 @@ snapshots:
 
   undici-types@7.18.2: {}
 
-  undici@6.27.0: {}
+  undici@6.28.0: {}
 
   unified@11.0.5:
     dependencies:
