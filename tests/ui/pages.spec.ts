@@ -187,6 +187,28 @@ test("custom 404 returns not found and offers recovery links", async ({
 	);
 });
 
+test("robots.txt keeps build assets crawlable and advertises the sitemap", async ({
+	request,
+}) => {
+	const response = await request.get("/robots.txt");
+	expect(response.status()).toBe(200);
+	const body = await response.text();
+
+	// Astro のスタイル / スクリプト / 画像はすべて /_astro/ 配下に出る。ここを
+	// Disallow すると Googlebot がページをレンダリングできない (fuwari の既定値が
+	// そうなっており、Search Console で 20/23 件のリソースがブロック扱いだった)。
+	const disallowed = body
+		.split("\n")
+		.map((line) => line.trim())
+		.filter((line) => /^Disallow:/i.test(line))
+		.map((line) => line.slice("Disallow:".length).trim())
+		.filter((prefix) => prefix !== "");
+	const asset = "/_astro/Layout.DN277Tmi.css";
+	expect(disallowed.filter((prefix) => asset.startsWith(prefix))).toEqual([]);
+
+	expect(body).toContain("Sitemap: https://necofuryai.dev/sitemap-index.xml");
+});
+
 test("theme switch enables dark mode and persists it", async ({ page }) => {
 	await page.addInitScript(() => {
 		if (localStorage.getItem("theme") === null) {
