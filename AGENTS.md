@@ -100,6 +100,8 @@ To keep builds deterministic, playlist fetching is not part of `pnpm build`. Ref
 
 Scheduled runs pass `--weekly` and fetch only the two playlists that Apple updates: Replay All Time and the current year, marked with `weekly: true` in the `PLAYLISTS` array. If only `fetchedAt` changes, the script does not write the JSON and the workflow does not open a PR. Refresh every playlist through `scope=all` in `workflow_dispatch` or by running `pnpm fetch-playlists` manually.
 
+Refresh PRs are created with the repository `GITHUB_TOKEN`, so their `pull_request` workflows wait for maintainer approval. After reviewing Files changed, use Merge status -> Awaiting approval -> Approve workflows to run; do not close and reopen the PR. The workflow requests review from `necofuryai` when it creates a PR and refuses to create a duplicate while an earlier refresh PR is open. `.github/workflows/monitor-playlist-refresh.yml` records any refresh PR left open for more than 24 hours in a deduplicated Issue.
+
 At the start of a new year, update the `PLAYLISTS` array and move the `weekly` marker to the new current-year playlist. A JSON file with `placeholder: true` contains placeholder data and causes the page to display a notice.
 
 The artwork in each track row acts as a 30-second preview button through `data-am-preview-url`. All tracks share one `<audio>` element mounted directly under `body` and protected by `data-am-preview-ready`. Stop playback on Swup's `content:replace` event because the body-level audio element survives content replacement.

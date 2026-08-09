@@ -1,0 +1,129 @@
+# github-actions[bot] が作成した Apple Music 更新 PR の滞留を検知する。
+# PR 作成直後は review request で通知し、この workflow は 24 時間以上開いた PR だけを
+# 単一 Issue に集約する。承認やマージは行わず、人間の判断点を可視化するだけに留める。
+name: Monitor Apple Music Playlist Refresh PRs
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 1 日 2 回。Refresh Apple Music Playlists (月曜 13:23 UTC) と時刻をずらし、
+    # schedule の遅延があっても 24 時間経過後おおむね 12 時間以内に検知する。
+    - cron: "17 2,14 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  # Issue 更新の途中で後続実行に打ち切られないよう直列化する。
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    name: Inspect open refresh pull requests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      checks: read
+      contents: read
+      pull-requests: read
+    outputs:
+      stale: ${{ steps.inspect.outputs.stale }}
+      report_base64: ${{ steps.inspect.outputs.report_base64 }}
+    steps:
+      # workflow_dispatch で別 ref を選んでも、監視ロジックは常に保護された main から読む。
+      - name: Checkout monitor from main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+
+      - name: Inspect pull requests older than 24 hours
+        id: inspect
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pull_requests="$(
+            gh pr list \
+              --state open \
+              --base main \
+              --limit 100 \
+              --json number,url,createdAt,author,headRefName,isCrossRepository,statusCheckRollup
+          )"
+          result="$(
+            printf '%s' "$pull_requests" |
+              node scripts/ci/evaluate-playlist-refresh-prs.mjs
+          )"
+          stale="$(jq -r '.stale' <<< "$result")"
+          report_base64="$(jq -r '.report | @base64' <<< "$result")"
+
+          [[ "$stale" == "true" || "$stale" == "false" ]]
+          echo "stale=${stale}" >> "$GITHUB_OUTPUT"
+          echo "report_base64=${report_base64}" >> "$GITHUB_OUTPUT"
+
+  # issues: write を持つ job では checkout もリポジトリコードの実行も行わない。
+  report:
+    name: Update the stale refresh issue
+    needs: inspect
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: Create, update, or close the tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          HAS_STALE_PR: ${{ needs.inspect.outputs.stale }}
+          MARKER: "<!-- apple-music-playlist-refresh-monitor -->"
+          REPORT_BASE64: ${{ needs.inspect.outputs.report_base64 }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TITLE: "chore: Apple Music playlist refresh PR を確認する"
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          open_issues="$(gh issue list --state open --limit 100 --json number,title,body)"
+          existing="$(
+            jq -r --arg title "$TITLE" --arg marker "$MARKER" \
+              '[.[] | select(.title == $title and ((.body // "") | startswith($marker)))][0].number // empty' \
+              <<< "$open_issues"
+          )"
+          existing_body="$(
+            jq -r --arg title "$TITLE" --arg marker "$MARKER" \
+              '[.[] | select(.title == $title and ((.body // "") | startswith($marker)))][0].body // empty' \
+              <<< "$open_issues"
+          )"
+
+          if [[ "$HAS_STALE_PR" == "true" ]]; then
+            report="$(printf '%s' "$REPORT_BASE64" | base64 --decode)"
+            body="$(printf '%s\n\n%s\n' "$MARKER" "$report")"
+
+            if [[ -n "$existing" ]]; then
+              if [[ "$existing_body" == "$body" ]]; then
+                echo "既存の Issue #${existing} に状態変化はありません。"
+              else
+                gh issue edit "$existing" --body "$body"
+                echo "既存の Issue #${existing} を更新しました。"
+              fi
+            else
+              gh issue create \
+                --title "$TITLE" \
+                --body "$body" \
+                --assignee necofuryai
+            fi
+          elif [[ -n "$existing" ]]; then
+            gh issue close "$existing" \
+              --comment "24 時間以上滞留している Apple Music playlist refresh PR がなくなったため、自動で close します。監視 workflow: ${RUN_URL}"
+          else
+            echo "滞留している refresh PR と未解決の追跡 Issue はありません。"
+          fi

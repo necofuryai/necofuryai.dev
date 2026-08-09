@@ -112,6 +112,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # The Markdown code fence must remain literal, so the format string is
+          # intentionally single-quoted instead of allowing command substitution.
+          # shellcheck disable=SC2016
           body=$(printf '%s\n\n```\n%s\n```\n\n%s\n\n%s\n' \
             "[cloudflare/skills](https://github.com/cloudflare/skills) に \`.claude/skills/\` へ未反映の更新があります。" \
             "$REPORT" \
