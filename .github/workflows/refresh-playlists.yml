@@ -6,8 +6,8 @@
 # Secrets に Apple Developer Program の
 # APPLE_MUSIC_TEAM_ID / APPLE_MUSIC_KEY_ID / APPLE_MUSIC_PRIVATE_KEY が必要。
 #
-# 注意: GITHUB_TOKEN で作成した PR / push は CI (on: pull_request) を自動起動しない。
-# 作成された PR は一度 close/reopen し、UI smoke を含む required checks を起動して確認する。
+# GITHUB_TOKEN で作成した PR の CI (on: pull_request) は承認待ちになる。
+# Files changed を確認後、Merge status の Approve workflows to run から required checks を開始する。
 name: Refresh Apple Music Playlists
 
 on:
@@ -79,6 +79,22 @@ jobs:
             echo "プレイリストデータに変更はありません。"
             exit 0
           fi
+
+          # 前回の refresh PR が未処理なら重複 PR を作らない。既存 PR を人間が
+          # 確認・解消した後、次回 schedule または workflow_dispatch で再取得する。
+          existing_pr="$(
+            gh pr list \
+              --state open \
+              --base main \
+              --limit 100 \
+              --json url,author,headRefName,isCrossRepository \
+              --jq '[.[] | select(.author.is_bot == true and .author.login == "app/github-actions" and .isCrossRepository == false and (.headRefName | test("^data/refresh-playlists-[0-9]+$")))][0].url // empty'
+          )"
+          if [[ -n "$existing_pr" ]]; then
+            echo "::error::既存の Apple Music playlist refresh PR が未処理です: ${existing_pr}"
+            exit 1
+          fi
+
           branch="data/refresh-playlists-${GITHUB_RUN_ID}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -86,6 +102,22 @@ jobs:
           git add src/data/playlists
           git commit -m "chore: refresh Apple Music playlist data"
           git push -u origin "$branch"
-          gh pr create --base main --head "$branch" \
-            --title "chore: refresh Apple Music playlist data" \
-            --body "$(printf 'scripts/fetch-playlists.mjs による自動更新です。\n\nGITHUB_TOKEN による PR / push では CI が自動起動しないため、マージ前にこの PR を一度 close/reopen して UI smoke を含む required checks を実行してください。')"
+          pr_url="$(
+            gh pr create --base main --head "$branch" \
+              --title "chore: refresh Apple Music playlist data" \
+              --body "$(printf 'scripts/fetch-playlists.mjs による自動更新です。\n\nこの PR は github-actions[bot] が GITHUB_TOKEN で作成したため、required checks は承認待ちになります。Files changed を確認後、Merge status の Awaiting approval から Approve workflows to run を選択してください。close/reopen は不要です。')"
+          )"
+          echo "作成した PR: ${pr_url}"
+
+          # review request で作成直後に通知する。通知に失敗しても PR 自体は有効なので、
+          # 24 時間後の monitor に任せて workflow は失敗させない。
+          if ! gh pr edit "$pr_url" --add-reviewer necofuryai; then
+            echo "::warning::${pr_url} の review request に失敗しました。"
+          fi
+
+          {
+            echo "### Apple Music playlist refresh PR"
+            echo
+            echo "- PR: ${pr_url}"
+            echo "- 次の操作: Files changed を確認し、Approve workflows to run で required checks を開始する"
+          } >> "$GITHUB_STEP_SUMMARY"
