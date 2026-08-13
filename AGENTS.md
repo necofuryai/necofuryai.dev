@@ -12,6 +12,8 @@ The repository uses dual licensing: source code is licensed under MIT, while art
 
 Use pnpm. The `preinstall` hook in `scripts/check-package-manager.js` enforces it. Node.js 22.13.0 or later is required.
 
+Astro and Vite commands load live `.env*` files when present. Run `dev`, `check`, `build`, `preview`, `type-check`, or UI tests only when the user authorizes the exact environment file and purpose. Without authorization, limit validation to commands that do not invoke Astro/Vite, such as unit tests and diff checks, and report the skipped checks.
+
 ```sh
 pnpm dev              # Start the development server at localhost:4321
 pnpm build            # Run astro build and generate the Pagefind index
@@ -96,11 +98,13 @@ Playlist data is committed under `src/data/playlists/*.json`. The `pnpm fetch-pl
 
 The command requires Apple Developer Program credentials through the `APPLE_MUSIC_TEAM_ID`, `APPLE_MUSIC_KEY_ID`, and `APPLE_MUSIC_PRIVATE_KEY` environment variables; it may load them from `.env`. It creates a new ES256-signed developer token with a one-hour lifetime for each run and does not store or rotate a long-lived token.
 
+`pnpm fetch-playlists` attempts to read `.env` when that file exists. Run it only when the user authorizes that exact file and purpose. If the user requests a refresh with credentials already exported but does not authorize `.env` access, run `node scripts/fetch-playlists.mjs` directly.
+
 To keep builds deterministic, playlist fetching is not part of `pnpm build`. Refresh data manually or through `.github/workflows/refresh-playlists.yml`, which supports `workflow_dispatch` and runs every Monday because Replay updates on Sundays.
 
 Scheduled runs pass `--weekly` and fetch only the two playlists that Apple updates: Replay All Time and the current year, marked with `weekly: true` in the `PLAYLISTS` array. If only `fetchedAt` changes, the script does not write the JSON and the workflow does not open a PR. Refresh every playlist through `scope=all` in `workflow_dispatch` or by running `pnpm fetch-playlists` manually.
 
-Refresh PRs are created with the repository `GITHUB_TOKEN`, so their `pull_request` workflows wait for maintainer approval. After reviewing Files changed, use Merge status -> Awaiting approval -> Approve workflows to run; do not close and reopen the PR. The workflow requests review from `necofuryai` when it creates a PR and refuses to create a duplicate while an earlier refresh PR is open. `.github/workflows/monitor-playlist-refresh.yml` records any refresh PR left open for more than 24 hours in a deduplicated Issue.
+Refresh PRs are created with the repository `GITHUB_TOKEN`, so their `pull_request` workflows wait for maintainer approval. When the user explicitly requests that approval, review Files changed, then use Merge status -> Awaiting approval -> Approve workflows to run; do not close and reopen the PR. The workflow requests review from `necofuryai` when it creates a PR and refuses to create a duplicate while an earlier refresh PR is open. `.github/workflows/monitor-playlist-refresh.yml` records any refresh PR left open for more than 24 hours in a deduplicated Issue.
 
 At the start of a new year, update the `PLAYLISTS` array and move the `weekly` marker to the new current-year playlist. A JSON file with `placeholder: true` contains placeholder data and causes the page to display a notice.
 
@@ -129,4 +133,4 @@ The three overrides for `@swup/plugin@<4`, `minimatch@<10.2.2`, and `brace-expan
 
 An override key that carries a version selector, such as `brace-expansion@<5.0.9`, stops matching as soon as the pinned version is installed. When a later advisory widens its affected range, raise the selector and the target together rather than assuming the existing entry still covers it. The consumers keep declaring permissive ranges — `minimatch@10.2.6` still accepts `brace-expansion@^5.0.8`, and `cheerio@1.0.0` still accepts `undici@^6.19.5` — so these direct pins stay necessary even after the consumers are updated.
 
-If every CI job on a Dependabot PR fails with `ERR_PNPM_BROKEN_LOCKFILE` and a duplicated mapping key, the cause is the GitHub test merge rather than the PR itself. An older PR and `main` have both added the same transitive dependency to the lockfile, and the textual merge produces the duplicate key. Confirm that the lockfile at the PR head is valid by using `git show origin/<branch>:pnpm-lock.yaml` and searching for the affected key, then post `@dependabot recreate` as a human user. Do not repair and push the lockfile manually: after an extra commit is pushed, Dependabot stops automatically rebasing that PR. Commands from a bot identity backed by `GITHUB_TOKEN` are rejected, so this operation cannot be automated that way.
+If every CI job on a Dependabot PR fails with `ERR_PNPM_BROKEN_LOCKFILE` and a duplicated mapping key, the cause is the GitHub test merge rather than the PR itself. An older PR and `main` have both added the same transitive dependency to the lockfile, and the textual merge produces the duplicate key. Confirm that the lockfile at the PR head is valid by using `git show origin/<branch>:pnpm-lock.yaml` and searching for the affected key. If the user explicitly authorizes the external comment, post `@dependabot recreate` as a human user. Do not repair and push the lockfile manually: after an extra commit is pushed, Dependabot stops automatically rebasing that PR. Commands from a bot identity backed by `GITHUB_TOKEN` are rejected, so this operation cannot be automated that way.
