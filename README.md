@@ -15,7 +15,7 @@ necofuryai の技術ブログです。日々の開発で得た知見、技術メ
 
 ## 開発
 
-Node.js >= 22.13.0 と [pnpm](https://pnpm.io) が必要です。
+Node.js >= 22.19.0 と [pnpm](https://pnpm.io) が必要です。
 
 ```sh
 pnpm install          # 依存関係のインストール
