@@ -1,7 +1,7 @@
 {
 	"placeholder": false,
 	"order": 1,
-	"fetchedAt": "2026-08-17T13:58:03.748Z",
+	"fetchedAt": "2026-08-24T14:08:28.754Z",
 	"id": "pl.rp-lellcVyY1yj",
 	"storefront": "jp",
 	"name": "リプレイ2026",
@@ -57,6 +57,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/62/92/44/6292441c-7aab-7b51-e444-1dac97a9ce1f/4540774248216.png/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1770958215",
+			"title": "Poison Berry Daughters",
+			"artist": "シャイニーカラーズ",
+			"album": "Happy Surprise Trick!",
+			"durationMs": 230651,
+			"url": "https://music.apple.com/jp/album/poison-berry-daughters/1770958209?i=1770958215",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7e/e8/18/7ee818b7-c69b-3c5d-94f8-5300ec863c28/mzaf_1987438423260884614.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "6767490584",
 			"title": "ガラクタロード",
 			"artist": "初星学園",
@@ -67,14 +77,14 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/41/df/44/41df44ef-476f-7d0a-bfa4-21f73738c853/PA00218612_0_246017_jacket.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1770958215",
-			"title": "Poison Berry Daughters",
-			"artist": "シャイニーカラーズ",
-			"album": "Happy Surprise Trick!",
-			"durationMs": 230651,
-			"url": "https://music.apple.com/jp/album/poison-berry-daughters/1770958209?i=1770958215",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7e/e8/18/7ee818b7-c69b-3c5d-94f8-5300ec863c28/mzaf_1987438423260884614.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
+			"id": "1734578459",
+			"title": "マハラジャンボリー",
+			"artist": "みらくらぱーく!",
+			"album": "以心☆電信 - EP",
+			"durationMs": 211573,
+			"url": "https://music.apple.com/jp/album/%E3%83%9E%E3%83%8F%E3%83%A9%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%9C%E3%83%AA%E3%83%BC/1734578456?i=1734578459",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/8a/99/b2/8a99b2b0-ffb0-cd31-f4dc-2f4b12978506/mzaf_16018253416893515025.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/8c/83/ac/8c83ac59-91b5-2565-82d1-f0734b073a41/4540774245239.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1886240225",
@@ -97,14 +107,14 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/66/4a/16/664a1689-92d3-1523-e189-d7bc1797a7a5/ANTCD-A0000019264.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1734578459",
-			"title": "マハラジャンボリー",
-			"artist": "みらくらぱーく!",
-			"album": "以心☆電信 - EP",
-			"durationMs": 211573,
-			"url": "https://music.apple.com/jp/album/%E3%83%9E%E3%83%8F%E3%83%A9%E3%82%B8%E3%83%A3%E3%83%B3%E3%83%9C%E3%83%AA%E3%83%BC/1734578456?i=1734578459",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/8a/99/b2/8a99b2b0-ffb0-cd31-f4dc-2f4b12978506/mzaf_16018253416893515025.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/8c/83/ac/8c83ac59-91b5-2565-82d1-f0734b073a41/4540774245239.png/{w}x{h}bb.jpg"
+			"id": "1734552687",
+			"title": "Fly and Fly",
+			"artist": "シーズ",
+			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
+			"durationMs": 245133,
+			"url": "https://music.apple.com/jp/album/fly-and-fly/1734552685?i=1734552687",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/a3/af/25/a3af259b-bf1e-5950-e5a5-4afdb96917a6/mzaf_4507571874379063591.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "6794271993",
@@ -115,16 +125,6 @@
 			"url": "https://music.apple.com/jp/album/go-ghost/6794271990?i=6794271993",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b5/94/11/b59411d9-986a-ba04-f305-935f249a835f/mzaf_6316876655859296881.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/47/f3/49/47f3490b-4395-28ba-e6a9-88c9dd7be8fa/4547366841732.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1734552687",
-			"title": "Fly and Fly",
-			"artist": "シーズ",
-			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
-			"durationMs": 245133,
-			"url": "https://music.apple.com/jp/album/fly-and-fly/1734552685?i=1734552687",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/a3/af/25/a3af259b-bf1e-5950-e5a5-4afdb96917a6/mzaf_4507571874379063591.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1647132944",
@@ -337,6 +337,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1734552686",
+			"title": "OH MY GOD",
+			"artist": "シーズ",
+			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
+			"durationMs": 224473,
+			"url": "https://music.apple.com/jp/album/oh-my-god/1734552685?i=1734552686",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ab/f5/19/abf519c5-1352-bdb1-1e21-d5c81c5ba610/mzaf_8059186779388347563.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1869542662",
 			"title": "CIRCE",
 			"artist": "SennaRin & 澤野弘之",
@@ -347,6 +357,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d7/7e/d3/d77ed313-5710-b526-8a8a-60f857cbcee4/4547366801774.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1802099493",
+			"title": "質問、恋って何でしょうか? (feat. ハコニワリリィ)",
+			"artist": "MARUMOCHI from HoneyWorks",
+			"album": "質問、恋って何でしょうか? (feat. ハコニワリリィ) - EP",
+			"durationMs": 183720,
+			"url": "https://music.apple.com/jp/album/%E8%B3%AA%E5%95%8F-%E6%81%8B%E3%81%A3%E3%81%A6%E4%BD%95%E3%81%A7%E3%81%97%E3%82%87%E3%81%86%E3%81%8B-feat-%E3%83%8F%E3%82%B3%E3%83%8B%E3%83%AF%E3%83%AA%E3%83%AA%E3%82%A3/1802099492?i=1802099493",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2a/29/d2/2a29d2d7-de54-3128-035b-3ca57c77b746/mzaf_7248954187154954008.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ad/c4/ff/adc4ff0e-46e7-b47e-cbca-d83ad8b00e9b/PCSP_06440_A.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1841346383",
 			"title": "青春のシルエット",
 			"artist": "H△G",
@@ -355,6 +375,16 @@
 			"url": "https://music.apple.com/jp/album/%E9%9D%92%E6%98%A5%E3%81%AE%E3%82%B7%E3%83%AB%E3%82%A8%E3%83%83%E3%83%88/1841346373?i=1841346383",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/29/a9/d2/29a9d25a-73ec-dc0d-82c7-59a2d2315354/mzaf_698481791540609027.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5d/78/83/5d788376-7850-0406-52db-240127a4b9b2/4540774746385.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1872946388",
+			"title": "ARIGATTO",
+			"artist": "m-flo loves RIP SLYME",
+			"album": "SUPERLIMINAL",
+			"durationMs": 242628,
+			"url": "https://music.apple.com/jp/album/arigatto/1872946381?i=1872946388",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6a/4a/e5/6a4ae5d7-0a5f-95f9-b738-621fbff31450/mzaf_5714879355927157799.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/66/4a/16/664a1689-92d3-1523-e189-d7bc1797a7a5/ANTCD-A0000019264.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1811807100",
@@ -417,16 +447,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1734552686",
-			"title": "OH MY GOD",
-			"artist": "シーズ",
-			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
-			"durationMs": 224473,
-			"url": "https://music.apple.com/jp/album/oh-my-god/1734552685?i=1734552686",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/ab/f5/19/abf519c5-1352-bdb1-1e21-d5c81c5ba610/mzaf_8059186779388347563.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1771366342",
 			"title": "風神",
 			"artist": "Vaundy",
@@ -447,16 +467,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1837841073",
-			"title": "ARIGATTO",
-			"artist": "m-flo loves RIP SLYME",
-			"album": "ARIGATTO - Single",
-			"durationMs": 241978,
-			"url": "https://music.apple.com/jp/album/arigatto/1837841072?i=1837841073",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a9/4d/22/a94d222a-e0f8-8226-3f81-ca36e241a40b/mzaf_6778035280572895747.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/73/13/ed/7313ed85-6cee-3df5-798f-462879af4a69/ANTCD-A0000017724.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1734578458",
 			"title": "BANG YOU グラビティ",
 			"artist": "みらくらぱーく!",
@@ -465,6 +475,16 @@
 			"url": "https://music.apple.com/jp/album/bang-you-%E3%82%B0%E3%83%A9%E3%83%93%E3%83%86%E3%82%A3/1734578456?i=1734578458",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/71/e6/d2/71e6d267-f433-b6a1-6c66-d65340e9b9c2/mzaf_13472869993353657674.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/8c/83/ac/8c83ac59-91b5-2565-82d1-f0734b073a41/4540774245239.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1815403436",
+			"title": "Good Times",
+			"artist": "RIP SLYME",
+			"album": "GREATEST FIVE",
+			"durationMs": 278800,
+			"url": "https://music.apple.com/jp/album/good-times/1815402986?i=1815403436",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/67/ef/4e/67ef4e51-b8e9-0c0c-b366-36e9d59b2624/mzaf_13429960608509349940.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a5/87/2d/a5872d72-0613-6f28-9f2d-11300c325eaf/5021732816757.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1560085807",
@@ -547,16 +567,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/39/7a/b4/397ab414-2b1f-c016-ca0f-248828eb0631/075679624505.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1802099493",
-			"title": "質問、恋って何でしょうか? (feat. ハコニワリリィ)",
-			"artist": "MARUMOCHI from HoneyWorks",
-			"album": "質問、恋って何でしょうか? (feat. ハコニワリリィ) - EP",
-			"durationMs": 183720,
-			"url": "https://music.apple.com/jp/album/%E8%B3%AA%E5%95%8F-%E6%81%8B%E3%81%A3%E3%81%A6%E4%BD%95%E3%81%A7%E3%81%97%E3%82%87%E3%81%86%E3%81%8B-feat-%E3%83%8F%E3%82%B3%E3%83%8B%E3%83%AF%E3%83%AA%E3%83%AA%E3%82%A3/1802099492?i=1802099493",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2a/29/d2/2a29d2d7-de54-3128-035b-3ca57c77b746/mzaf_7248954187154954008.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ad/c4/ff/adc4ff0e-46e7-b47e-cbca-d83ad8b00e9b/PCSP_06440_A.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "425110024",
 			"title": "Stand By Me",
 			"artist": "オアシス",
@@ -565,6 +575,16 @@
 			"url": "https://music.apple.com/jp/album/stand-by-me/425110020?i=425110024",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/35/db/f2/35dbf29c-50cb-dfce-c8ce-74409006491b/mzaf_10847154379601753539.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/cb/d0/71/cbd071d6-e5d1-aa2e-ec39-a667abfe7185/884977854480.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1537418578",
+			"title": "君 station",
+			"artist": "ORANGE RANGE",
+			"album": "ALL the SINGLES",
+			"durationMs": 303293,
+			"url": "https://music.apple.com/jp/album/%E5%90%9B-station/1537418560?i=1537418578",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4d/32/ed/4d32ed4c-422f-000e-095f-02d53e41a355/mzaf_3908546552846156126.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6b/50/9c/6b509c4b-6550-40f7-2086-008eaed86c5f/jacket_SRCL07315B00Z_550.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1867148153",
@@ -727,16 +747,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/36/d7/c0/36d7c00a-79ef-1c8c-41ac-85ce67b07a9d/4547366761450.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1537418578",
-			"title": "君 station",
-			"artist": "ORANGE RANGE",
-			"album": "ALL the SINGLES",
-			"durationMs": 303293,
-			"url": "https://music.apple.com/jp/album/%E5%90%9B-station/1537418560?i=1537418578",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4d/32/ed/4d32ed4c-422f-000e-095f-02d53e41a355/mzaf_3908546552846156126.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6b/50/9c/6b509c4b-6550-40f7-2086-008eaed86c5f/jacket_SRCL07315B00Z_550.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1884244908",
 			"title": "Dogs",
 			"artist": "羊文学",
@@ -755,16 +765,6 @@
 			"url": "https://music.apple.com/jp/album/shine-days/838212719?i=838212736",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/01/54/35/015435f2-0bf0-fb8e-4555-dc396dd576b2/mzaf_17194541801902406154.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/28/8c/c2/288cc24f-b2fa-9582-6f71-c8ae48023c6f/4933032006039_cover.png/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1815403436",
-			"title": "Good Times",
-			"artist": "RIP SLYME",
-			"album": "GREATEST FIVE",
-			"durationMs": 278800,
-			"url": "https://music.apple.com/jp/album/good-times/1815402986?i=1815403436",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/67/ef/4e/67ef4e51-b8e9-0c0c-b366-36e9d59b2624/mzaf_13429960608509349940.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a5/87/2d/a5872d72-0613-6f28-9f2d-11300c325eaf/5021732816757.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1535818426",
