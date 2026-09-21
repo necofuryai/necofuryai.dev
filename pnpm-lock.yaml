@@ -37,7 +37,7 @@ importers:
         version: 3.7.4
       '@astrojs/svelte':
         specifier: 9.0.1
-        version: 9.0.1(@types/node@26.4.1)(astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(svelte@5.57.0)(terser@5.43.1)(typescript@6.0.3)(yaml@2.9.0)
+        version: 9.0.1(@types/node@26.4.1)(astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(svelte@5.57.0)(terser@5.43.1)(typescript@6.0.3)(yaml@2.9.1)
       '@expressive-code/core':
         specifier: ^0.44.0
         version: 0.44.2
@@ -64,10 +64,10 @@ importers:
         version: 1.2.4
       '@iconify-json/material-symbols':
         specifier: ^1.2.50
-        version: 1.2.91
+        version: 1.2.92
       '@iconify-json/simple-icons':
         specifier: ^1.2.90
-        version: 1.2.95
+        version: 1.2.96
       '@iconify/svelte':
         specifier: ^5.2.2
         version: 5.2.2(svelte@5.57.0)
@@ -79,13 +79,13 @@ importers:
         version: 0.5.20(tailwindcss@4.3.3)
       '@tailwindcss/vite':
         specifier: ^4.3.3
-        version: 4.3.3(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))
+        version: 4.3.3(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))
       astro:
         specifier: 7.3.3
-        version: 7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)
+        version: 7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)
       astro-expressive-code:
         specifier: ^0.44.0
-        version: 0.44.2(astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))
+        version: 0.44.2(astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))
       astro-icon:
         specifier: ^1.2.0
         version: 1.2.0
@@ -97,7 +97,7 @@ importers:
         version: 0.18.7
       markdown-it:
         specifier: ^15.0.0
-        version: 15.0.1
+        version: 15.0.2
       markdown-it-container:
         specifier: ^4.0.0
         version: 4.0.0
@@ -167,10 +167,10 @@ importers:
     devDependencies:
       '@astrojs/ts-plugin':
         specifier: ^1.10.9
-        version: 1.10.11(typescript@6.0.3)
+        version: 1.10.12(typescript@6.0.3)
       '@biomejs/biome':
-        specifier: 2.5.13
-        version: 2.5.13
+        specifier: 2.5.14
+        version: 2.5.14
       '@playwright/test':
         specifier: 1.63.0
         version: 1.63.0
@@ -318,8 +318,8 @@ packages:
     resolution: {integrity: sha512-C1TLn5sPJr0x4vk56piHWKbnqlEB8BKyte5Y45V02U+D7BGO5eMqZDH5aPjnkXQWJggvmsTXxH03QMZ9NgWLzQ==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
 
-  '@astrojs/ts-plugin@1.10.11':
-    resolution: {integrity: sha512-W7Fmbaw81mcecFgJWgfY8FX7G7nCiooiakgd8ZAVprglEo81W2HzXh2I+okmAorCZLICl4PeEELkpGzrEXze4g==}
+  '@astrojs/ts-plugin@1.10.12':
+    resolution: {integrity: sha512-EOT4VUYPGJTTHRcbWjAq7ABS79Q8X6sNq9k4a8sWoQmo8cLlrjCoUOO4LTxIbfsssNPmq68HHyk8rmh8+TdJTQ==}
 
   '@astrojs/yaml2ts@0.2.4':
     resolution: {integrity: sha512-8oddpOae35pJsXPQXhTkM0ypfKPskVsh2bCxRtbf7e+/Epw2nReakFYpLKjZMEr75CsoF203PMnCocpfz0s69A==}
@@ -341,59 +341,59 @@ packages:
     resolution: {integrity: sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg==}
     engines: {node: '>=6.9.0'}
 
-  '@biomejs/biome@2.5.13':
-    resolution: {integrity: sha512-+SEC/mFk1a+5mvUANZgbZTaiZXs1nj4iMhL/PHiqDT5TPUEPFIlliEtkKKZB4N862yylHC3UI+/Sj2I0HJEqhA==}
+  '@biomejs/biome@2.5.14':
+    resolution: {integrity: sha512-0FabLIjd4M/dm8VFI86RMaLLdgepzbdfiAL2R8cr7V81OYYrP1w7Z73KfAwPK5h9SrEBXTzNG2y+mBwPo9xRnw==}
     engines: {node: '>=14.21.3'}
     hasBin: true
 
-  '@biomejs/cli-darwin-arm64@2.5.13':
-    resolution: {integrity: sha512-nYSuDJ6zgVqZUkAkJkvhXxsF2PYIrUk/g638K4voCXz7foI9f7b6C2/7+oAihsHQlivZNMUrm/y8ywlcHQtZOw==}
+  '@biomejs/cli-darwin-arm64@2.5.14':
+    resolution: {integrity: sha512-UnzaXO65L4tsZimFITFP2M121GyhDcWFrT3pL5ZJ5U4XcS/0L5VHYytVohdCf/gnDUFHgl2I9xnt5bV/J1kxHQ==}
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [darwin]
 
-  '@biomejs/cli-darwin-x64@2.5.13':
-    resolution: {integrity: sha512-KVy1ceEDuJ3AzFxjT9kkxbVy+UANw1pjEMUS6lvKfxjJ+fmkRvc7sQn1Xo6ETgseEI7wUQoV03KSga3XfE8YRQ==}
+  '@biomejs/cli-darwin-x64@2.5.14':
+    resolution: {integrity: sha512-kiy8qA16K93J7uvFfWi4LgjqDpnRKyePAna6A0Y4jxyUga35SYpIZ2cNWlhy0lsfgqRenCpfymnJWEZ6mgpRgA==}
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [darwin]
 
-  '@biomejs/cli-linux-arm64-musl@2.5.13':
-    resolution: {integrity: sha512-CH32xpep3dNS5EVJpAHlYchkBYznxyVZQrx0b6YYYlPL9u9ZeD2NtqiK/6s64+HFS2a7hGnryLlqqZAOh8ax5g==}
+  '@biomejs/cli-linux-arm64-musl@2.5.14':
+    resolution: {integrity: sha512-SJ9PrZkBnnH9dHJDnxk34vKs0GB2dbsioaft6/hPhWJ7AHpwYH83Isnhj0FSRpFkGgpVfJ1lds23ApB2czUDLQ==}
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@biomejs/cli-linux-arm64@2.5.13':
-    resolution: {integrity: sha512-VlNMtoxOqs0dUR6drxxHr18SNUvI7xxAuHZlH4s/dstYSf3g6RaqVgo8JRnhcOhKz9afWrvtJTboNG1JuYlIDQ==}
+  '@biomejs/cli-linux-arm64@2.5.14':
+    resolution: {integrity: sha512-vO/9BaU1n30CiFNLx49gMTMtbCAAqlo/EqFoG0BU3deQInTbJrmXSmTQ9e3FoDZIKQnvSLDVNL4lx1ci7y1T1Q==}
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@biomejs/cli-linux-x64-musl@2.5.13':
-    resolution: {integrity: sha512-F3pmwl+VHoUuVJN/tbNLKeLt0SVK3EIyN1jXlMcNyQGYRQQTVqXF+GgkP0/CjGXFN87e/mv0sBfUnWqWza5PKQ==}
+  '@biomejs/cli-linux-x64-musl@2.5.14':
+    resolution: {integrity: sha512-2kI5PrMgW5dcEZYrstLPmUmCwkUwZY39rP4BN93Vxbwcs2O57LDQOktUZZYPvvspN5i0mhGr3TJtF5sU26NUWg==}
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@biomejs/cli-linux-x64@2.5.13':
-    resolution: {integrity: sha512-Fi6gIxbUaJ3ZCIXeG3ggIBPF76O2DjDN67WrPX/ODRv54GeXPm2gbEPC96Yb0yrJoiH0Eax1JLx1Pi0XbsNFZQ==}
+  '@biomejs/cli-linux-x64@2.5.14':
+    resolution: {integrity: sha512-VHZRa7CCQBUWKxNwUvHJeuW03WFRgN5NWO//SDGOitc9QIeNyfA42V9zlKm+x82xFSG9Bzi5fi+hbhm9anO8yA==}
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@biomejs/cli-win32-arm64@2.5.13':
-    resolution: {integrity: sha512-+WD13qshXrr0Icv4BfsAdzm8Fs3TL+nZ59zEQxsYNd8lcgZJ0A5+OrlwsL1PipVCmWeRpxgIPD6DAcEd7smkCQ==}
+  '@biomejs/cli-win32-arm64@2.5.14':
+    resolution: {integrity: sha512-pHgAFffmZtaYoxavEsWEYNvcA7NwOIjLyqw2HXyLbt16xYryX0L4fMV2u0G9ag6LNYPIoqWaWqzUcnc6rLGGXg==}
     engines: {node: '>=14.21.3'}
     cpu: [arm64]
     os: [win32]
 
-  '@biomejs/cli-win32-x64@2.5.13':
-    resolution: {integrity: sha512-VOofU/nW761XWzUeUNE8zzYNyPrxuMuNFMizL0qz7J75yeV8N7WFheUlk1/K6dOkaFpH9wJ+lDKlwjAbw0346w==}
+  '@biomejs/cli-win32-x64@2.5.14':
+    resolution: {integrity: sha512-oJWmBhoHsnhUKIke+0gXDX0mltJrWHA1UyHsrTlXwX0TL64ilVZAo+TYZm97baecV0esBdpzy3k96q+09JaZUQ==}
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
@@ -688,11 +688,11 @@ packages:
   '@iconify-json/fa6-solid@1.2.4':
     resolution: {integrity: sha512-LmDNNdJVyvF5mPm1yxWvL8KjCc/E8LzoqnF1LNTVpyY2ZJRUlGOWuPIThdbuFBF2IovgttkIyumhyqfmlHdwKg==}
 
-  '@iconify-json/material-symbols@1.2.91':
-    resolution: {integrity: sha512-Ne4XOTaxrDm+NLWBA2mrMyrdaDde/x24JXglkKsI5jP3/VdjXWqstaA9SqkH9QsfaEMx+N1VOZFv/hSmLNobag==}
+  '@iconify-json/material-symbols@1.2.92':
+    resolution: {integrity: sha512-8DQClJc/77mpdlpNiWyjGXpx81YZuoNklrWNe/6K2rJtLTPU/7kRA7F/F8l5Q0a5yFvNlWuMReGB0m4CQ8cepA==}
 
-  '@iconify-json/simple-icons@1.2.95':
-    resolution: {integrity: sha512-QwWgcoiL+eNCD38QM0OStFVFoOgDvzeHrcwMAvATvcFl0VvMEtED92qp3K3juS0H6RZ9BGUlgq9mODPwNWkjJg==}
+  '@iconify-json/simple-icons@1.2.96':
+    resolution: {integrity: sha512-/FmCYo/H5rIywTLV/P6OYsr0rg/31vuc8jYq0QnkOZl6m7PWIs+h5oAnSTT2cqRhOsMaKqbXcdkka6tnZ1WiUA==}
 
   '@iconify/svelte@5.2.2':
     resolution: {integrity: sha512-XMXxD3nzH7yB68C3K4sNwzrJ1TBscODR0ZqCeNf0KGuEMCTSuCo0jHNDZ0o0iRXTylO41NSz/DWam/4atLG1yw==}
@@ -1639,8 +1639,8 @@ packages:
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
-  argparse@3.0.1:
-    resolution: {integrity: sha512-nM4mHF/KM1v59ZNKX7zfusQz5wUAxR511YG8Vo6TyiV4aqhu++rbJW4v04xsWhpSsHFj66flT8P7znVpyO20xQ==}
+  argparse@3.0.2:
+    resolution: {integrity: sha512-mFdDM6WqWKraGLsVb+C9CahPnzTXOefAOLq3jYcca2YZ8bEWpr++Tzj+zSaKW9+X9L5uSxcm1AZ3Y6aZJ09OhQ==}
 
   aria-query@5.3.1:
     resolution: {integrity: sha512-Z/ZeOgVl7bcSYZ/u/rh0fOpvEpq//LZmdbkXyc7syVzjPAhfOa9ebsdTSjEBDU4vs5nC98Kfduj1uFo0qyET3g==}
@@ -1930,6 +1930,10 @@ packages:
 
   entities@8.0.0:
     resolution: {integrity: sha512-zwfzJecQ/Uej6tusMqwAqU/6KL2XaB2VZ2Jg54Je6ahNBGNH6Ek6g3jjNCF0fG9EWQKGZNddNjU5F1ZQn/sBnA==}
+    engines: {node: '>=20.19.0'}
+
+  entities@8.1.0:
+    resolution: {integrity: sha512-kxL7msIffSuh9aaFAMD7rxAIuTRMAHMeBtgHW2yUdWw732ZNh4MehkF2gdjvtdmikkaIP9bFDDJOPlsvm7avrA==}
     engines: {node: '>=20.19.0'}
 
   es-module-lexer@2.3.2:
@@ -2433,8 +2437,8 @@ packages:
   markdown-it-container@4.0.0:
     resolution: {integrity: sha512-HaNccxUH0l7BNGYbFbjmGpf5aLHAMTinqRZQAEQbMr2cdD3z91Q6kIo1oUn1CQndkT03jat6ckrdRYuwwqLlQw==}
 
-  markdown-it@15.0.1:
-    resolution: {integrity: sha512-9/7gE95FNPkfUWrjJIoHZza2iLmuJlPD0UNMxPi7bxUrbCR525YZY0r+zyfes0dZI5ZZ/uNIXUJca0pJvtw41g==}
+  markdown-it@15.0.2:
+    resolution: {integrity: sha512-q4IGxMv56jCqT4OCRCADBoDP3LO4MhmTXjFbphHPXs4g3j9Xg5RDnxqN8IF/3vIWEU+VCnUq+7JUg/cfy2E6Qw==}
     hasBin: true
 
   markdown-table@3.0.4:
@@ -3511,6 +3515,9 @@ packages:
   vscode-languageserver-textdocument@1.0.12:
     resolution: {integrity: sha512-cxWNPesCnQCcMPeenjKKsOCKQZ/L6Tv19DTRIGuLWe32lyzWhihGVJ/rcckZXJxfdKCFvRLS3fpBIsV/ZGX4zA==}
 
+  vscode-languageserver-textdocument@1.0.14:
+    resolution: {integrity: sha512-EQyqJMi552E4ZTf46izQ4Fj6XquqxCySR3J5ZSD1SisMf6RfpeOWHxGBE8Gr6V0/3GHIGdAzDn8F8+1nTGCnoQ==}
+
   vscode-languageserver-types@3.17.5:
     resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
 
@@ -3526,6 +3533,9 @@ packages:
 
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
+
+  vscode-uri@3.2.0:
+    resolution: {integrity: sha512-m2gXo3bn0G1kT9InzMf07fTbqMbGtyckj3bH5ktLO+1Ssv+yiATZ4dhwaQv9UZWxJh6E9IFGnQyjgWVDWVBDrg==}
 
   web-namespaces@2.0.1:
     resolution: {integrity: sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==}
@@ -3567,8 +3577,8 @@ packages:
     engines: {node: '>= 14.6'}
     hasBin: true
 
-  yaml@2.9.0:
-    resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
+  yaml@2.9.1:
+    resolution: {integrity: sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw==}
     engines: {node: '>= 14.6'}
     hasBin: true
 
@@ -3764,15 +3774,15 @@ snapshots:
       sitemap: 9.0.1
       zod: 4.5.4
 
-  '@astrojs/svelte@9.0.1(@types/node@26.4.1)(astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(svelte@5.57.0)(terser@5.43.1)(typescript@6.0.3)(yaml@2.9.0)':
+  '@astrojs/svelte@9.0.1(@types/node@26.4.1)(astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(svelte@5.57.0)(terser@5.43.1)(typescript@6.0.3)(yaml@2.9.1)':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 7.2.0(svelte@5.57.0)(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))
-      astro: 7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)
+      '@sveltejs/vite-plugin-svelte': 7.2.0(svelte@5.57.0)(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))
+      astro: 7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)
       svelte: 5.57.0
       svelte2tsx: 0.7.58(svelte@5.57.0)(typescript@6.0.3)
       typescript: 6.0.3
-      vite: 8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)
-      vitefu: 1.1.3(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))
+      vite: 8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)
+      vitefu: 1.1.3(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))
     transitivePeerDependencies:
       - '@types/node'
       - '@vitejs/devtools'
@@ -3794,21 +3804,20 @@ snapshots:
       is-docker: 4.0.0
       package-manager-detector: 1.8.0
 
-  '@astrojs/ts-plugin@1.10.11(typescript@6.0.3)':
+  '@astrojs/ts-plugin@1.10.12(typescript@6.0.3)':
     dependencies:
       '@astrojs/compiler': 2.13.1
       '@astrojs/yaml2ts': 0.2.4
-      '@jridgewell/sourcemap-codec': 1.5.5
+      '@jridgewell/sourcemap-codec': 1.6.0
       '@volar/language-core': 2.4.28
       '@volar/typescript': 2.4.28(typescript@6.0.3)
-      semver: 7.8.5
-      vscode-languageserver-textdocument: 1.0.12
+      vscode-languageserver-textdocument: 1.0.14
     transitivePeerDependencies:
       - typescript
 
   '@astrojs/yaml2ts@0.2.4':
     dependencies:
-      yaml: 2.9.0
+      yaml: 2.9.1
 
   '@babel/helper-string-parser@7.29.7': {}
 
@@ -3823,39 +3832,39 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@biomejs/biome@2.5.13':
+  '@biomejs/biome@2.5.14':
     optionalDependencies:
-      '@biomejs/cli-darwin-arm64': 2.5.13
-      '@biomejs/cli-darwin-x64': 2.5.13
-      '@biomejs/cli-linux-arm64': 2.5.13
-      '@biomejs/cli-linux-arm64-musl': 2.5.13
-      '@biomejs/cli-linux-x64': 2.5.13
-      '@biomejs/cli-linux-x64-musl': 2.5.13
-      '@biomejs/cli-win32-arm64': 2.5.13
-      '@biomejs/cli-win32-x64': 2.5.13
+      '@biomejs/cli-darwin-arm64': 2.5.14
+      '@biomejs/cli-darwin-x64': 2.5.14
+      '@biomejs/cli-linux-arm64': 2.5.14
+      '@biomejs/cli-linux-arm64-musl': 2.5.14
+      '@biomejs/cli-linux-x64': 2.5.14
+      '@biomejs/cli-linux-x64-musl': 2.5.14
+      '@biomejs/cli-win32-arm64': 2.5.14
+      '@biomejs/cli-win32-x64': 2.5.14
 
-  '@biomejs/cli-darwin-arm64@2.5.13':
+  '@biomejs/cli-darwin-arm64@2.5.14':
     optional: true
 
-  '@biomejs/cli-darwin-x64@2.5.13':
+  '@biomejs/cli-darwin-x64@2.5.14':
     optional: true
 
-  '@biomejs/cli-linux-arm64-musl@2.5.13':
+  '@biomejs/cli-linux-arm64-musl@2.5.14':
     optional: true
 
-  '@biomejs/cli-linux-arm64@2.5.13':
+  '@biomejs/cli-linux-arm64@2.5.14':
     optional: true
 
-  '@biomejs/cli-linux-x64-musl@2.5.13':
+  '@biomejs/cli-linux-x64-musl@2.5.14':
     optional: true
 
-  '@biomejs/cli-linux-x64@2.5.13':
+  '@biomejs/cli-linux-x64@2.5.14':
     optional: true
 
-  '@biomejs/cli-win32-arm64@2.5.13':
+  '@biomejs/cli-win32-arm64@2.5.14':
     optional: true
 
-  '@biomejs/cli-win32-x64@2.5.13':
+  '@biomejs/cli-win32-x64@2.5.14':
     optional: true
 
   '@bruits/satteri-darwin-arm64@0.10.5':
@@ -4082,11 +4091,11 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/material-symbols@1.2.91':
+  '@iconify-json/material-symbols@1.2.92':
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/simple-icons@1.2.95':
+  '@iconify-json/simple-icons@1.2.96':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -4539,14 +4548,14 @@ snapshots:
     dependencies:
       acorn: 8.18.0
 
-  '@sveltejs/vite-plugin-svelte@7.2.0(svelte@5.57.0)(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))':
+  '@sveltejs/vite-plugin-svelte@7.2.0(svelte@5.57.0)(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))':
     dependencies:
       deepmerge: 4.3.1
       magic-string: 0.30.21
       obug: 2.1.4
       svelte: 5.57.0
-      vite: 8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)
-      vitefu: 1.1.3(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))
+      vite: 8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)
+      vitefu: 1.1.3(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))
 
   '@swup/a11y-plugin@5.0.0(swup@4.8.2)':
     dependencies:
@@ -4720,12 +4729,12 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 4.3.3
 
-  '@tailwindcss/vite@4.3.3(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))':
+  '@tailwindcss/vite@4.3.3(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))':
     dependencies:
       '@tailwindcss/node': 4.3.3
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
-      vite: 8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)
+      vite: 8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)
 
   '@tybys/wasm-util@0.10.3':
     dependencies:
@@ -4840,7 +4849,7 @@ snapshots:
     dependencies:
       '@volar/language-core': 2.4.28
       path-browserify: 1.0.1
-      vscode-uri: 3.1.0
+      vscode-uri: 3.2.0
     optionalDependencies:
       typescript: 6.0.3
 
@@ -4900,7 +4909,7 @@ snapshots:
 
   argparse@2.0.1: {}
 
-  argparse@3.0.1: {}
+  argparse@3.0.2: {}
 
   aria-query@5.3.1: {}
 
@@ -4910,9 +4919,9 @@ snapshots:
 
   astring@1.9.0: {}
 
-  astro-expressive-code@0.44.2(astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)):
+  astro-expressive-code@0.44.2(astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)):
     dependencies:
-      astro: 7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)
+      astro: 7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)
       rehype-expressive-code: 0.44.2
       url-extras: 0.1.0
 
@@ -4922,7 +4931,7 @@ snapshots:
       '@iconify/types': 2.0.0
       '@iconify/utils': 3.1.4
 
-  astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0):
+  astro@7.3.3(@astrojs/markdown-remark@7.3.1(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.1)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1):
     dependencies:
       '@astrojs/compiler-rs': 0.4.1(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)
       '@astrojs/internal-helpers': 0.11.0
@@ -4972,8 +4981,8 @@ snapshots:
       unifont: 0.7.5
       unstorage: 1.17.5
       verkit: 0.4.0
-      vite: 8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)
-      vitefu: 1.1.3(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0))
+      vite: 8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)
+      vitefu: 1.1.3(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1))
       xxhash-wasm: 1.1.0
       yargs-parser: 22.0.0
       zod: 4.6.5
@@ -5227,6 +5236,8 @@ snapshots:
   entities@7.0.1: {}
 
   entities@8.0.0: {}
+
+  entities@8.1.0: {}
 
   es-module-lexer@2.3.2: {}
 
@@ -5816,10 +5827,10 @@ snapshots:
 
   markdown-it-container@4.0.0: {}
 
-  markdown-it@15.0.1:
+  markdown-it@15.0.2:
     dependencies:
-      argparse: 3.0.1
-      entities: 8.0.0
+      argparse: 3.0.2
+      entities: 8.1.0
       linkify-it: 6.1.0
       mdurl: 2.1.0
       punycode.js: 2.3.1
@@ -7187,7 +7198,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0):
+  vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -7202,9 +7213,9 @@ snapshots:
       sass: 1.80.4
       stylus: 0.64.0(supports-color@7.2.0)
       terser: 5.43.1
-      yaml: 2.9.0
+      yaml: 2.9.1
 
-  vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0):
+  vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -7219,15 +7230,15 @@ snapshots:
       sass: 1.80.4
       stylus: 0.64.0(supports-color@7.2.0)
       terser: 5.43.1
-      yaml: 2.9.0
+      yaml: 2.9.1
 
-  vitefu@1.1.3(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)):
+  vitefu@1.1.3(vite@8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)):
     optionalDependencies:
-      vite: 8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)
+      vite: 8.1.5(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)
 
-  vitefu@1.1.3(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)):
+  vitefu@1.1.3(vite@8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)):
     optionalDependencies:
-      vite: 8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.0)
+      vite: 8.3.0(@types/node@26.4.1)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.80.4)(stylus@0.64.0(supports-color@7.2.0))(terser@5.43.1)(yaml@2.9.1)
 
   volar-service-css@0.0.71(@volar/language-service@2.4.28(typescript@6.0.3)):
     dependencies:
@@ -7325,6 +7336,8 @@ snapshots:
 
   vscode-languageserver-textdocument@1.0.12: {}
 
+  vscode-languageserver-textdocument@1.0.14: {}
+
   vscode-languageserver-types@3.17.5: {}
 
   vscode-languageserver-types@3.18.0: {}
@@ -7336,6 +7349,8 @@ snapshots:
   vscode-nls@5.2.0: {}
 
   vscode-uri@3.1.0: {}
+
+  vscode-uri@3.2.0: {}
 
   web-namespaces@2.0.1: {}
 
@@ -7384,7 +7399,7 @@ snapshots:
 
   yaml@2.8.3: {}
 
-  yaml@2.9.0: {}
+  yaml@2.9.1: {}
 
   yargs-parser@22.0.0: {}
 
