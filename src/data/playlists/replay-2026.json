@@ -1,7 +1,7 @@
 {
 	"placeholder": false,
 	"order": 1,
-	"fetchedAt": "2026-09-14T18:45:24.707Z",
+	"fetchedAt": "2026-09-21T18:49:15.643Z",
 	"id": "pl.rp-lellcVyY1yj",
 	"storefront": "jp",
 	"name": "リプレイ2026",
@@ -37,16 +37,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/62/92/44/6292441c-7aab-7b51-e444-1dac97a9ce1f/4540774248216.png/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1537418577",
-			"title": "イケナイ太陽",
-			"artist": "ORANGE RANGE",
-			"album": "ALL the SINGLES",
-			"durationMs": 241653,
-			"url": "https://music.apple.com/jp/album/%E3%82%A4%E3%82%B1%E3%83%8A%E3%82%A4%E5%A4%AA%E9%99%BD/1537418560?i=1537418577",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a7/44/ac/a744ac6b-f81c-b061-1dc6-dfd67ccbb2e4/mzaf_13704085025977389199.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6b/50/9c/6b509c4b-6550-40f7-2086-008eaed86c5f/jacket_SRCL07315B00Z_550.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1890060756",
 			"title": "飛ぶ時",
 			"artist": "Vaundy",
@@ -65,6 +55,16 @@
 			"url": "https://music.apple.com/jp/album/fly-and-fly/1734552685?i=1734552687",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e4/7c/2e/e47c2e2d-d872-1d93-bfe3-ddf20194ab31/mzaf_4912271659180542644.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1537418577",
+			"title": "イケナイ太陽",
+			"artist": "ORANGE RANGE",
+			"album": "ALL the SINGLES",
+			"durationMs": 241653,
+			"url": "https://music.apple.com/jp/album/%E3%82%A4%E3%82%B1%E3%83%8A%E3%82%A4%E5%A4%AA%E9%99%BD/1537418560?i=1537418577",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a7/44/ac/a744ac6b-f81c-b061-1dc6-dfd67ccbb2e4/mzaf_13704085025977389199.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6b/50/9c/6b509c4b-6550-40f7-2086-008eaed86c5f/jacket_SRCL07315B00Z_550.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1856531495",
@@ -135,6 +135,16 @@
 			"url": "https://music.apple.com/jp/album/chainsaw-blood/1647132937?i=1647132944",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e1/13/8b/e1138b12-ad1b-45e6-3545-8c4f8765ce8b/mzaf_16193442776413626505.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/c9/de/16/c9de1632-3d12-19c3-2699-22090b4bfcc1/4547366588620.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6781198668",
+			"title": "なんもねえ",
+			"artist": "忘れらんねえよ",
+			"album": "なんもねえ - Single",
+			"durationMs": 171000,
+			"url": "https://music.apple.com/jp/album/%E3%81%AA%E3%82%93%E3%82%82%E3%81%AD%E3%81%88/6781198667?i=6781198668",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c9/28/83/c9288393-3515-ef7b-6d51-1186cf21bedc/mzaf_14081471784850322326.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6e/28/00/6e280007-5f1f-388e-4041-e593d43d1297/4988021077361.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1860538548",
@@ -245,6 +255,16 @@
 			"url": "https://music.apple.com/jp/album/stella/6784368653?i=6784369010",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3c/c8/41/3cc84150-821a-9f7d-3b7c-fec877ecd418/mzaf_7068252172229240759.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/eb/fb/6d/ebfb6d9d-8e2f-631a-3c14-96019f9cc117/26UMGIM73140.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6807197459",
+			"title": "Bass Persuades",
+			"artist": "マイリー・サイラス",
+			"album": "Bass Persuades",
+			"durationMs": 202461,
+			"url": "https://music.apple.com/jp/album/bass-persuades/6807197456?i=6807197459",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/00/d4/32/00d432e3-a454-b3c9-d905-415d3afcb5f7/mzaf_4705230866933064384.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ff/af/51/ffaf51a6-d711-6f92-a5d6-f90e98014f0f/075679564061.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1537331532",
@@ -365,16 +385,6 @@
 			"url": "https://music.apple.com/jp/album/ex-otogibanashi/1869843536?i=1869843680",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/51/61/6c/51616ca9-4f37-f977-72a4-6a5299cea5d2/mzaf_17933705570527889606.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "6781198668",
-			"title": "なんもねえ",
-			"artist": "忘れらんねえよ",
-			"album": "なんもねえ - Single",
-			"durationMs": 171000,
-			"url": "https://music.apple.com/jp/album/%E3%81%AA%E3%82%93%E3%82%82%E3%81%AD%E3%81%88/6781198667?i=6781198668",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c9/28/83/c9288393-3515-ef7b-6d51-1186cf21bedc/mzaf_14081471784850322326.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6e/28/00/6e280007-5f1f-388e-4041-e593d43d1297/4988021077361.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1869542662",
@@ -777,6 +787,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/d4/e1/10/d4e11047-904c-cf42-00c5-3f3d9a217c04/4540774148622.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "6803283192",
+			"title": "serena joy",
+			"artist": "オリヴィア・ロドリゴ",
+			"album": "serena joy - Single",
+			"durationMs": 185839,
+			"url": "https://music.apple.com/jp/album/serena-joy/6803283190?i=6803283192",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/5f/72/f6/5f72f6b5-9303-0e34-0061-6d482966dd4a/mzaf_3277005726351200013.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/74/88/51/748851f3-26da-36f5-65a3-d41fe0b292ec/26UM1IM06641.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1869843682",
 			"title": "ハッピーシンセサイザ (Cover)",
 			"artist": "かぐや(cv.夏吉ゆうこ) & 超かぐや姫!",
@@ -785,6 +805,16 @@
 			"url": "https://music.apple.com/jp/album/%E3%83%8F%E3%83%83%E3%83%94%E3%83%BC%E3%82%B7%E3%83%B3%E3%82%BB%E3%82%B5%E3%82%A4%E3%82%B6-cover/1869843536?i=1869843682",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/39/5f/b0/395fb0ce-7ad0-a0dd-cbe2-00554c2b98b7/mzaf_12246305121213161920.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1889992113",
+			"title": "drop dead",
+			"artist": "オリヴィア・ロドリゴ",
+			"album": "you seem pretty sad for a girl so in love",
+			"durationMs": 224999,
+			"url": "https://music.apple.com/jp/album/drop-dead/1889992111?i=1889992113",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/89/57/ad/8957adf6-1862-4e4e-bcb5-810d6cf79cc4/mzaf_7752581374620577831.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1d/1b/f9/1d1bf9b1-44c6-9a6c-6ffb-c158488c06ce/26UMGIM39303.rgb.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1869843659",
@@ -847,6 +877,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2c/74/cd/2c74cd39-ed84-e403-f4fb-cdf80216d91b/4540774149834.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1821382352",
+			"title": "すーぱーびっぐらぶ!",
+			"artist": "天狼群",
+			"album": "すーぱーびっぐらぶ! - Single",
+			"durationMs": 249711,
+			"url": "https://music.apple.com/jp/album/%E3%81%99%E3%83%BC%E3%81%B1%E3%83%BC%E3%81%B3%E3%81%A3%E3%81%90%E3%82%89%E3%81%B6/1821382351?i=1821382352",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ed/01/f3/ed01f3a4-5579-cc21-0cd0-69d20f8a59e1/mzaf_17292202630048303930.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/63/32/7f/63327f81-33fa-28bb-c282-7bbbc2df6177/dj.mstyvdil.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1821656927",
 			"title": "Feel",
 			"artist": "羊文学",
@@ -895,16 +935,6 @@
 			"url": "https://music.apple.com/jp/album/nasty/1783002566?i=1783002567",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/37/69/86/376986d8-42c9-4052-5418-45e3838bea0a/mzaf_14168492795312105692.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/39/7a/b4/397ab414-2b1f-c016-ca0f-248828eb0631/075679624505.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "6807197459",
-			"title": "Bass Persuades",
-			"artist": "マイリー・サイラス",
-			"album": "Bass Persuades",
-			"durationMs": 202461,
-			"url": "https://music.apple.com/jp/album/bass-persuades/6807197456?i=6807197459",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d7/49/16/d7491673-f360-48e1-21e1-e9ae87899e34/mzaf_8874309465923037266.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ff/af/51/ffaf51a6-d711-6f92-a5d6-f90e98014f0f/075679564061.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1377826728",
@@ -985,36 +1015,6 @@
 			"url": "https://music.apple.com/jp/album/%E6%8B%9D%E5%95%93%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%AB%E3%83%97%E3%82%BB%E3%83%AB/1734551569?i=1734551571",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/5a/d8/a0/5ad8a022-fbdc-16a2-7803-a014bafc6329/mzaf_5056499945863540162.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/ea/ac/c2/eaacc294-2959-389c-c310-ce28c55c37b5/4540774241149.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1837658529",
-			"title": "IRIS OUT",
-			"artist": "米津玄師",
-			"album": "IRIS OUT - Single",
-			"durationMs": 151573,
-			"url": "https://music.apple.com/jp/album/iris-out/1837658528?i=1837658529",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/90/85/cb/9085cb94-33c8-78bc-b8a6-4750232a210d/mzaf_5526054165895597852.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e0/f9/f1/e0f9f1f3-a088-b28d-6760-a28accabc705/4547366775181.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1883618562",
-			"title": "トモダチになれる場所",
-			"artist": "みらくらぱーく!",
-			"album": "トモダチになれる場所 - EP",
-			"durationMs": 244125,
-			"url": "https://music.apple.com/jp/album/%E3%83%88%E3%83%A2%E3%83%80%E3%83%81%E3%81%AB%E3%81%AA%E3%82%8C%E3%82%8B%E5%A0%B4%E6%89%80/1883618561?i=1883618562",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2f/8d/d4/2f8dd48b-61fd-f4c3-9144-645991b9fc2b/mzaf_10751085373729855211.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/33/37/62/33376210-c831-370d-4460-8777a2314ab4/4540774248179.png/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1811807101",
-			"title": "I'm Outta Time",
-			"artist": "オアシス",
-			"album": "Dig Out Your Soul",
-			"durationMs": 250013,
-			"url": "https://music.apple.com/jp/album/im-outta-time/1811807096?i=1811807101",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6b/06/58/6b06588e-784e-1ea6-1ea6-8a21bce4c05c/mzaf_16954965830940360890.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ae/09/0b/ae090bdd-11b3-38f5-3f7d-84d4cdf1df51/4547366747669.jpg/{w}x{h}bb.jpg"
 		}
 	]
 }
