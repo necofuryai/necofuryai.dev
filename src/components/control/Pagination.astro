@@ -56,6 +56,7 @@ const getPageUrl = (p: number) => {
          リンクとしてタブ順に残り、アクセシブルな名前も持たないため
          Lighthouse の link-name に落ちる (.disabled の pointer-events: none は
          マウス操作しか止められない)。href の無い <a> はリンクとして公開されない。 -->
+    {/* biome-ignore lint/a11y/useAnchorContent: アイコンのみのリンク。アクセシブルな名前は aria-label が与える (Biome 2.5.14 から HTML/Astro でも aria-label を内容とみなさない) */}
     <a href={page.url.prev} aria-label={page.url.prev ? "Previous Page" : null}
        class:list={["btn-card overflow-hidden rounded-lg text-[var(--primary)] w-11 h-11",
            {"disabled": page.url.prev === undefined}
@@ -78,6 +79,7 @@ const getPageUrl = (p: number) => {
             >{p}</a>
         })}
     </div>
+    {/* biome-ignore lint/a11y/useAnchorContent: アイコンのみのリンク。アクセシブルな名前は aria-label が与える (Biome 2.5.14 から HTML/Astro でも aria-label を内容とみなさない) */}
     <a href={page.url.next} aria-label={page.url.next ? "Next Page" : null}
        class:list={["btn-card overflow-hidden rounded-lg text-[var(--primary)] w-11 h-11",
            {"disabled": page.url.next === undefined}
