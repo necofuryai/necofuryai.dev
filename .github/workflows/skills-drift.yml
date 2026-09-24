@@ -61,13 +61,17 @@ jobs:
       #
       # 終了コード 2 (検査自体の失敗) を 1 (上流更新あり) と区別する。混同すると
       # 上流の一時的な取得エラーで「更新あり」の Issue が立つ。
+      #
+      # shell: bash は bash -e で起動し、set -uo pipefail では -e は外れない。
+      # 素の report=$(...) だと非 0 終了の時点でステップが打ち切られ、レポートの出力も
+      # 下の case による振り分けも行われない。そのため || で終了コードを受け取る。
       - name: Check for drift
         id: check
         shell: bash
         run: |
           set -uo pipefail
-          report=$(pnpm --silent run diff-skills 2>&1)
-          rc=$?
+          rc=0
+          report=$(pnpm --silent run diff-skills 2>&1) || rc=$?
           echo "$report"
           case "$rc" in
             0) drift=false ;;

@@ -15,8 +15,9 @@ Claude Code のプロジェクトスコープのスキル。このリポジト�
 |---|---|
 | `wrangler/SKILL.md` | `skills/wrangler/SKILL.md` |
 | `workers-best-practices/SKILL.md` | `skills/workers-best-practices/SKILL.md` |
-| `workers-best-practices/references/rules.md` | `skills/workers-best-practices/references/rules.md` |
-| `workers-best-practices/references/review.md` | `skills/workers-best-practices/references/review.md` |
+| `workers-best-practices/references/configuration.md` | `skills/workers-best-practices/references/configuration.md` |
+| `workers-best-practices/references/platform-apis.md` | `skills/workers-best-practices/references/platform-apis.md` |
+| `workers-best-practices/references/runtime-patterns.md` | `skills/workers-best-practices/references/runtime-patterns.md` |
 | `workers-best-practices/references/static-assets/*.md` | `skills/cloudflare/references/static-assets/*.md` |
 | `workers-best-practices/references/observability/*.md` | `skills/cloudflare/references/observability/*.md` |
 
@@ -27,9 +28,14 @@ Claude Code のプロジェクトスコープのスキル。このリポジト�
 
 Apache-2.0 第 4 条 (b) に基づく変更告知。以下の 2 点以外は上流と同一。
 
-1. `workers-best-practices/SKILL.md` の "Reference Documentation" 節に、同梱した `references/static-assets/` と `references/observability/` の 2 行を追記。
-2. 両 `SKILL.md` の "Retrieval Sources" 表にある `node_modules/wrangler/config-schema.json` の行に、このリポジトリの事情を注記。
+1. `workers-best-practices/SKILL.md` の "References" 表に、同梱した `references/static-assets/` と `references/observability/` の 2 行を追記。
+2. 両 `SKILL.md` にある Wrangler の設定スキーマ (`config-schema.json`) を参照させる箇所に、このリポジトリの事情を注記。
+   `wrangler/SKILL.md` は "Retrieve What the Task Needs" 表の "Edit config or add a binding" 行、`workers-best-practices/SKILL.md` は "References" 表の直後の段落にある "Use the installed Wrangler schema for config fields." の文。
    wrangler は `package.json` の依存に入っておらず (デプロイは Cloudflare 側の Git 連携ビルド)、`node_modules/wrangler/` は存在しないため、スキーマ参照はドキュメント URL へフォールバックさせる必要がある。
+
+参照資料 (`references/` 以下) は上流と同一のまま置いている。
+`references/configuration.md` にも `node_modules/wrangler/config-schema.json` への言及が残るが、上記 2 の注記が入口の `SKILL.md` で先に読まれるため改変していない。
+`references/observability/README.md` 末尾の `../analytics-engine/` などへの相対リンクは上流の包括スキル内の資料を指しており、このリポジトリには同梱していないためリンク切れになる。
 
 ## 上流への再同期
 
@@ -48,7 +54,7 @@ pnpm diff-skills
 | コード | 意味 |
 |---|---|
 | 0 | 対応不要 (完全一致、またはローカル改変のみ) |
-| 1 | 要対応 (上流が更新された、またはファイルが欠落している) |
+| 1 | 要対応 (上流が更新・削除・移動された、またはファイルが欠落している) |
 | 2 | 検査自体が失敗した (上流の取得エラーなど) |
 
 プラグイン経由ではないため上流更新は自動では降ってこないが、上記ワークフローが毎週月曜に検査し、更新があれば Issue を立てる。
