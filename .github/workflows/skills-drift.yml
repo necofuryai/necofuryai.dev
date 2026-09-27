@@ -5,8 +5,9 @@
 #
 # 乖離には性質の異なる 2 種類があり、トリガーごとに扱いを変える:
 # - pull_request (.claude/skills/、検査スクリプトとその定義、このワークフローを触った PR のみ):
-#   ベンダリングファイルの改変は PR の責任なのでジョブを失敗させる。改変するなら
-#   LOCALLY_MODIFIED への登録が要る、という強制。ファイル冒頭の変更告知は通信を要しないため、
+#   ベンダリングファイルの改変は PR の責任なのでジョブを失敗させる。改変するなら、改変の元にした
+#   上流の版の blob SHA とともに LOCALLY_MODIFIED への登録が要る、という強制。上流を取り込み直した PR で
+#   その値を更新し忘れた場合もここで失敗する。ファイル冒頭の変更告知は通信を要しないため、
 #   必須チェックで走る単体テスト (tests/unit/vendored-skills-notice.test.mjs) が検査する。
 #   README の「上流からの改変点」への記録は機械的に検査しないため、レビューで確認する。
 # - schedule / workflow_dispatch: 上流更新は誰の PR の責任でもないため失敗させず、Issue に記録する。
@@ -97,7 +98,7 @@ jobs:
       - name: Fail the pull request on drift
         if: github.event_name == 'pull_request' && steps.check.outputs.drift == 'true'
         run: |
-          echo "::error::ベンダリングしたスキルが上流と乖離しています。改変が意図的なら scripts/cloudflare-skills-manifest.mjs の LOCALLY_MODIFIED に登録し、改変したファイルの冒頭 (frontmatter があればその直後) に変更告知を置いたうえで、.claude/skills/README.md の「上流からの改変点」に追記してください。"
+          echo "::error::ベンダリングしたスキルが上流と乖離しています。改変が意図的なら scripts/cloudflare-skills-manifest.mjs の LOCALLY_MODIFIED に改変の元にした上流の版の blob SHA とともに登録し (値の求め方は .claude/skills/README.md の「上流への再同期」を参照)、改変したファイルの冒頭 (frontmatter があればその直後) に変更告知を置いたうえで、.claude/skills/README.md の「上流からの改変点」に追記してください。「更新」と表示されたファイルは、上流を取り込み直したうえで LOCALLY_MODIFIED の blob SHA を新しい版の値に更新してください。"
           exit 1
 
   # 週次実行で上流更新を見つけた場合の記録係。チェックアウトしないので
@@ -128,7 +129,7 @@ jobs:
           body=$(printf '%s\n\n```\n%s\n```\n\n%s\n\n%s\n' \
             "[cloudflare/skills](https://github.com/cloudflare/skills) に \`.claude/skills/\` へ未反映の更新があります。" \
             "$REPORT" \
-            "取り込む手順は \`.claude/skills/README.md\` の「上流への再同期」を参照してください。差分本文は \`pnpm diff-skills --diff\` で確認できます。ローカル改変済みの 2 ファイルは上流更新が「改変」表示に埋もれるため、目視での確認が要ります。" \
+            "取り込む手順は \`.claude/skills/README.md\` の「上流への再同期」を参照してください。差分本文は \`pnpm diff-skills --diff\` で確認できます。「更新」と表示されたファイルはローカル改変済みなので、改変を当て直したうえで \`scripts/cloudflare-skills-manifest.mjs\` の \`LOCALLY_MODIFIED\` の blob SHA を更新してください。" \
             "実行ログ: ${RUN_URL}")
           existing=$(gh issue list --state open --search "in:title \"${TITLE}\"" --json number --jq '.[0].number // empty')
           if [ -n "$existing" ]; then

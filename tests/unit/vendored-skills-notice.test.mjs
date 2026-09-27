@@ -35,7 +35,7 @@ test("firstContentLine skips frontmatter and blank lines", () => {
 });
 
 test("locally modified vendored files start with the change notice", async () => {
-	for (const name of LOCALLY_MODIFIED) {
+	for (const name of LOCALLY_MODIFIED.keys()) {
 		const text = await readFile(new URL(name, SKILLS_DIR), "utf8");
 		assert.ok(
 			firstContentLine(text).startsWith(`> ${MODIFICATION_NOTICE}`),

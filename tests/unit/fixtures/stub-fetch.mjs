@@ -4,18 +4,23 @@
 //
 // STUB_FETCH_MODE で上流の状態を、STUB_FETCH_TARGET (.claude/skills/ からの相対パス) で
 // その状態にするファイルを指定する。
-// - match: 各ファイルに手元と同じ内容を返す。LOCALLY_MODIFIED だけは手元と異なる内容を返し「改変」にする
-// - diff: match に加え、TARGET の内容だけを変える
+// - match: 各ファイルに手元と同じ内容を返す。LOCALLY_MODIFIED だけは手元と異なる「改変の元にした版」を返し
+//   「改変」にする
+// - diff: match に加え、TARGET の内容だけを変える。TARGET が LOCALLY_MODIFIED なら、改変の元にした版から
+//   上流が更新された状態になる
 // - gone: match に加え、TARGET だけ 404 を返す
 // - http-error: match に加え、TARGET だけ 500 を返す
 // - network-error: match に加え、TARGET だけ fetch 自体を失敗させる
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import {
-	FILES,
-	LOCALLY_MODIFIED,
-	UPSTREAM,
-} from "../../../scripts/cloudflare-skills-manifest.mjs";
+import { changedUpstream, vendoredUpstream } from "./stub-upstream.mjs";
+
+// 定義ファイルは、実行中のスクリプトと同じ位置のものを読み込む。固定のパスから静的に import すると、
+// 一時ディレクトリへ複製した木のテストではスクリプトと別のモジュールになり、下の基準の登録が届かない
+const scriptUrl = pathToFileURL(process.argv[1]);
+const { FILES, LOCALLY_MODIFIED, UPSTREAM, gitBlobSha } = await import(
+	new URL("./cloudflare-skills-manifest.mjs", scriptUrl).href
+);
 
 const mode = process.env.STUB_FETCH_MODE ?? "match";
 const TARGET = process.env.STUB_FETCH_TARGET;
@@ -23,7 +28,7 @@ if (mode !== "match" && !FILES.some(([local]) => local === TARGET)) {
 	throw new Error(`stub-fetch: STUB_FETCH_TARGET が FILES にない: ${TARGET}`);
 }
 // 実行中のスクリプトの位置から同梱ディレクトリを求める (一時ディレクトリへ複製した木でも動くように)
-const skillsDir = new URL("../.claude/skills/", pathToFileURL(process.argv[1]));
+const skillsDir = new URL("../.claude/skills/", scriptUrl);
 const localByUrl = new Map(
 	FILES.map(([local, upstream]) => [`${UPSTREAM}/${upstream}`, local]),
 );
@@ -36,6 +41,12 @@ function readLocal(name) {
 		if (error.code === "ENOENT") return "stub upstream content\n";
 		throw error;
 	}
+}
+
+// LOCALLY_MODIFIED の値は本物の上流の内容の blob SHA で、スタブはその内容を持たない。
+// そこでテストの間だけ、スタブが返す改変の元にした版の blob SHA を基準として登録し直す
+for (const name of LOCALLY_MODIFIED.keys()) {
+	LOCALLY_MODIFIED.set(name, gitBlobSha(vendoredUpstream(readLocal(name))));
 }
 
 globalThis.fetch = async (input) => {
@@ -58,8 +69,9 @@ globalThis.fetch = async (input) => {
 		}
 	}
 
-	let body = readLocal(name);
-	if (LOCALLY_MODIFIED.has(name)) body += "\nupstream-only line\n";
-	if (name === TARGET && mode === "diff") body += "\nchanged upstream\n";
+	let body = LOCALLY_MODIFIED.has(name)
+		? vendoredUpstream(readLocal(name))
+		: readLocal(name);
+	if (name === TARGET && mode === "diff") body = changedUpstream(body);
 	return new Response(body, { status: 200 });
 };
