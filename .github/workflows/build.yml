@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     name: Astro Check
     steps:
@@ -54,7 +54,7 @@ jobs:
         run: pnpm type-check
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     name: Astro Build
     steps:
@@ -101,7 +101,7 @@ jobs:
 
   ui-smoke:
     name: UI smoke test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     container:
       image: mcr.microsoft.com/playwright:v1.63.0-noble@sha256:eff16c30e6f3f4af0a03fa4b706120d5e9b0891c344a27d64559aff5900a4a27
@@ -145,7 +145,7 @@ jobs:
 
   ci-scripts:
     name: CI script unit tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -177,7 +177,7 @@ jobs:
     name: CI OK
     if: always()
     needs: [ check, build, ui-smoke, ci-scripts ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
       - name: Require all checks to succeed

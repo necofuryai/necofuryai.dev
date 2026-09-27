@@ -1,0 +1,188 @@
+# 使い捨ての試験用ワークフロー。main にはマージしない。
+# ubuntu-latest が Ubuntu 26.04 に切り替わる (2026-10-19 開始) 前に、ワークフローが頼っている
+# ホストのコマンドの挙動を ubuntu-24.04 と並べて確かめる。資格情報を使わず、チェックアウトもしない。
+# 本番の該当箇所と同じ形 (オプション、set -euo pipefail、パイプの組み方) で実行し、期待値と比べる。
+name: Trial Ubuntu 26.04 probe
+
+on:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  probe:
+    name: Probe (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-26.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      # (a) 実体の記録。判定はせず、ログに残すだけ。shell: bash は bash -e で起動するので、
+      # 未インストールのパッケージの照会などで止まらないよう -e を明示的に外す
+      - name: Record host facts
+        shell: bash
+        run: |
+          set +e -uo pipefail
+          cat /etc/os-release
+          for c in tr head wc base64 mktemp sleep cp rm; do
+            printf '%-7s -> %s\n' "$c" "$(readlink -f "$(command -v "$c")")"
+          done
+          echo "--- tr --version"
+          tr --version 2>&1 | head -n 2
+          echo "--- dpkg"
+          dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version}\n' \
+            coreutils coreutils-from-uutils coreutils-from-gnu gnu-coreutils rust-coreutils sudo sudo-rs 2>&1
+          echo "--- gnu-prefixed tools"
+          command -v gnutr gnuhead gnuwc gnubase64 || echo "(none)"
+          echo "--- /tmp"
+          findmnt -no FSTYPE,SIZE,OPTIONS /tmp || true
+          echo "--- runner layout"
+          echo "RUNNER_TEMP=$RUNNER_TEMP HOME=$HOME USER=$(id -un)"
+          ls -ld "$HOME/.config" "$HOME/.cache" 2>&1 || true
+          echo "--- versions"
+          node --version
+          jq --version
+          echo "bash $BASH_VERSION"
+
+      # (b) dependabot-advisory-review.yml の sanitize (L177-178) と同じ除去処理の差分検査。
+      # 期待値は Node のバイト単位のフィルタで計算する。gnutr があれば 2 つ目の参照として比べる
+      - name: Differential test of the sanitize filter
+        shell: bash
+        run: |
+          set -euo pipefail
+          d="$RUNNER_TEMP/probe-sanitize"
+          mkdir -p "$d"
+          node - "$d" <<'EOF'
+          const { writeFileSync } = require("node:fs");
+          const { randomBytes } = require("node:crypto");
+          const { join } = require("node:path");
+          const [dir] = process.argv.slice(2);
+          // tr -d '\000-\010\013\014\016-\037\177' が取り除くバイト (8 進)
+          const drop = (b) => b <= 0o10 || b === 0o13 || b === 0o14 || (b >= 0o16 && b <= 0o37) || b === 0o177;
+          const cases = {
+            "all256.bin": Buffer.from(Array.from({ length: 256 }, (_, i) => i)),
+            "random.bin": randomBytes(1048576),
+            "text.txt": Buffer.from("+\x1b[31mred\x1b[0m\x07\r\n+日本語\tタブ\x00\x7f\n\x0b\x0c end", "utf8"),
+            "exact-1mib.txt": Buffer.alloc(1048576, 0x61),
+            "empty.txt": Buffer.alloc(0),
+          };
+          for (const [name, buf] of Object.entries(cases)) {
+            writeFileSync(join(dir, name), buf);
+            writeFileSync(join(dir, `${name}.expected`), Buffer.from(buf.filter((b) => !drop(b))).subarray(0, 1048576));
+          }
+          EOF
+          sha256sum "$d/all256.bin.expected"
+          fail=0
+          for f in all256.bin random.bin text.txt exact-1mib.txt empty.txt; do
+            # 本番は set -euo pipefail の下でこのパイプを実行する。非 0 終了も失敗として記録する
+            if ! LC_ALL=C tr -d '\000-\010\013\014\016-\037\177' < "$d/$f" \
+              | head -c 1048576 > "$d/$f.out"; then
+              echo "::error::sanitize pipeline exited non-zero for $f"
+              fail=1
+              continue
+            fi
+            if cmp "$d/$f.out" "$d/$f.expected"; then
+              echo "OK    tr/head   $f ($(wc -c < "$d/$f.out") bytes)"
+            else
+              echo "::error::sanitize filter output differs for $f"
+              fail=1
+            fi
+            if command -v gnutr > /dev/null; then
+              LC_ALL=C gnutr -d '\000-\010\013\014\016-\037\177' < "$d/$f" \
+                | gnuhead -c 1048576 > "$d/$f.gnu"
+              if cmp "$d/$f.gnu" "$d/$f.expected"; then
+                echo "OK    gnutr     $f"
+              else
+                echo "::error::gnutr output differs for $f"
+                fail=1
+              fi
+            fi
+          done
+          exit "$fail"
+
+      # (c) そのほかのホストのコマンド。本番と同じ形で実行し、固定の期待値と比べる
+      - name: Check other host commands used by workflows
+        shell: bash
+        env:
+          TITLE: "chore: Apple Music playlist refresh PR を確認する"
+          MARKER: "<!-- playlist-refresh-monitor -->"
+          GITHUB_REPOSITORY_FIXTURE: necofuryai/necofuryai.dev
+        run: |
+          set -euo pipefail
+          d="$(mktemp -d)"
+          [[ -d "$d" ]]
+          echo "OK    mktemp -d -> $d"
+
+          # dependabot-advisory-review.yml L110-112: wc -c / wc -l を算術式で比べる
+          printf 'a\nbb\nccc\n' > "$d/w.txt"
+          diff_bytes="$(wc -c < "$d/w.txt")"
+          diff_lines="$(wc -l < "$d/w.txt")"
+          (( diff_bytes == 9 && diff_lines == 3 ))
+          if (( diff_bytes > 1048576 || diff_lines > 2000 )); then exit 1; fi
+          echo "OK    wc -c/-l (${diff_bytes} bytes, ${diff_lines} lines)"
+
+          # dependabot-advisory-review.yml L120-125: head -c による切り詰め (入力が上限以下の場合)
+          printf '%s' "short body" | head -c 65536 > "$d/body.txt"
+          [[ "$(cat "$d/body.txt")" == "short body" ]]
+          echo "OK    head -c"
+
+          # monitor-playlist-refresh.yml L66-67 と L108: jq の @base64 と base64 --decode の往復
+          result='{"stale":true,"report":"行 1\n- #12 open since 2026-09-01 <!-- x -->\n"}'
+          stale="$(jq -r '.stale' <<< "$result")"
+          report_base64="$(jq -r '.report | @base64' <<< "$result")"
+          [[ "$stale" == "true" || "$stale" == "false" ]]
+          [[ "$stale" == "true" ]]
+          report="$(printf '%s' "$report_base64" | base64 --decode)"
+          [[ "$report" == "$(jq -r '.report' <<< "$result")" ]]
+          body="$(printf '%s\n\n%s\n' "$MARKER" "$report")"
+          [[ "$body" == "$MARKER"$'\n\n'"行 1"$'\n'"- #12 open since 2026-09-01 <!-- x -->" ]]
+          echo "OK    jq @base64 / base64 --decode"
+
+          # monitor-playlist-refresh.yml L97-105: Issue の検索
+          open_issues="$(jq -n --arg title "$TITLE" --arg marker "$MARKER" '[
+            {number: 1, title: $title, body: "no marker"},
+            {number: 2, title: "other", body: ($marker + "\nx")},
+            {number: 3, title: $title, body: null},
+            {number: 4, title: $title, body: ($marker + "\nbody 4")},
+            {number: 5, title: $title, body: ($marker + "\nbody 5")}
+          ]')"
+          existing="$(
+            jq -r --arg title "$TITLE" --arg marker "$MARKER" \
+              '[.[] | select(.title == $title and ((.body // "") | startswith($marker)))][0].number // empty' \
+              <<< "$open_issues"
+          )"
+          existing_body="$(
+            jq -r --arg title "$TITLE" --arg marker "$MARKER" \
+              '[.[] | select(.title == $title and ((.body // "") | startswith($marker)))][0].body // empty' \
+              <<< "$open_issues"
+          )"
+          [[ "$existing" == "4" ]]
+          [[ "$existing_body" == "$MARKER"$'\n'"body 4" ]]
+          none="$(jq -r '[.[] | select(.title == "absent")][0].number // empty' <<< "$open_issues")"
+          [[ -z "$none" ]]
+          echo "OK    jq issue lookup"
+
+          # dependabot-advisory-review.yml L60-81: preflight の jq
+          run_json='{"name":"Build and Check","event":"pull_request","head_sha":"abc","head_repository":{"full_name":"necofuryai/necofuryai.dev"}}'
+          [[ "$(jq -r '.name' <<<"$run_json")" == "Build and Check" ]]
+          [[ "$(jq -r '.head_repository.full_name' <<<"$run_json")" == "necofuryai/necofuryai.dev" ]]
+          prs_json='[{"number":7,"base":{"ref":"dev","repo":{"full_name":"necofuryai/necofuryai.dev"}}},{"number":8,"base":{"ref":"main","repo":{"full_name":"necofuryai/necofuryai.dev"}}}]'
+          pr_number="$(jq -r --arg repo "$GITHUB_REPOSITORY_FIXTURE" \
+            '[.[] | select(.base.repo.full_name == $repo and .base.ref == "main")][0].number // empty' <<<"$prs_json")"
+          [[ "$pr_number" == "8" ]]
+          pr_json='{"user":{"login":"dependabot[bot]"},"draft":false,"head":{"sha":"abc","repo":{"full_name":"necofuryai/necofuryai.dev"}}}'
+          [[ "$(jq -r '.user.login' <<<"$pr_json")" == "dependabot[bot]" ]]
+          [[ "$(jq -r '.draft' <<<"$pr_json")" == "false" ]]
+          echo "OK    jq preflight filters"
+
+          # dependabot-automerge.yml L95: sleep に変数の秒数を渡す
+          attempt=1
+          start=$SECONDS
+          sleep "$attempt"
+          (( SECONDS - start >= 1 ))
+          echo "OK    sleep"
+
+          rm -rf "$d"
+          echo "all checks passed"

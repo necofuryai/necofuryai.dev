@@ -15,7 +15,7 @@ concurrency:
 jobs:
   preflight:
     name: Inspect pull request without executing its code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     permissions:
       contents: read
@@ -71,7 +71,7 @@ jobs:
     name: Clear stale Dependabot auto-merge request
     needs: preflight
     if: needs.preflight.outputs.is_dependabot == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     permissions:
       contents: write
@@ -103,7 +103,7 @@ jobs:
     if: >-
       needs.preflight.outputs.is_dependabot == 'true' &&
       needs.preflight.outputs.manifest_only == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     permissions:
       contents: read
@@ -172,7 +172,7 @@ jobs:
       needs.clear.result == 'success' &&
       needs.metadata.result == 'success' &&
       needs.metadata.outputs.eligible == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     permissions:
       contents: write
@@ -193,7 +193,7 @@ jobs:
     name: Dependabot Auto-merge Policy
     if: always()
     needs: [preflight, clear, metadata, enable]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     permissions: {}
     env:
