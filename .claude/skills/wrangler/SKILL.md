@@ -3,6 +3,8 @@ name: wrangler
 description: Run or troubleshoot Wrangler CLI commands and configure Worker projects for local development, Previews, deployment, and Cloudflare resource management.
 ---
 
+> **Modified by necofuryai:** this file is a modified copy of [`skills/wrangler/SKILL.md`](https://github.com/cloudflare/skills/blob/main/skills/wrangler/SKILL.md) from [cloudflare/skills](https://github.com/cloudflare/skills), licensed under the [Apache License 2.0](../LICENSE). The "Edit config or add a binding" row notes that `config-schema.json` is absent in this repository. See "上流からの改変点" in [`../README.md`](../README.md) for details.
+
 # Wrangler CLI
 
 Use the project's Wrangler version and retrieve the relevant documentation before writing commands or configuration. CLI flags and configuration fields change; do not rely on memorized examples.

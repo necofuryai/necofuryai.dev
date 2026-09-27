@@ -1,10 +1,14 @@
 # .claude/skills/ にベンダリングした cloudflare/skills (Apache-2.0) と上流の乖離を検出する。
 # これらのスキルはプラグイン経由ではなく手動コピーのため上流更新が自動で降ってこず、放置すると
-# .claude/skills/README.md の「上流からの改変点」(Apache-2.0 第 4 条 (b) の変更告知) が実態とずれる。
+# 改変したファイル冒頭の変更告知と .claude/skills/README.md の「上流からの改変点」
+# (Apache-2.0 第 4 条 (b)) が実態とずれる。
 #
 # 乖離には性質の異なる 2 種類があり、トリガーごとに扱いを変える:
-# - pull_request (.claude/skills/ を触った PR のみ): ベンダリングファイルの改変は PR の責任なので
-#   ジョブを失敗させる。改変するなら LOCALLY_MODIFIED への登録と README への記録が要る、という強制。
+# - pull_request (.claude/skills/、検査スクリプトとその定義、このワークフローを触った PR のみ):
+#   ベンダリングファイルの改変は PR の責任なのでジョブを失敗させる。改変するなら
+#   LOCALLY_MODIFIED への登録が要る、という強制。ファイル冒頭の変更告知は通信を要しないため、
+#   必須チェックで走る単体テスト (tests/unit/vendored-skills-notice.test.mjs) が検査する。
+#   README の「上流からの改変点」への記録は機械的に検査しないため、レビューで確認する。
 # - schedule / workflow_dispatch: 上流更新は誰の PR の責任でもないため失敗させず、Issue に記録する。
 #   Actions タブを恒常的に赤くせず、かつ通知メールのように流れて消えないようにするための選択。
 #
@@ -18,6 +22,7 @@ on:
     paths:
       - ".claude/skills/**"
       - "scripts/diff-cloudflare-skills.mjs"
+      - "scripts/cloudflare-skills-manifest.mjs"
       - ".github/workflows/skills-drift.yml"
   workflow_dispatch:
   schedule:
@@ -51,16 +56,16 @@ jobs:
         with:
           node-version: 24
 
-      - name: Setup pnpm
-        uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
-        with:
-          install: false
-
-      # diff-cloudflare-skills.mjs は Node 組み込みモジュールのみで動くため install は不要。
-      # 依存を足す場合はここに pnpm install --frozen-lockfile を追加すること。
+      # diff-cloudflare-skills.mjs は Node 組み込みモジュールと fetch だけで動くため、
+      # pnpm のセットアップも install も不要。pnpm を経由しないことで、このワークフローが
+      # pnpm 本体やその setup アクションの更新の影響を受けなくなる。
+      # 依存を足す場合は Setup pnpm と pnpm install --frozen-lockfile を戻すこと。
       #
-      # 終了コード 2 (検査自体の失敗) を 1 (上流更新あり) と区別する。混同すると
-      # 上流の一時的な取得エラーで「更新あり」の Issue が立つ。
+      # スクリプトは「上流更新あり」だけを専用の終了コード 20 で報告する
+      # (scripts/cloudflare-skills-manifest.mjs の EXIT_DRIFT)。それ以外の非 0 はすべて検査自体の
+      # 失敗として扱い、Issue は立てずにジョブを失敗させる。Node は読み込み時のエラーや構文エラーも
+      # 1 で報告するため、1 を「更新あり」に使うと、壊れたスクリプトが「更新あり」の Issue を立ててしまう。
+      # この分類は tests/unit/skills-drift-workflow.test.mjs が、このステップの本文を取り出して実行し検査する。
       #
       # shell: bash は bash -e で起動し、set -uo pipefail では -e は外れない。
       # 素の report=$(...) だと非 0 終了の時点でステップが打ち切られ、レポートの出力も
@@ -70,14 +75,15 @@ jobs:
         shell: bash
         run: |
           set -uo pipefail
+          script=scripts/diff-cloudflare-skills.mjs
           rc=0
-          report=$(pnpm --silent run diff-skills 2>&1) || rc=$?
+          report=$(node "$script" 2>&1) || rc=$?
           echo "$report"
           case "$rc" in
             0) drift=false ;;
-            1) drift=true ;;
+            20) drift=true ;;
             *)
-              echo "::error::diff-skills が想定外の終了コード ${rc} で終了しました。"
+              echo "::error::${script} による検査が失敗しました (終了コード ${rc})。"
               exit "$rc"
               ;;
           esac
@@ -91,7 +97,7 @@ jobs:
       - name: Fail the pull request on drift
         if: github.event_name == 'pull_request' && steps.check.outputs.drift == 'true'
         run: |
-          echo "::error::ベンダリングしたスキルが上流と乖離しています。改変が意図的なら scripts/diff-cloudflare-skills.mjs の LOCALLY_MODIFIED に登録し、.claude/skills/README.md の「上流からの改変点」に追記してください。"
+          echo "::error::ベンダリングしたスキルが上流と乖離しています。改変が意図的なら scripts/cloudflare-skills-manifest.mjs の LOCALLY_MODIFIED に登録し、改変したファイルの冒頭 (frontmatter があればその直後) に変更告知を置いたうえで、.claude/skills/README.md の「上流からの改変点」に追記してください。"
           exit 1
 
   # 週次実行で上流更新を見つけた場合の記録係。チェックアウトしないので

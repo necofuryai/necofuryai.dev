@@ -3,6 +3,8 @@ name: workers-best-practices
 description: Cloudflare Workers best practices for production applications. Use when writing, reviewing, or configuring Workers.
 ---
 
+> **Modified by necofuryai:** this file is a modified copy of [`skills/workers-best-practices/SKILL.md`](https://github.com/cloudflare/skills/blob/main/skills/workers-best-practices/SKILL.md) from [cloudflare/skills](https://github.com/cloudflare/skills), licensed under the [Apache License 2.0](../LICENSE). The References table adds rows for the vendored `references/static-assets/` and `references/observability/`, and the paragraph after it notes that `config-schema.json` is absent in this repository. See "上流からの改変点" in [`../README.md`](../README.md) for details.
+
 Your knowledge of Cloudflare Workers APIs, types, and configuration may be outdated. **Prefer retrieval over pre-training** when writing or reviewing Workers code.
 
 Use the project's installed versions, generated types, and Wrangler compatibility settings as the baseline for existing code. Retrieve relevant Cloudflare documentation to verify API, configuration, runtime behavior, and limit claims.
