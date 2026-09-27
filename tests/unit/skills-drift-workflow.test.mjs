@@ -12,6 +12,7 @@ import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { test } from "node:test";
 import { EXIT_DRIFT } from "../../scripts/cloudflare-skills-manifest.mjs";
+import { extractRunScript } from "./fixtures/workflow-step.mjs";
 
 // .github/workflows/skills-drift.yml の "Check for drift" ステップの本文を取り出し、GitHub Actions の
 // shell: bash と同じ `bash --noprofile --norc -e -o pipefail` で実行して、終了コードの分類を検査する。
@@ -24,40 +25,11 @@ const WORKFLOW = new URL(
 const skip =
 	process.platform === "win32" ? "bash と POSIX の PATH が前提" : false;
 
-// YAML パーサは依存にないため、行単位で run: | のブロックを取り出す。
-// ワークフローの形が変わって取り出せなくなったら、空振りせずに失敗させる。
-function extractCheckStep(yaml) {
-	const lines = yaml.split(/\r?\n/);
-	const nameIndex = lines.findIndex((line) =>
-		/^\s*- name: Check for drift\s*$/.test(line),
-	);
-	assert.notEqual(nameIndex, -1, "Check for drift ステップが見つからない");
-	const runIndex = lines.findIndex(
-		(line, index) => index > nameIndex && /^\s*run: \|\s*$/.test(line),
-	);
-	assert.notEqual(runIndex, -1, "run: | が見つからない");
-	assert.ok(
-		!lines.slice(nameIndex + 1, runIndex).some((line) => /^\s*- /.test(line)),
-		"run: | が Check for drift ステップの外にある",
-	);
-
-	const runIndent = lines[runIndex].search(/\S/);
-	const body = [];
-	for (const line of lines.slice(runIndex + 1)) {
-		if (line.trim() !== "" && line.search(/\S/) <= runIndent) break;
-		body.push(line);
-	}
-	const indent = Math.min(
-		...body
-			.filter((line) => line.trim() !== "")
-			.map((line) => line.search(/\S/)),
-	);
-	const script = body.map((line) => line.slice(indent)).join("\n");
-	assert.match(script, /case "\$rc" in/, "分類処理 (case) を取り出せていない");
-	return script;
-}
-
-const STEP = extractCheckStep(readFileSync(WORKFLOW, "utf8"));
+const STEP = extractRunScript(
+	readFileSync(WORKFLOW, "utf8"),
+	"Check for drift",
+);
+assert.match(STEP, /case "\$rc" in/, "分類処理 (case) を取り出せていない");
 
 // 偽の node は stdout と stderr の両方に書く。ステップは 2>&1 で両方をレポートとして受け取り、
 // 失敗時もその内容 (スクリプトが stderr に出す失敗の原因) をログへ出す必要がある

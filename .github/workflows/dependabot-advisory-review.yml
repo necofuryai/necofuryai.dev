@@ -117,12 +117,16 @@ jobs:
           fi
           rm -f "$raw/diff.patch.full"
 
-          gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.body // ""' \
-            | head -c 65536 > "$raw/pr-body-excerpt.txt"
+          # gh の出力を `| head -c` で切り詰めると、上限を超えたときに head が先に終わって gh が
+          # SIGPIPE で死ぬことがあり、pipefail がステップを落とす。全体をファイルに受けてから切り詰める。
+          gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.body // ""' > "$raw/pr-body.full"
+          head -c 65536 "$raw/pr-body.full" > "$raw/pr-body-excerpt.txt"
+          rm -f "$raw/pr-body.full"
 
           gh api "repos/${GITHUB_REPOSITORY}/commits/${HEAD_SHA}/check-runs?per_page=100" \
-            --jq '.check_runs[] | "\(.name): \(.status) \(.conclusion // "-")"' \
-            | head -c 32768 > "$raw/checks-summary.txt"
+            --jq '.check_runs[] | "\(.name): \(.status) \(.conclusion // "-")"' > "$raw/checks-summary.full"
+          head -c 32768 "$raw/checks-summary.full" > "$raw/checks-summary.txt"
+          rm -f "$raw/checks-summary.full"
 
           node - "$raw" "$SOURCE_RUN_ID" "$PR_NUMBER" "$HEAD_SHA" <<'EOF'
           const { createHash } = require("node:crypto");
@@ -172,6 +176,9 @@ jobs:
           out="$RUNNER_TEMP/claude-sanitized"
           mkdir -p "$out"
 
+          # tr は削るだけで出力が入力より大きくならず、preflight が各ファイルを 1 MiB 以下に抑えているので、
+          # head が tr より先に終わって SIGPIPE になることはない。preflight の上限を 1 MiB より上げるなら、
+          # ここもファイル経由に変える。
           for f in diff.patch pr-body-excerpt.txt checks-summary.txt; do
             [[ -f "$raw/$f" ]] || : > "$raw/$f"
             LC_ALL=C tr -d '\000-\010\013\014\016-\037\177' < "$raw/$f" \
