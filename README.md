@@ -38,9 +38,12 @@ Google アナリティクス 4 (GA4) を使用しています。
 
 ## ライセンス
 
-- コード: [MIT License](LICENSE)
+- コード: [MIT License](LICENSE) (`.claude/skills/` を除く)
 - 記事コンテンツ: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+- `.claude/skills/` 以下 ([cloudflare/skills](https://github.com/cloudflare/skills) から同梱したスキルと参照資料、およびその改変): [Apache License 2.0](.claude/skills/LICENSE)。上流からの改変点は [.claude/skills/README.md](.claude/skills/README.md) を参照
 
 ## Credits
 
 Built on [fuwari](https://github.com/saicaca/fuwari) by [saicaca](https://github.com/saicaca) (MIT License), imported at commit `6d39b0d`.
+
+The Claude Code skills in `.claude/skills/` are vendored from [cloudflare/skills](https://github.com/cloudflare/skills) by Cloudflare (Apache License 2.0).
