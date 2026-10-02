@@ -228,27 +228,39 @@ const gaInlineScript = gaMeasurementId
 	.enable-banner #banner-wrapper {
 		@apply h-[var(--banner-height-home)];
 	}
-	.enable-banner.is-home #banner-wrapper {
-		@apply h-[var(--banner-height-home)] translate-y-[var(--banner-height-extend)];
-	}
 
 	.enable-banner #banner {
 		@apply h-[var(--banner-height-home)] translate-y-[var(--bannerOffset)];
 	}
-	.enable-banner.is-home #banner {
-		@apply h-[var(--banner-height-home)] translate-y-0;
-	}
-	.enable-banner.is-home #main-grid {
-		@apply translate-y-[var(--banner-height-extend)];
-	}
 	.enable-banner #top-row {
 		@apply h-[calc(var(--banner-height-home)_-_4.5rem)] transition-all duration-300;
 	}
-	.enable-banner.is-home #sidebar-sticky {
-		@apply top-[calc(1rem_-_var(--banner-height-extend))];
-	}
 	.navbar-hidden {
 		@apply opacity-0 -translate-y-16;
+	}
+}
+
+/*
+ * トップページの body には "lg:is-home" クラスが付く。Tailwind v3 はこのクラスから
+ * 下のルールの lg バリアントを生成していたが、v4 は @layer 内で定義したクラスに
+ * バリアントを付けないため、ブレークポイントを直接書く。
+ * - @layer components の外に置く。v4 ではユーティリティ (#sidebar-sticky の top-4 など)
+ *   がカスケードレイヤーの順で components より優先され、詳細度では上書きできないため。
+ * - 1024px は scrollFunction の innerWidth >= 1024 と v3 の lg に合わせた値。v4 の lg
+ *   (64rem) とは、ブラウザの既定フォントサイズが 16px 以外のときにずれる。
+ */
+@media (min-width: 1024px) {
+	.enable-banner.lg\:is-home #banner-wrapper {
+		@apply h-[var(--banner-height-home)] translate-y-[var(--banner-height-extend)];
+	}
+	.enable-banner.lg\:is-home #banner {
+		@apply h-[var(--banner-height-home)] translate-y-0;
+	}
+	.enable-banner.lg\:is-home #main-grid {
+		@apply translate-y-[var(--banner-height-extend)];
+	}
+	.enable-banner.lg\:is-home #sidebar-sticky {
+		@apply top-[calc(1rem_-_var(--banner-height-extend))];
 	}
 }
 </style>

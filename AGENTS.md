@@ -75,6 +75,10 @@ The repository explicitly configures a `unified()`-based pipeline in `markdown.p
 
 Site configuration is centralized in `src/config.ts` through `siteConfig`, `navBarConfig`, `profileConfig`, `licenseConfig`, and `expressiveCodeConfig`. Theme colors are stored as hue values from 0 through 360 and expanded into CSS variables. UI strings live in `src/i18n/`, and the site language is Japanese.
 
+### Tailwind CSS 4 layers
+
+Tailwind CSS 4 applies variants such as `lg:` only to its own utilities and `@utility` classes, and its utilities layer outranks `@layer components` regardless of selector specificity. Write a compound selector that must react to a breakpoint or override a utility as unlayered CSS with an explicit `@media`, as the `lg:is-home` banner rules in `src/layouts/Layout.astro` do.
+
 ### Icons
 
 The site uses two icon systems. Astro files use `astro-icon`, which embeds SVGs at build time from local `@iconify-json/*` packages; the allowed sets are configured through `icon({ include })` in `astro.config.mjs`. Svelte islands use `@iconify/svelte`, which retrieves icons at runtime from `api.iconify.design` and therefore creates third-party requests.
