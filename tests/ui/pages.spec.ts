@@ -102,9 +102,11 @@ test("desktop search ignores a stale result after its query is cleared", async (
 	await expect(helloWorldResult).toHaveCount(0);
 
 	await page.evaluate(() => {
+		// window.pagefind の型は src/global.d.ts にあるが、tsconfig の include 外なのでここで足す
 		const testWindow = window as Window & {
 			__releaseSearch?: () => void;
 			__searchStarted?: Promise<void>;
+			pagefind?: unknown;
 		};
 		let markSearchStarted: () => void = () => {};
 		let releaseSearch: () => void = () => {};
@@ -115,7 +117,7 @@ test("desktop search ignores a stale result after its query is cleared", async (
 			releaseSearch = resolve;
 		});
 		testWindow.__releaseSearch = releaseSearch;
-		window.pagefind = {
+		testWindow.pagefind = {
 			search: async () => ({
 				results: [
 					{
