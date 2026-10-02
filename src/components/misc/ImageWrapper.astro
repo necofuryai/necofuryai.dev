@@ -8,12 +8,29 @@ interface Props {
 	alt?: string;
 	position?: string;
 	basePath?: string;
+	/**
+	 * 画面幅いっぱい・高さ coverHeightVh (vh) の枠を object-fit: cover で埋める画像のとき
+	 * に指定する。ローカルのラスター画像に srcset を付け、縦長の画面で画像が 100vw より
+	 * 広く描かれることを sizes に反映する。SVG は単一の src のまま。
+	 */
+	coverHeightVh?: number;
+	/** ファーストビューの画像。遅延読み込みをやめ、高い優先度で取得する */
+	priority?: boolean;
 }
 
 import { Image } from "astro:assets";
+import { coverImageSrcset } from "../../utils/cover-image-srcset.mjs";
 import { url } from "../../utils/url-utils";
 
-const { id, src, alt, position = "center", basePath = "/" } = Astro.props;
+const {
+	id,
+	src,
+	alt,
+	position = "center",
+	basePath = "/",
+	coverHeightVh,
+	priority,
+} = Astro.props;
 const className = Astro.props.class;
 
 const isLocal = !(
@@ -50,11 +67,16 @@ if (isLocal) {
 	img = await file();
 }
 
+const responsive =
+	img && coverHeightVh !== undefined && img.format !== "svg"
+		? coverImageSrcset(img.width, img.height, coverHeightVh)
+		: undefined;
+
 const imageClass = "w-full h-full object-cover";
 const imageStyle = `object-position: ${position}`;
 ---
 <div id={id} class:list={[className, 'overflow-hidden relative']}>
     <div class="transition absolute inset-0 dark:bg-black/10 pointer-events-none"></div>
-    {isLocal && img && <Image src={img} alt={alt || ""} class={imageClass} style={imageStyle}/>}
-    {!isLocal && <img src={isPublic ? url(src) : src} alt={alt || ""} class={imageClass} style={imageStyle}/>}
+    {isLocal && img && <Image src={img} alt={alt || ""} class={imageClass} style={imageStyle} widths={responsive?.widths} sizes={responsive?.sizes} priority={priority}/>}
+    {!isLocal && <img src={isPublic ? url(src) : src} alt={alt || ""} class={imageClass} style={imageStyle} fetchpriority={priority ? "high" : undefined}/>}
 </div>

@@ -102,9 +102,11 @@ test("desktop search ignores a stale result after its query is cleared", async (
 	await expect(helloWorldResult).toHaveCount(0);
 
 	await page.evaluate(() => {
+		// window.pagefind の型は src/global.d.ts にあるが、tsconfig の include 外なのでここで足す
 		const testWindow = window as Window & {
 			__releaseSearch?: () => void;
 			__searchStarted?: Promise<void>;
+			pagefind?: unknown;
 		};
 		let markSearchStarted: () => void = () => {};
 		let releaseSearch: () => void = () => {};
@@ -115,7 +117,7 @@ test("desktop search ignores a stale result after its query is cleared", async (
 			releaseSearch = resolve;
 		});
 		testWindow.__releaseSearch = releaseSearch;
-		window.pagefind = {
+		testWindow.pagefind = {
 			search: async () => ({
 				results: [
 					{
@@ -309,4 +311,45 @@ test("playlist controls survive a Swup revisit", async ({ page }) => {
 		),
 	).toBe(true);
 	await verifyTrackListCollapse(page);
+});
+
+test("desktop home banner rules shift the grid and keep the sidebar sticky offset", async ({
+	page,
+}) => {
+	// バナーは src/config.ts で無効なので、body に enable-banner を付けて CSS だけを確かめる。
+	// Tailwind v4 では @layer 内のクラスに lg: バリアントが付かず、トップでも記事ページと
+	// 同じ 35vh の帯になっていた。#sidebar-sticky のルールがユーティリティ top-4 に負けない
+	// ことも確かめる。遷移アニメーション中の値を読まないよう transition は止める。
+	const readBannerLayout = async () => {
+		await page.addStyleTag({
+			content: "*, *::before, *::after { transition: none !important; }",
+		});
+		await page.evaluate(() => document.body.classList.add("enable-banner"));
+		return {
+			extend: await page.evaluate(() =>
+				Number.parseFloat(
+					getComputedStyle(document.documentElement).getPropertyValue(
+						"--banner-height-extend",
+					),
+				),
+			),
+			gridTranslate: await page
+				.locator("#main-grid")
+				.evaluate((el) => getComputedStyle(el).translate),
+			sidebarTop: await page
+				.locator("#sidebar-sticky")
+				.evaluate((el) => getComputedStyle(el).top),
+		};
+	};
+
+	await page.goto("/", { waitUntil: "load" });
+	const home = await readBannerLayout();
+	expect(home.extend).toBeGreaterThan(0);
+	expect(home.gridTranslate).toBe(`0px ${home.extend}px`);
+	expect(home.sidebarTop).toBe(`${16 - home.extend}px`);
+
+	await page.goto("/archive/", { waitUntil: "load" });
+	const archive = await readBannerLayout();
+	expect(archive.gridTranslate).toBe("none");
+	expect(archive.sidebarTop).toBe("16px");
 });
