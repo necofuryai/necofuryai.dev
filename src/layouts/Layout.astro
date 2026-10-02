@@ -3,10 +3,10 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 // CSS は global.css がエントリで、author CSS の取り込み順もそこで管理する。
-// .styl は CSS から @import できないため JS import で読み込む
+// 次の 2 つは Tailwind のコンパイル単位に入れず、global.css の後ろにレイヤー外で読み込む
 import "../styles/global.css";
-import "../styles/markdown-extend.styl";
-import "../styles/variables.styl";
+import "../styles/markdown-extend.css";
+import "../styles/variables.css";
 
 import ConfigCarrier from "@components/ConfigCarrier.astro";
 import { profileConfig, siteConfig } from "@/config";
