@@ -55,7 +55,7 @@ Before declaring the work complete or opening a PR, verify the following and rep
 
 ## Architecture
 
-The stack is Astro 7, Svelte 5 for interactive islands only, Tailwind CSS 4 through `@tailwindcss/vite`, Stylus for selected styles, and Biome 2.
+The stack is Astro 7, Svelte 5 for interactive islands only, Tailwind CSS 4 through `@tailwindcss/vite`, and Biome 2.
 
 ### Markdown pipeline (`astro.config.mjs`)
 
@@ -130,7 +130,7 @@ Because `trailingSlash` is set to `"always"`, always include trailing slashes in
 
 - Biome applies to the entire repository and uses tabs and double quotes.
 - `html.experimentalFullSupportEnabled: true` makes `.astro` and `.svelte` files formattable.
-- `src/**/*.css` and Stylus files are excluded from Biome.
+- `src/**/*.css` is excluded from Biome.
 - CI also checks formatting and linting through `.github/workflows/biome.yml`.
 
 ### Dependencies
