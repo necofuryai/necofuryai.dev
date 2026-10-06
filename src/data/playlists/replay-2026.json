@@ -1,7 +1,7 @@
 {
 	"placeholder": false,
 	"order": 1,
-	"fetchedAt": "2026-09-28T20:09:57.621Z",
+	"fetchedAt": "2026-10-05T21:14:55.125Z",
 	"id": "pl.rp-lellcVyY1yj",
 	"storefront": "jp",
 	"name": "リプレイ2026",
@@ -27,6 +27,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/8c/83/ac/8c83ac59-91b5-2565-82d1-f0734b073a41/4540774245239.png/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1734552687",
+			"title": "Fly and Fly",
+			"artist": "シーズ",
+			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
+			"durationMs": 245133,
+			"url": "https://music.apple.com/jp/album/fly-and-fly/1734552685?i=1734552687",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e4/7c/2e/e47c2e2d-d872-1d93-bfe3-ddf20194ab31/mzaf_4912271659180542644.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1856531494",
 			"title": "カウントダウンラブ",
 			"artist": "I'm a Cutie Finder",
@@ -45,16 +55,6 @@
 			"url": "https://music.apple.com/jp/album/%E9%A3%9B%E3%81%B6%E6%99%82/1890060754?i=1890060756",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/94/e0/1d/94e01dcb-c00e-8f28-cc00-ce2b7aa7b56d/mzaf_9748317802096708441.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/40/6f/fe/406ffe67-b650-6f46-5aa6-c6dc947e23b5/4547366818246.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1734552687",
-			"title": "Fly and Fly",
-			"artist": "シーズ",
-			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
-			"durationMs": 245133,
-			"url": "https://music.apple.com/jp/album/fly-and-fly/1734552685?i=1734552687",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e4/7c/2e/e47c2e2d-d872-1d93-bfe3-ddf20194ab31/mzaf_4912271659180542644.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1537418577",
@@ -137,14 +137,14 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/c9/de/16/c9de1632-3d12-19c3-2699-22090b4bfcc1/4547366588620.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "6781198668",
-			"title": "なんもねえ",
-			"artist": "忘れらんねえよ",
-			"album": "なんもねえ - Single",
-			"durationMs": 171000,
-			"url": "https://music.apple.com/jp/album/%E3%81%AA%E3%82%93%E3%82%82%E3%81%AD%E3%81%88/6781198667?i=6781198668",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c9/28/83/c9288393-3515-ef7b-6d51-1186cf21bedc/mzaf_14081471784850322326.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6e/28/00/6e280007-5f1f-388e-4041-e593d43d1297/4988021077361.png/{w}x{h}bb.jpg"
+			"id": "1734552686",
+			"title": "OH MY GOD",
+			"artist": "シーズ",
+			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
+			"durationMs": 224473,
+			"url": "https://music.apple.com/jp/album/oh-my-god/1734552685?i=1734552686",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2e/2c/e6/2e2ce683-ccef-f684-863a-2c8ae7f6e2c5/mzaf_6746704345981850540.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1860538548",
@@ -155,6 +155,26 @@
 			"url": "https://music.apple.com/jp/album/aizo/1860538546?i=1860538548",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/29/a2/1a/29a21ac0-9c04-75cc-4b46-d1ec4168c0f0/mzaf_15133126017791169575.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9f/8a/0b/9f8a0bc1-e6ee-5873-4fc9-9a75b0d58e2a/4547366794816.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6781198668",
+			"title": "なんもねえ",
+			"artist": "忘れらんねえよ",
+			"album": "なんもねえ - Single",
+			"durationMs": 171000,
+			"url": "https://music.apple.com/jp/album/%E3%81%AA%E3%82%93%E3%82%82%E3%81%AD%E3%81%88/6781198667?i=6781198668",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c9/28/83/c9288393-3515-ef7b-6d51-1186cf21bedc/mzaf_14081471784850322326.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6e/28/00/6e280007-5f1f-388e-4041-e593d43d1297/4988021077361.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6807197459",
+			"title": "Bass Persuades",
+			"artist": "マイリー・サイラス",
+			"album": "Bass Persuades",
+			"durationMs": 202461,
+			"url": "https://music.apple.com/jp/album/bass-persuades/6807197456?i=6807197459",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/00/d4/32/00d432e3-a454-b3c9-d905-415d3afcb5f7/mzaf_4705230866933064384.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ff/af/51/ffaf51a6-d711-6f92-a5d6-f90e98014f0f/075679564061.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1889076498",
@@ -207,16 +227,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2f/62/3a/2f623ab5-c6fd-0848-918d-ed825b358199/4547366816051.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1734552686",
-			"title": "OH MY GOD",
-			"artist": "シーズ",
-			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
-			"durationMs": 224473,
-			"url": "https://music.apple.com/jp/album/oh-my-god/1734552685?i=1734552686",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2e/2c/e6/2e2ce683-ccef-f684-863a-2c8ae7f6e2c5/mzaf_6746704345981850540.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1869843676",
 			"title": "ワールドイズマイン (かぐや&月見ヤチヨ ver.) [CPK! Remix]",
 			"artist": "ryo (supercell), かぐや(cv.夏吉ゆうこ), 超かぐや姫! & 月見ヤチヨ(cv.早見沙織)",
@@ -255,16 +265,6 @@
 			"url": "https://music.apple.com/jp/album/stella/6784368653?i=6784369010",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/3c/c8/41/3cc84150-821a-9f7d-3b7c-fec877ecd418/mzaf_7068252172229240759.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/eb/fb/6d/ebfb6d9d-8e2f-631a-3c14-96019f9cc117/26UMGIM73140.rgb.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "6807197459",
-			"title": "Bass Persuades",
-			"artist": "マイリー・サイラス",
-			"album": "Bass Persuades",
-			"durationMs": 202461,
-			"url": "https://music.apple.com/jp/album/bass-persuades/6807197456?i=6807197459",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/00/d4/32/00d432e3-a454-b3c9-d905-415d3afcb5f7/mzaf_4705230866933064384.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ff/af/51/ffaf51a6-d711-6f92-a5d6-f90e98014f0f/075679564061.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1537331532",
@@ -367,6 +367,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a5/1e/da/a51edaea-dc4d-1abe-76c4-3fd86e78523e/4550752049414_cover.png/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1537415536",
+			"title": "GOLD",
+			"artist": "UVERworld",
+			"album": "GOLD - Single",
+			"durationMs": 244293,
+			"url": "https://music.apple.com/jp/album/gold/1537415535?i=1537415536",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/d4/e8/9f/d4e89fc8-efba-6ccd-2c7d-41c40de6081e/mzaf_16037639282131617981.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c1/c8/58/c1c85882-af3b-135d-d795-fd4c8b87d7e9/jacket_SRCL07241B00Z_550.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1537433534",
 			"title": "CORE PRIDE",
 			"artist": "UVERworld",
@@ -447,16 +457,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ae/09/0b/ae090bdd-11b3-38f5-3f7d-84d4cdf1df51/4547366747669.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1537415536",
-			"title": "GOLD",
-			"artist": "UVERworld",
-			"album": "GOLD - Single",
-			"durationMs": 244293,
-			"url": "https://music.apple.com/jp/album/gold/1537415535?i=1537415536",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/d4/e8/9f/d4e89fc8-efba-6ccd-2c7d-41c40de6081e/mzaf_16037639282131617981.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c1/c8/58/c1c85882-af3b-135d-d795-fd4c8b87d7e9/jacket_SRCL07241B00Z_550.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "6776969582",
 			"title": "終宵",
 			"artist": "マカロニえんぴつ",
@@ -465,6 +465,16 @@
 			"url": "https://music.apple.com/jp/album/%E7%B5%82%E5%AE%B5/6776969581?i=6776969582",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/67/40/94/67409469-530c-7df7-9d7c-815c35d5f829/mzaf_7232735065893337692.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/ec/01/aeec011c-b4c2-0e80-e032-472679eec7c2/4517331101260.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1797455083",
+			"title": "おいでよ!石川大観光",
+			"artist": "蓮ノ空女学院スクールアイドルクラブ",
+			"album": "おいでよ!石川大観光",
+			"durationMs": 229960,
+			"url": "https://music.apple.com/jp/album/%E3%81%8A%E3%81%84%E3%81%A7%E3%82%88-%E7%9F%B3%E5%B7%9D%E5%A4%A7%E8%A6%B3%E5%85%89/1797455082?i=1797455083",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/12/2b/4a/122b4a57-30e6-0179-93c1-4f941d474878/mzaf_16951586948940290493.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ef/98/5b/ef985bfd-e762-fab6-1402-444dcc93e461/4540774251490.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1765301212",
@@ -505,6 +515,16 @@
 			"url": "https://music.apple.com/jp/album/midnight-parade/1770958209?i=1770958213",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/91/ff/a5/91ffa546-652e-e508-25d0-d38a218862bb/mzaf_13198143086450132276.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1836352947",
+			"title": "ニャオシグニャル",
+			"artist": "みらくらぱーく!",
+			"album": "ニャオシグニャル - EP",
+			"durationMs": 179988,
+			"url": "https://music.apple.com/jp/album/%E3%83%8B%E3%83%A3%E3%82%AA%E3%82%B7%E3%82%B0%E3%83%8B%E3%83%A3%E3%83%AB/1836352946?i=1836352947",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/85/3f/df/853fdfd3-e9fd-3d80-5291-e04e5d4830b3/mzaf_7278493055519088016.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9a/14/ea/9a14ea3e-084a-6f10-d4ac-793a8e75206c/4540774247738.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1771366342",
@@ -567,6 +587,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/c2/2c/b1/c22cb13e-9724-c1ae-c36e-2e313e077321/jacket_SRCL08640B00Z_550.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1821656927",
+			"title": "Feel",
+			"artist": "羊文学",
+			"album": "Feel / mild days - Single",
+			"durationMs": 245840,
+			"url": "https://music.apple.com/jp/album/feel/1821656926?i=1821656927",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b0/d3/f6/b0d3f6e4-2b0e-4537-dee9-61d5dbff319d/mzaf_17226342504095358552.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/43/33/7b/43337bca-c308-bc0a-23e0-aaec37562611/4547366759075.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1887808019",
 			"title": "風のアンセム (feat. suis from ヨルシカ)",
 			"artist": "Eve",
@@ -617,6 +647,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/cb/d0/71/cbd071d6-e5d1-aa2e-ec39-a667abfe7185/884977854480.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1734578457",
+			"title": "以心☆電信",
+			"artist": "みらくらぱーく!",
+			"album": "以心☆電信 - EP",
+			"durationMs": 220720,
+			"url": "https://music.apple.com/jp/album/%E4%BB%A5%E5%BF%83-%E9%9B%BB%E4%BF%A1/1734578456?i=1734578457",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/1a/54/78/1a547814-fe46-f800-ee6a-5e061232f222/mzaf_10092383730772519931.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/8c/83/ac/8c83ac59-91b5-2565-82d1-f0734b073a41/4540774245239.png/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1537418578",
 			"title": "君 station",
 			"artist": "ORANGE RANGE",
@@ -635,6 +675,36 @@
 			"url": "https://music.apple.com/jp/album/%E6%84%9F%E8%AC%9D%E3%81%AE%E3%82%B3%E3%83%B3%E3%83%88%E3%83%AC%E3%82%A4%E3%83%AB/1867148149?i=1867148153",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4c/2d/fc/4c2dfc9a-c198-92a5-9614-b19de55960c2/mzaf_1115417059848173358.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/7f/0b/77/7f0b7793-a56b-bd88-e0e4-61be3e7d0c3e/4540774747870.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1537331085",
+			"title": "Q&A リサイタル!",
+			"artist": "戸松遥",
+			"album": "Sunny Side Story",
+			"durationMs": 289800,
+			"url": "https://music.apple.com/jp/album/q-a-%E3%83%AA%E3%82%B5%E3%82%A4%E3%82%BF%E3%83%AB/1537331083?i=1537331085",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/fd/ca/32/fdca32a8-a2fa-4fc2-d963-8a3451d3df84/mzaf_10847048813600544466.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/c1/06/27/c10627d6-e197-7907-7780-68825b878cd1/jacket_SMCL00290B00Z_550.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6761808940",
+			"title": "ススメ→トゥモロウ",
+			"artist": "高坂穂乃果(CV.新田恵海), 南ことり(CV.内田 彩), 園田海未(CV.三森すずこ) & μ's",
+			"album": "μ's Complete BEST BOX Chapter.02",
+			"durationMs": 273107,
+			"url": "https://music.apple.com/jp/album/%E3%82%B9%E3%82%B9%E3%83%A1-%E3%83%88%E3%82%A5%E3%83%A2%E3%83%AD%E3%82%A6/1891593976?i=6761808940",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4c/1a/d5/4c1ad55f-6426-277b-bea0-b11627ba97e8/mzaf_13278631415322208041.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e8/2c/0b/e82c0b46-059b-0c32-81d7-a5725473e438/4540774907229.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6761808945",
+			"title": "START:DASH!!",
+			"artist": "μ's",
+			"album": "μ's Complete BEST BOX Chapter.02",
+			"durationMs": 255316,
+			"url": "https://music.apple.com/jp/album/start-dash/1891593976?i=6761808945",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/6d/dc/a5/6ddca559-925f-e68d-d90a-63eed2111970/mzaf_5743426421838116476.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/e8/2c/0b/e82c0b46-059b-0c32-81d7-a5725473e438/4540774907229.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1838918171",
@@ -687,6 +757,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f2/87/61/f2876192-e8bb-79f5-0288-7b668a248dcb/4571614181769.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1488408568",
+			"title": "Blinding Lights",
+			"artist": "ザ・ウィークエンド",
+			"album": "Blinding Lights - Single",
+			"durationMs": 201570,
+			"url": "https://music.apple.com/jp/album/blinding-lights/1488408555?i=1488408568",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/17/b4/8f/17b48f9a-0b93-6bb8-fe1d-3a16623c2cfb/mzaf_9560252727299052414.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a6/6e/bf/a66ebf79-5008-8948-b352-a790fc87446b/19UM1IM04638.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1884248346",
 			"title": "Petals",
 			"artist": "Orangestar",
@@ -695,16 +775,6 @@
 			"url": "https://music.apple.com/jp/album/petals/1884248344?i=1884248346",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/9d/ee/f9/9deef984-c114-1e27-5541-2a8ebe950d36/mzaf_2841575864250359321.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/af/c4/c0/afc4c0dd-bfc3-d785-f58d-9fd1867f6400/820200642127.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1797455083",
-			"title": "おいでよ!石川大観光",
-			"artist": "蓮ノ空女学院スクールアイドルクラブ",
-			"album": "おいでよ!石川大観光",
-			"durationMs": 229960,
-			"url": "https://music.apple.com/jp/album/%E3%81%8A%E3%81%84%E3%81%A7%E3%82%88-%E7%9F%B3%E5%B7%9D%E5%A4%A7%E8%A6%B3%E5%85%89/1797455082?i=1797455083",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/12/2b/4a/122b4a57-30e6-0179-93c1-4f941d474878/mzaf_16951586948940290493.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ef/98/5b/ef985bfd-e762-fab6-1402-444dcc93e461/4540774251490.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1787114805",
@@ -727,6 +797,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/39/7a/b4/397ab414-2b1f-c016-ca0f-248828eb0631/075679624505.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "6787976426",
+			"title": "Blue",
+			"artist": "MILLENNIUM PARADE, Saya Gray, Daniel Caesar & 常田大希",
+			"album": "Blue - Single",
+			"durationMs": 156780,
+			"url": "https://music.apple.com/jp/album/blue/6787976235?i=6787976426",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/57/d1/f8/57d1f8eb-0a97-9587-762a-136e8cdd59d9/mzaf_14408455350709799458.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/cb/df/38/cbdf388f-a8a2-01c2-64a4-57330a4e6a86/4547366835045.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1890060969",
 			"title": "飛ぼうよ",
 			"artist": "yama",
@@ -735,16 +815,6 @@
 			"url": "https://music.apple.com/jp/album/%E9%A3%9B%E3%81%BC%E3%81%86%E3%82%88/1890060754?i=1890060969",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/76/85/73/7685739f-e3b6-5eee-b92a-8e167d3bdcbc/mzaf_4931745318369213744.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/40/6f/fe/406ffe67-b650-6f46-5aa6-c6dc947e23b5/4547366818246.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1836352947",
-			"title": "ニャオシグニャル",
-			"artist": "みらくらぱーく!",
-			"album": "ニャオシグニャル - EP",
-			"durationMs": 179988,
-			"url": "https://music.apple.com/jp/album/%E3%83%8B%E3%83%A3%E3%82%AA%E3%82%B7%E3%82%B0%E3%83%8B%E3%83%A3%E3%83%AB/1836352946?i=1836352947",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/85/3f/df/853fdfd3-e9fd-3d80-5291-e04e5d4830b3/mzaf_7278493055519088016.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9a/14/ea/9a14ea3e-084a-6f10-d4ac-793a8e75206c/4540774247738.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1706832137",
@@ -805,16 +875,6 @@
 			"url": "https://music.apple.com/jp/album/%E3%83%8F%E3%83%83%E3%83%94%E3%83%BC%E3%82%B7%E3%83%B3%E3%82%BB%E3%82%B5%E3%82%A4%E3%82%B6-cover/1869843536?i=1869843682",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/39/5f/b0/395fb0ce-7ad0-a0dd-cbe2-00554c2b98b7/mzaf_12246305121213161920.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1889992113",
-			"title": "drop dead",
-			"artist": "オリヴィア・ロドリゴ",
-			"album": "you seem pretty sad for a girl so in love",
-			"durationMs": 224999,
-			"url": "https://music.apple.com/jp/album/drop-dead/1889992111?i=1889992113",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/89/57/ad/8957adf6-1862-4e4e-bcb5-810d6cf79cc4/mzaf_7752581374620577831.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1d/1b/f9/1d1bf9b1-44c6-9a6c-6ffb-c158488c06ce/26UMGIM39303.rgb.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1869843659",
@@ -887,16 +947,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/63/32/7f/63327f81-33fa-28bb-c282-7bbbc2df6177/dj.mstyvdil.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1821656927",
-			"title": "Feel",
-			"artist": "羊文学",
-			"album": "Feel / mild days - Single",
-			"durationMs": 245840,
-			"url": "https://music.apple.com/jp/album/feel/1821656926?i=1821656927",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b0/d3/f6/b0d3f6e4-2b0e-4537-dee9-61d5dbff319d/mzaf_17226342504095358552.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/43/33/7b/43337bca-c308-bc0a-23e0-aaec37562611/4547366759075.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1659371899",
 			"title": "約束",
 			"artist": "如月千早 (CV.今井麻美)",
@@ -965,56 +1015,6 @@
 			"url": "https://music.apple.com/jp/album/endroll/1869542654?i=1869542939",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/34/94/b8/3494b835-8b1b-e72b-9124-d34ead0a4fbb/mzaf_9592005285602048161.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d7/7e/d3/d77ed313-5710-b526-8a8a-60f857cbcee4/4547366801774.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1744081113",
-			"title": "世界一可愛い私",
-			"artist": "初星学園 & 藤田ことね",
-			"album": "世界一可愛い私 - Single",
-			"durationMs": 238346,
-			"url": "https://music.apple.com/jp/album/%E4%B8%96%E7%95%8C%E4%B8%80%E5%8F%AF%E6%84%9B%E3%81%84%E7%A7%81/1744081108?i=1744081113",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/3e/fb/99/3efb99ac-a016-2284-b8f6-a8dc8380e601/mzaf_15196290751823376533.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/ec/4a/59/ec4a5935-851e-b48d-2fb2-fc784f6f99d0/PA00153104_0_191076_jacket.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "346713765",
-			"title": "Do Ya Wanna Taste It",
-			"artist": "Wig Wam",
-			"album": "Non Stop Rock'n Roll",
-			"durationMs": 176973,
-			"url": "https://music.apple.com/jp/album/do-ya-wanna-taste-it/346713757?i=346713765",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/70/71/79/70717986-4265-07dc-a19d-6f24ca9ef393/mzaf_14999850518979506614.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/74/0b/93/740b9372-bf71-23f0-9087-b7bc073439a7/7332334353938.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "6798374089",
-			"title": "Love Sensation",
-			"artist": "マドンナ",
-			"album": "Love Sensation - Single",
-			"durationMs": 228629,
-			"url": "https://music.apple.com/jp/album/love-sensation/6798373683?i=6798374089",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c8/93/f7/c893f768-0175-3227-cd25-37da5f0b802a/mzaf_369941762280343525.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b6/b5/77/b6b577cb-45c7-1cc1-7d66-373eb1dc582f/054391210685.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1821657229",
-			"title": "mild days",
-			"artist": "羊文学",
-			"album": "Feel / mild days - Single",
-			"durationMs": 188613,
-			"url": "https://music.apple.com/jp/album/mild-days/1821656926?i=1821657229",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/53/72/05/5372055e-1b9b-4a25-3f37-5b0f53b20319/mzaf_11515931476483762577.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/43/33/7b/43337bca-c308-bc0a-23e0-aaec37562611/4547366759075.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1734551571",
-			"title": "拝啓タイムカプセル",
-			"artist": "放課後クライマックスガールズ",
-			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 04 - EP",
-			"durationMs": 261547,
-			"url": "https://music.apple.com/jp/album/%E6%8B%9D%E5%95%93%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%AB%E3%83%97%E3%82%BB%E3%83%AB/1734551569?i=1734551571",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/5a/d8/a0/5ad8a022-fbdc-16a2-7803-a014bafc6329/mzaf_5056499945863540162.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/ea/ac/c2/eaacc294-2959-389c-c310-ce28c55c37b5/4540774241149.jpg/{w}x{h}bb.jpg"
 		}
 	]
 }
