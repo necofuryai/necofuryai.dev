@@ -218,10 +218,11 @@ Renovate は存在しないベースブランチの依存抽出を飛ばすた�
 この流れは Renovate のソースで確認した。
 上流にも同じ症状の報告がある（renovatebot/renovate Discussion #31352、2026-10-06 時点で未解決）。
 
-`develop` の設定は、このリポジトリの外から届いているとみられる。
+`develop` の設定は、このリポジトリの外にある Mend Developer Portal（developer.mend.io）のアカウント単位の設定から届いていた。
 リポジトリには Renovate の設定ファイルが無く、Renovate が共通設定を探しに行く `necofuryai/renovate-config` と `necofuryai/.github` も存在しない。
-一方、同じ Mend installation の非公開リポジトリでも 2026-03-14 から同じ自動クローズが 108 件続いており、Renovate が正常に動いているのは、自前の `renovate.json` でベースブランチを明示したリポジトリだけである。
-このため出どころは Mend 側のアカウント単位の設定と推定しているが、Mend のジョブログでは確認していない。
+一方、同じ Mend installation の非公開リポジトリでも 2026-03-14 から同じ自動クローズが 108 件続いており、Renovate が正常に動いていたのは、自前の `renovate.json` でベースブランチを上書きしたリポジトリだけである。
+Portal のアカウント単位の Settings を開くと、General タブの「Base Branches」に `develop` が入っており、環境変数とシークレットの欄は空だった。
+Renovate が動いている別のリポジトリのジョブログ（Debug レベル）でも、Mend がジョブに渡すグローバル設定に `"baseBranchPatterns": ["develop"]` が含まれ、そのリポジトリの `renovate.json` が既定ブランチで上書きしていた。
 
 実行のきっかけは main への push に限られない。
 13 件のうち 5 件は main への merge の 26 秒から 87 秒後に、7 件は別の PR が開くか閉じた 33 秒から 64 秒後に作られている（7 件のうち 6 件は Dependabot の PR）。
@@ -232,3 +233,7 @@ Mend は webhook を受けるとジョブを起動するので、Dependabot が 
 `"enabled": false` の `renovate.json` を置く方法や、閉じた PR のタイトルを戻して opt-out させる方法もあるが、どちらも App の書き込み権限が残る。
 計画が Renovate を採用しない理由に挙げる、App への書き込み権限の付与を解消できるのは、アクセス対象から外す方法だけである。
 解除後に push した commit には、Renovate の check suite が作られなかった。
+
+同日、Portal のアカウント単位の Base Branches から `develop` を外し、既定値（空）に戻した。
+保存後は、各リポジトリの Settings に継承値として表示されていた `develop` も消えた。
+自前の `renovate.json` でベースブランチを上書きしているリポジトリは影響を受けず、今後 App のアクセス対象に加えるリポジトリは既定ブランチで動く見込みである。
