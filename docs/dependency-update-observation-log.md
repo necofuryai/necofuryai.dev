@@ -5,6 +5,7 @@
 - 観測開始：2026-07-20（Dependabot の初回週次実行）
 - 記録時点：2026-08-08
 - 進捗：第 1 週から第 3 週まで記録済み。第 4 週は 2026-08-10 の週次実行で確定する
+- 追記：2026-10-06（観測期間後の事象を末尾に記録）
 
 計画が求める観測項目は、作成された PR 数、grouping の妥当性、CI failure の原因、手作業で lockfile または manifest を修正した回数、更新後に revert した回数、自動マージと手動マージの件数、`packageManager` の pnpm version が更新対象になるか、Claude advisory の成功率と実行時間と有用性である。
 VRT に関する項目（VRT failure、flaky 差分、baseline 更新、誤検知の件数）は 2026-07-22 の運用変更で対象が消滅したため、UI smoke test の失敗と不安定挙動として読み替えて記録する。
@@ -199,3 +200,35 @@ package ecosystem は 2 つのままで、monorepo 化も、独立した lockfil
 Dependabot の運用を継続する。
 
 第 4 週（2026-08-10）の実績を追記した時点で、フェーズ 5 の観測を完了とする。
+
+## 観測期間後の事象
+
+### Mend Renovate の onboarding PR が作成直後に閉じられた件
+
+2026-10-05 04:46（#176）から 2026-10-06 17:54（#196）までに、Mend Renovate App が onboarding PR を 13 件作成した。
+どの PR も `config:recommended` だけの `renovate.json` を追加する内容で、作成の約 1 秒後に App 自身がタイトルの末尾へ「 - autoclosed」を付けて閉じ、ブランチも削除していた。
+このリポジトリは Renovate を採用しない方針なので（`dependency-update-automation-plan.md`）、App のアクセス対象にこのリポジトリが含まれていたこと自体が方針と食い違っていた。
+
+直接の原因は、存在しない `develop` を Renovate がベースブランチとして扱っていたことである。
+13 件の PR 本文はどれも「branch `develop` as base branch」と表示しているが、このリポジトリのブランチは main だけである。
+Renovate は存在しないベースブランチの依存抽出を飛ばすため、その回の実行が管理するブランチの一覧は空になる。
+すると実行の最後の後片付けが、作ったばかりの onboarding 用ブランチを不要なブランチと判定し、PR を閉じてブランチを消す。
+次の実行は、閉じた onboarding PR をタイトルの完全一致で探す。
+改名された PR は一致しないので、Renovate は未導入と判断して onboarding を最初からやり直す。
+この流れは Renovate のソースで確認した。
+上流にも同じ症状の報告がある（renovatebot/renovate Discussion #31352、2026-10-06 時点で未解決）。
+
+`develop` の設定は、このリポジトリの外から届いているとみられる。
+リポジトリには Renovate の設定ファイルが無く、Renovate が共通設定を探しに行く `necofuryai/renovate-config` と `necofuryai/.github` も存在しない。
+一方、同じ Mend installation の非公開リポジトリでも 2026-03-14 から同じ自動クローズが 108 件続いており、Renovate が正常に動いているのは、自前の `renovate.json` でベースブランチを明示したリポジトリだけである。
+このため出どころは Mend 側のアカウント単位の設定と推定しているが、Mend のジョブログでは確認していない。
+
+実行のきっかけは main への push に限られない。
+13 件のうち 5 件は main への merge の 26 秒から 87 秒後に、7 件は別の PR が開くか閉じた 33 秒から 64 秒後に作られている（7 件のうち 6 件は Dependabot の PR）。
+Mend は webhook を受けるとジョブを起動するので、Dependabot が PR を出し続ける限り、繰り返しが止まらない状態だった。
+自動クローズされたブランチでは workflow も 15 回実行された。
+
+2026-10-06 に、このリポジトリと上記の非公開リポジトリを Mend Renovate App のアクセス対象から外した。
+`"enabled": false` の `renovate.json` を置く方法や、閉じた PR のタイトルを戻して opt-out させる方法もあるが、どちらも App の書き込み権限が残る。
+計画が Renovate を採用しない理由に挙げる、App への書き込み権限の付与を解消できるのは、アクセス対象から外す方法だけである。
+解除後に push した commit には、Renovate の check suite が作られなかった。
