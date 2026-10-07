@@ -10,7 +10,7 @@ The repository uses three licenses: source code is licensed under MIT (except `.
 
 ## Commands
 
-Use pnpm. The `preinstall` hook in `scripts/check-package-manager.js` enforces it. Node.js 22.19.0 or later is required.
+Use pnpm. The `preinstall` hook in `scripts/check-package-manager.js` enforces it. Node.js 22.19.0 or later is required. `pnpm-workspace.yaml` sets `pmOnFail: ignore` to keep the lockfile readable by GitHub's dependency graph, so pnpm does not switch to the `packageManager` version by itself; run that version locally. CI installs it from `packageManager`.
 
 Astro and Vite commands load live `.env*` files when present. Run `dev`, `check`, `build`, `preview`, `type-check`, or UI tests only when the user authorizes the exact environment file and purpose. Without authorization, limit validation to commands that do not invoke Astro/Vite, such as unit tests and diff checks, and report the skipped checks.
 
