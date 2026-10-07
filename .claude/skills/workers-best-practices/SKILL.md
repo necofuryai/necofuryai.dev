@@ -21,7 +21,7 @@ Read the sections relevant to the task:
 | [Static Assets](references/static-assets/README.md) | Build output and routing configuration, the asset binding, SPA and SSG routing, and caching or deployment issues |
 | [Observability](references/observability/README.md) | Choosing between Workers Logs, Traces, and exports; collection configuration, sampling, and missing-data checks |
 
-For missing evidence, consult [Workers best practices](https://developers.cloudflare.com/workers/best-practices/workers-best-practices/) or find the affected product in the [Cloudflare docs directory](https://developers.cloudflare.com/directory/). Use the installed Wrangler schema for config fields. **In this repo the schema is absent**: wrangler is not a dependency and deploys run through Cloudflare's Git integration, so there is no `node_modules/wrangler/config-schema.json`; fall back to the [Wrangler configuration reference](https://developers.cloudflare.com/workers/wrangler/configuration/). A newer type package does not supersede the project's configured target.
+For missing evidence, consult [Workers best practices](https://developers.cloudflare.com/workers/best-practices/workers-best-practices/index.md) or find the affected product in the [Cloudflare docs directory](https://developers.cloudflare.com/directory/index.md). Use the installed Wrangler schema for config fields. **In this repo the schema is absent**: wrangler is not a dependency and deploys run through Cloudflare's Git integration, so there is no `node_modules/wrangler/config-schema.json`; fall back to the [Wrangler configuration reference](https://developers.cloudflare.com/workers/wrangler/configuration/index.md). A newer type package does not supersede the project's configured target.
 
 ## Keep Compatibility Dates Current
 
@@ -29,7 +29,7 @@ Use today's date for new Workers. Encourage periodic updates for existing Worker
 
 ## Enable Observability
 
-Enable [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/) and [Traces](https://developers.cloudflare.com/workers/observability/traces/) when creating or preparing a Worker for production. Set `observability.enabled` and `observability.traces.enabled` to `true`; the top-level setting alone does not enable traces. Use structured JSON logging and configure sampling for the workload. During reviews, flag missing logs or traces. See the [configuration example](references/configuration.md#enable-workers-logs-and-traces).
+Enable [Workers Logs](https://developers.cloudflare.com/workers/observability/logs/workers-logs/index.md) and [Traces](https://developers.cloudflare.com/workers/observability/traces/index.md) when creating or preparing a Worker for production. Set `observability.enabled` and `observability.traces.enabled` to `true`; the top-level setting alone does not enable traces. Use structured JSON logging and configure sampling for the workload. During reviews, flag missing logs or traces. See the [configuration example](references/configuration.md#enable-workers-logs-and-traces).
 
 ## Anti-Patterns to Flag
 
@@ -60,5 +60,5 @@ Use the project's existing checks for affected Workers behavior: type-check bind
 This skill covers Workers-specific best practices and code review. For related topics:
 
 - **Durable Objects**: load the `durable-objects` skill
-- **Workflows**: see [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/)
+- **Workflows**: see [Rules of Workflows](https://developers.cloudflare.com/workflows/build/rules-of-workflows/index.md)
 - **Wrangler CLI commands**: load the `wrangler` skill

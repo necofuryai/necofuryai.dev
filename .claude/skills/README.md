@@ -37,6 +37,7 @@ Apache-2.0 第 4 条 (b) は、改変したファイル自身に変更した旨�
 2. 両 `SKILL.md` にある Wrangler の設定スキーマ (`config-schema.json`) を参照させる箇所に、このリポジトリの事情を注記。
    `wrangler/SKILL.md` は "Retrieve What the Task Needs" 表の "Edit config or add a binding" 行、`workers-best-practices/SKILL.md` は "References" 表の直後の段落にある "Use the installed Wrangler schema for config fields." の文。
    wrangler は `package.json` の依存に入っておらず (デプロイは Cloudflare 側の Git 連携ビルド)、`node_modules/wrangler/` は存在しないため、スキーマ参照はドキュメント URL へフォールバックさせる必要がある。
+   `workers-best-practices/SKILL.md` の注記に書き足したリンクは、上流のほかのリンクと同じく Markdown 版のページ (`…/index.md`) を直接指す。`wrangler/SKILL.md` の注記はリンクを足しておらず、同じ行にある上流のリンクをそのまま使う。上流は、Markdown 版を返すかどうかをリクエストの指定で切り替える仕組み (content negotiation) に対応しないエージェントがあるため、この形式に揃えている。
 3. 両 `SKILL.md` の frontmatter の直後に、necofuryai が改変した旨、上流のパス、変更の概要、この節への参照を記した告知 (引用ブロック) を追加。
    frontmatter の `name` と `description` はスキルを読み込むかどうかの判定に使われるため、手を入れていない。
    告知は `**Modified by necofuryai:**` で始める。単体テスト `tests/unit/vendored-skills-notice.test.mjs` がこの文字列で告知の有無と位置を確かめる。
