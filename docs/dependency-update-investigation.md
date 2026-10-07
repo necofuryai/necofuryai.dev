@@ -85,6 +85,21 @@ pnpm `11.20.0` と Node.js `24` で、当時の #132 と修正後の main から
 今回の修正ではグループ追加と、一時コピーを検証する step を `Build and Check` の `Astro Check` job に実装した。
 既存の `CI OK` がこの job の成功を要求するため、新しい必須チェック名を branch protection に登録する必要はない。
 
+### pnpm 12 での再確認（2026-10-07）
+
+pnpm `12.9.1` の `install` には `--resolution-only` がなく、上の検証コマンドは `error: unexpected argument '--resolution-only' found` で失敗する。
+pnpm 12 の `install` は、frozen install や最新の lockfile では依存解決を省き、peer dependency の問題を報告しない。
+そこで、同じ3ファイルの一時コピーで、lockfile だけを読む `pnpm peers check --lockfile-only` を実行する方式に替えた。
+上の指示どおり、同じ2つの fixture で再確認した。
+どちらも `packageManager` を `pnpm@12.9.1` にし、`pnpm-workspace.yaml` に `pmOnFail: ignore` を加えた状態で実行した。
+
+| 入力 | 結果 |
+| --- | --- |
+| #132 `8f3031f` | exit 1。`unmet peer @astrojs/markdown-remark` で、導入版 `7.2.4` と、`astro@7.2.10` の要求範囲 `^7.3.0` の不一致を検出。 |
+| main `9e22147` | exit 0。`No peer dependency issues found`。 |
+
+どちらの試行でも `node_modules` は作成されず、lockfile も書き換わらなかった。
+
 ## fast-uri の自動セキュリティ更新が失敗した理由
 
 Dependabot は修正版の公開を認識していたが、pnpm `11.20.0` へ渡した更新コマンドが間接依存の解決を変更しなかった。

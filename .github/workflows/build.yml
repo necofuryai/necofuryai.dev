@@ -45,7 +45,7 @@ jobs:
           trap 'rm -rf "$validation_dir"' EXIT
           cp package.json pnpm-lock.yaml pnpm-workspace.yaml "$validation_dir/"
           cd "$validation_dir"
-          pnpm install --resolution-only --no-frozen-lockfile --strict-peer-dependencies --ignore-scripts
+          pnpm peers check --lockfile-only
 
       - name: Run Astro Check
         run: pnpm astro check
