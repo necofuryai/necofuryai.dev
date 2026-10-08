@@ -575,6 +575,8 @@ metadata 検証の失敗は自動マージ不適格として扱う。
 古い auto-merge request の解除を確認できた場合だけ対象外 PR の policy job を成功させるため、手動マージは妨げない。
 [required status checks の性質](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks)
 
+> **2026-07-20 改訂:** 以下の allowlist と、後段の「次の更新は自動マージしない」のうち更新幅、依存の種別、group 化、allowlist に関する項目は、初期設計の記録として残す。現行の判定は「自動マージ条件の緩和（2026-07-20 改訂）」節の判定 matrix と `scripts/ci/evaluate-automerge-policy.mjs` を正とする。
+
 自動マージの初期 allowlist は、現在 `devDependencies` にある次の六件である。
 
 - `@astrojs/ts-plugin`
@@ -950,6 +952,8 @@ jobs:
 Dependabot PR と baseline generator 自身には repository write token を渡さず、画像更新だけで regression を成功扱いにする経路を作らない。
 
 ### 7. `.github/workflows/dependabot-advisory-review.yml`
+
+> **2026-10-02 改訂:** この節と実装との差異は、「advisory Workflow の実装との差異（2026-10-02 改訂）」節に記す。同節は、実装を正とする記述を上書きし、実装が満たしていない要求は取り下げずに残す。
 
 Claude Code による依存差分レビューと、VRT failure 時の screenshot 診断を自動実行する。
 ただし、この Workflow は branch protection の required context にせず、失敗、credential 不在、rate limit、モデルの判断でマージ可否を変更しない。
@@ -1575,6 +1579,94 @@ Dependabot の docker ecosystem は Dockerfile などの manifest を対象と�
 
 「自動マージ範囲を広げる条件」が挙げた denylist 解除の再評価条件のうち、VRT baseline の同時更新は 2026-07-22 の運用変更で前提ごと消滅した。
 残る条件は container image digest 更新の自動化であり、#5819 の解決かそれに相当する仕組みを導入した時点で再評価する。
+
+## advisory Workflow の実装との差異（2026-10-02 改訂）
+
+本節は「実装する変更」の「7. `.github/workflows/dependabot-advisory-review.yml`」（以下、7 節）と実装との差異を記録し、「実装手順」のフェーズ 2 の手順 11 と 12 にも同じ差異を適用する。
+差異は二種類に分けて扱い、本改訂と同じ変更で実装を 7 節に合わせた項目は最後にまとめる。
+「実装を正とする差異」に挙げる記述は、本節が 7 節を上書きする。
+「7 節の要求に実装が届いていない項目」に挙げる要求は取り下げず、実装が満たしていない要求として残す。
+VRT と画像診断に関する記述は冒頭の「2026-07-22 運用変更」の注記が、patch 更新だけを自動マージの対象とする前提は「自動マージ条件の緩和（2026-07-20 改訂）」が扱っているので、本節では繰り返さない。
+
+現行の構成は `.github/workflows/dependabot-advisory-review.yml`、`.github/workflows/advisory-canary-fixture.yml`、`.github/claude/advisory-permissions.json`、`scripts/ci/extract-advisory-json.mjs`、`scripts/ci/render-advisory-comment.mjs` を正とする。
+二つの Workflow の Action pin と `claude_args` が一致することは、`scripts/ci/advisory-workflow-config.test.mjs` が検査する。
+差異の多くは、Workflow を追加した PR #27（2026-07-19）の時点で、すでに 7 節と異なる形で実装されていた。
+後から変わった項目には、変更した PR を記す。
+
+### 実装を正とする差異
+
+`preflight` は、自動の `workflow_run` だけでなく手動の `workflow_dispatch` でも、PR author が `dependabot[bot]` であること、draft でないこと、head repository がこの repository であることを要求する。
+7 節は author と draft の条件を自動実行だけに課し、手動実行を「通常 PR の VRT failure を owner が調べる用途」にも使うとしていたが、`preflight` は Dependabot 以外の PR に対する手動実行をすべて拒否する。
+そのため、フェーズ 2 の手順 11 と 12 が想定する owner の PR を使った手動検証は、VRT の廃止とは別に、現行の `preflight` でも実行できない。
+
+Claude へ渡す入力は、`diff.patch`、`pr-body-excerpt.txt`、`checks-summary.txt` と manifest の四 file である。
+7 節が挙げた「Dependabot metadata」と package name、old version、new version は構造化した値として渡しておらず、package name と version は diff と PR body の文面にだけ現れる。
+`pr-body-excerpt.txt` は release note の節を抜き出したものではなく、PR body 全体の先頭 64 KiB である。
+`checks-summary.txt` は、head SHA に付いた check run を required checks に限らず pagination なしで最大 100 件取得し、32 KiB に切り詰めたものである。
+
+`sanitize` job は checkout も依存の install も行わない。
+job 単位の `permissions` を持たないので、Workflow の `permissions: {}` を継承する。
+処理は Workflow に直接書いた script で行い、三つの text file から TAB、LF、CR を除く C0 制御文字と DEL を削り、各 file を 1 MiB に切り詰めてから manifest を作り直す。
+7 節が書いた trusted な `main` の checkout、`contents: read`、frozen lockfile からの install は VRT artifact 用の sanitizer を動かすためのもので、PR #56（2026-07-22）で VRT と一緒に削除された。
+
+`analyze` job は `id-token` を持たない。
+7 節は job の一覧で `id-token: write` を挙げる一方、後段では `id-token: write` を付与しないと書いており、節の中で記述が食い違っている。
+後段の記述は、credential を OAuth token に切り替えた PR #26（2026-07-19）で書き換えたもので、`id-token` については実装は後段に従う。
+
+`--max-turns` は、7 節の 4 から PR #44（2026-07-20）で 12 に上げた。
+4 では入力の読み取りと JSON の出力に要する turn 数に届かず、PR #44 の merge までに Claude を起動した実行は、すべて Claude の step が失敗していた（確認したログの終了理由は `error_max_turns`）。
+PR #103（2026-08-10）は、12 でも PR #101 の advisory が上限に達して構造化出力を生成できなかったため 20 に上げ、一回の実行の費用上限として `--max-budget-usd 1.00` も加えた。
+7 節には費用の上限の定めがない。
+これらの値は今後も変わりうるので、現行の値は Workflow の `claude_args` で確認する。
+
+permission settings は Action の `settings` input ではなく、`claude_args` の `--settings` で `.github/claude/advisory-permissions.json` を渡す。
+
+7 節は「project-relative の `src/**`、package files、Workflow、sanitized input だけを allow にする」としているが、`--permission-mode dontAsk` では、作業ディレクトリ内のファイルの読み取りは allow rule がなくても実行される。
+そのため allow list は作業ディレクトリ内の読み取りを絞り込んでおらず、7 節の列挙にない `Read(./astro.config.mjs)` も読み取りの範囲を広げていない。
+読み取りを実際に制限しているのは、deny rule と、作業ディレクトリの外にあるファイルの読み取りを `dontAsk` が拒否することである。
+作業ディレクトリの外を対象にした deny rule はこの拒否と重なる多重防御であり、deny rule だけが拒否を担うのは、作業ディレクトリ内の `./.git/**`、`./.env*`、`./.npmrc` である。
+また、Claude Code は Glob の path rule を受け付けるが参照せず、Grep の path rule の扱いは文書に記載がない。
+[Claude Code の permission mode と path rule](https://code.claude.com/docs/en/permissions)
+
+`--bare` の代わりとして 7 節が挙げた「pinned Action が `CLAUDE.md`、`.claude/`、`.mcp.json` 等を default branch から復元する実装」は、この Workflow の起動方法では行われない。
+v1.0.236 の Action がこの復元を行うのは、issue と PR の event（`issues`、`issue_comment`、`pull_request`、`pull_request_target`、`pull_request_review`、`pull_request_review_comment`）で起動され、対象が PR である場合に限られる。
+`workflow_run` と `workflow_dispatch` は、これに当たらない。
+PR の設定 file が Claude に読み込まれないのは、`workflow_run` で起動された `analyze` job が trusted な `main` だけを checkout し、PR head を checkout しないためである。
+手動の `workflow_dispatch` では、起動時に選んだ ref の Workflow 定義が動き、その ref を checkout する。
+
+structured output は JSON Schema で生成しておらず、prompt で出力の形を文章として示しているだけである。
+`scripts/ci/extract-advisory-json.mjs` は最後の assistant text の最初の `{` から最後の `}` までを JSON として解釈し、job output に渡す前には全体が 64 KiB 以下であることだけを検査する。
+許可する key の一覧と、文字列ごとの 2,000 byte、配列ごとの 10 件という上限は、後段の `comment` job で `scripts/ci/render-advisory-comment.mjs` が検査する。
+
+そのため、JSON としては正しいが形の違う出力では、7 節の記述と異なり `comment` job は skip されない。
+`comment` job が起動して renderer が exit 1 で終わり、comment は投稿されず required checks も変わらないが、Workflow の run は failure になる。
+2026-10-02 時点で、この Workflow の run のうち failure は 2026-07-27 に `preflight` で失敗した一回だけで、この経路を通った run はない。
+
+### 7 節の要求に実装が届いていない項目
+
+`advisory-canary-fixture.yml` が canary と `sk-ant-oat` を探すのは、Claude の execution file だけである。
+execution file には structured output が含まれ、PR comment はそこから組み立てるので、この二つは間接的に検査される。
+一方、Action log は検査していない。
+fixture は canary の値を Claude の step（env canary だけ）と検査 step（四つすべて）に `env` として渡しており、GitHub Actions は step の `env` を log に表示するので、run の log には構造上 canary が現れる。
+そのため、Action log に canary が現れないことを確かめるという 7 節の要求は、この fixture では満たせない。
+fixture には `sanitize` job も `comment` job もなく、sanitized artifact と PR comment を直接検査する手段もない。
+
+fixture は、deny rule が読み取りを拒否したことも検査していない。
+PR #27 の merge 前、PR #44 の branch、PR #169（v1.0.235 への更新）の branch で canary を検査した三回の fixture 実行では、いずれも `permission_denials_count` が 0 だった。
+確認した本番の実行でも 0 だった。
+0 という値からは、deny rule が読み取りを拒否できるかどうかは分からない。
+7 節は「pinned Action と runner image の組み合わせで拒否を再現できない場合、Claude advisory Workflow は merge せず延期する」と定めていたが、PR #27 は拒否を確認しないまま merge され、そのまま運用が続いている。
+
+### 本改訂で実装を 7 節に合わせた項目
+
+`analyze` job の permissions から `actions: read` を外し、7 節の後段どおり `contents: read` と `pull-requests: read` だけにした。
+同じ run の artifact を取得する `actions/download-artifact` は Metadata だけの token を持つ `sanitize` job でも成功しており、v1.0.236 の Action が `actions: read` を要する API を呼ぶのは PR に関する event で起動された場合に限られるので、`analyze` はこの権限を使っていなかった。
+
+manifest は、`sanitize` が作り直す前と `analyze` が Claude に渡す前の二か所で検証する。
+どちらも `source_run_id`、`pr_number`、`head_sha` を `preflight` の job output と照合し、file の組が三つの bundle file と一致すること、各 file の SHA-256 が manifest と一致することを確かめる。
+照合に失敗すると job が失敗し、Claude は起動されない。
+期待値と manifest の値は同じ step output から来るので、出力が欠けたときに空文字同士で一致しないよう、期待値の形式を先に確かめる。
+これらの検査は `tests/unit/advisory-manifest-workflow.test.mjs` が確かめる。
 
 ## 公式資料
 
