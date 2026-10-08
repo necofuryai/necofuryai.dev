@@ -131,6 +131,7 @@ Because `trailingSlash` is set to `"always"`, always include trailing slashes in
 - Biome applies to the entire repository and uses tabs and double quotes.
 - `html.experimentalFullSupportEnabled: true` makes `.astro` and `.svelte` files formattable.
 - `src/**/*.css` is excluded from Biome.
+- `.claude/worktrees/` is force-ignored with the anchored pattern `!!.claude/worktrees`, so a worktree's own `biome.json` is not reported as a nested root configuration when Biome runs from the main checkout. Keep the pattern anchored: with a `**/` prefix it also matches the worktree's own path, and Biome then ignores every file when it runs inside a worktree.
 - CI also checks formatting and linting through `.github/workflows/biome.yml`.
 
 ### Dependencies

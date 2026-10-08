@@ -18,7 +18,8 @@
 			"!**/test-results/**/*",
 			"!**/.claude/settings.local.json",
 			"!**/.claude/launch.json",
-			"!**/.claude/.cc-writes/**/*"
+			"!**/.claude/.cc-writes/**/*",
+			"!!.claude/worktrees"
 		]
 	},
 	"formatter": {
