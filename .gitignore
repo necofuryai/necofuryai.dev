@@ -41,3 +41,6 @@ yarn.lock
 # 固有情報は preview を 4322 に逃がす作業習慣だけ)。ローカル除外は .git/info/exclude 側。
 .claude/settings.local.json
 .claude/.cc-writes/
+
+# local scratch for temporary files (never committed; Biome force-ignores it too)
+tmp/
