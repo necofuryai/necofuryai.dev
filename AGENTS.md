@@ -33,7 +33,7 @@ pnpm diff-skills      # Compare vendored cloudflare/skills in .claude/skills/ wi
 
 ## Commit messages and pull requests
 
-IMPORTANT: Write commit messages created with `git commit` and PR titles in English using the `<type>: <description>` format. Valid types are `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, and `ci`. This rule takes precedence even when the session language is Japanese. Write PR bodies in Japanese. A squash merge uses the PR title unchanged as the commit subject on `main`, so the title language becomes part of the repository history.
+IMPORTANT: Write commit messages created with `git commit` and PR titles in English using the `<type>: <description>` format. Valid types are `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `perf`, and `ci`. This rule takes precedence even when the session language is Japanese. Write PR bodies in Japanese. The repository's squash default, `COMMIT_OR_PR_TITLE`, makes the commit subject on `main` the commit's title for a single-commit PR and the PR title otherwise, so both become part of the repository history.
 
 ## UI smoke tests
 
@@ -112,7 +112,7 @@ To keep builds deterministic, playlist fetching is not part of `pnpm build`. Ref
 
 Scheduled runs pass `--weekly` and fetch only the two playlists that Apple updates: Replay All Time and the current year, marked with `weekly: true` in the `PLAYLISTS` array. If only `fetchedAt` changes, the script does not write the JSON and the workflow does not open a PR. Refresh every playlist through `scope=all` in `workflow_dispatch` or by running `pnpm fetch-playlists` manually.
 
-Refresh PRs are created with the repository `GITHUB_TOKEN`, so their `pull_request` workflows wait for maintainer approval. When the user explicitly requests that approval, review Files changed, then use Merge status -> Awaiting approval -> Approve workflows to run; do not close and reopen the PR. The workflow requests review from `necofuryai` when it creates a PR and refuses to create a duplicate while an earlier refresh PR is open. `.github/workflows/monitor-playlist-refresh.yml` records any refresh PR left open for more than 24 hours in a deduplicated Issue.
+Refresh PRs are created with the repository `GITHUB_TOKEN`, so their `pull_request` workflows wait for maintainer approval. When the user explicitly requests that approval, review Files changed, then use Merge status -> Awaiting approval -> Approve workflows to run; do not close and reopen the PR. When the PR is behind `main`, update it with `gh pr update-branch` instead of approving: the update is triggered by the user, so the required checks run without approval. The workflow requests review from `necofuryai` when it creates a PR and refuses to create a duplicate while an earlier refresh PR is open. `.github/workflows/monitor-playlist-refresh.yml` records any refresh PR left open for more than 24 hours in a deduplicated Issue.
 
 At the start of a new year, update the `PLAYLISTS` array and move the `weekly` marker to the new current-year playlist. A JSON file with `placeholder: true` contains placeholder data and causes the page to display a notice.
 
