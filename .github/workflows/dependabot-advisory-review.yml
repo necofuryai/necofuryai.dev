@@ -37,6 +37,7 @@ jobs:
       proceed: ${{ steps.validate.outputs.proceed }}
       pr_number: ${{ steps.validate.outputs.pr_number }}
       head_sha: ${{ steps.validate.outputs.head_sha }}
+      run_id: ${{ steps.validate.outputs.run_id }}
     steps:
       - name: Validate trigger against the GitHub API
         id: validate
@@ -168,6 +169,41 @@ jobs:
           name: claude-raw-input-${{ github.run_id }}
           path: ${{ runner.temp }}/claude-raw/
 
+      # 作り直す前に、raw bundle が preflight の作ったものであることを確かめる。期待値は manifest と
+      # 同じ step output から来るので、出力が欠けると空文字同士で一致してしまう。先に形式を確かめる。
+      - name: Verify raw manifest
+        env:
+          EXPECTED_SOURCE_RUN_ID: ${{ needs.preflight.outputs.run_id }}
+          EXPECTED_PR: ${{ needs.preflight.outputs.pr_number }}
+          EXPECTED_SHA: ${{ needs.preflight.outputs.head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - "$RUNNER_TEMP/claude-raw" "$EXPECTED_SOURCE_RUN_ID" "$EXPECTED_PR" "$EXPECTED_SHA" <<'EOF'
+          const { createHash } = require("node:crypto");
+          const { readFileSync, readdirSync, statSync } = require("node:fs");
+          const { join } = require("node:path");
+          const [dir, expectedRunId, expectedPr, expectedSha] = process.argv.slice(2);
+          if (!/^[0-9]+$/.test(expectedRunId)) throw new Error("expected source_run_id is not numeric");
+          if (!/^[0-9]+$/.test(expectedPr)) throw new Error("expected pr_number is not numeric");
+          if (!/^[0-9a-f]{40}$/.test(expectedSha)) throw new Error("expected head_sha is not a commit SHA");
+          const bundle = ["checks-summary.txt", "diff.patch", "pr-body-excerpt.txt"].join("\n");
+          const manifest = JSON.parse(readFileSync(join(dir, "manifest.json"), "utf8"));
+          if (manifest.source_run_id !== expectedRunId) throw new Error("source_run_id mismatch");
+          if (manifest.pr_number !== expectedPr) throw new Error("pr_number mismatch");
+          if (manifest.head_sha !== expectedSha) throw new Error("head_sha mismatch");
+          if (!Array.isArray(manifest.files) || manifest.files.map((f) => f.name).sort().join("\n") !== bundle)
+            throw new Error("manifest file list differs from the bundle");
+          const present = readdirSync(dir)
+            .filter((f) => f !== "manifest.json" && statSync(join(dir, f)).isFile())
+            .sort();
+          if (present.join("\n") !== bundle) throw new Error("bundle directory has unexpected or missing files");
+          for (const f of manifest.files) {
+            const digest = createHash("sha256").update(readFileSync(join(dir, f.name))).digest("hex");
+            if (digest !== f.sha256) throw new Error(`sha256 mismatch: ${f.name}`);
+          }
+          EOF
+
       - name: Sanitize bundle
         shell: bash
         run: |
@@ -178,9 +214,8 @@ jobs:
 
           # tr は削るだけで出力が入力より大きくならず、preflight が各ファイルを 1 MiB 以下に抑えているので、
           # head が tr より先に終わって SIGPIPE になることはない。preflight の上限を 1 MiB より上げるなら、
-          # ここもファイル経由に変える。
+          # ここもファイル経由に変える。三つのファイルがそろっていることは前のステップで確かめている。
           for f in diff.patch pr-body-excerpt.txt checks-summary.txt; do
-            [[ -f "$raw/$f" ]] || : > "$raw/$f"
             LC_ALL=C tr -d '\000-\010\013\014\016-\037\177' < "$raw/$f" \
               | head -c 1048576 > "$out/$f"
           done
@@ -220,7 +255,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
-      actions: read
       contents: read
       pull-requests: read
     outputs:
@@ -259,20 +293,32 @@ jobs:
       - name: Verify sanitized manifest
         if: steps.gate.outputs.run_claude == 'true'
         env:
+          EXPECTED_SOURCE_RUN_ID: ${{ needs.preflight.outputs.run_id }}
           EXPECTED_PR: ${{ needs.preflight.outputs.pr_number }}
           EXPECTED_SHA: ${{ needs.preflight.outputs.head_sha }}
         shell: bash
         run: |
           set -euo pipefail
-          node - "$EXPECTED_PR" "$EXPECTED_SHA" <<'EOF'
+          node - "$EXPECTED_SOURCE_RUN_ID" "$EXPECTED_PR" "$EXPECTED_SHA" <<'EOF'
           const { createHash } = require("node:crypto");
-          const { readFileSync } = require("node:fs");
+          const { readFileSync, readdirSync, statSync } = require("node:fs");
           const { join } = require("node:path");
-          const [expectedPr, expectedSha] = process.argv.slice(2);
+          const [expectedRunId, expectedPr, expectedSha] = process.argv.slice(2);
+          if (!/^[0-9]+$/.test(expectedRunId)) throw new Error("expected source_run_id is not numeric");
+          if (!/^[0-9]+$/.test(expectedPr)) throw new Error("expected pr_number is not numeric");
+          if (!/^[0-9a-f]{40}$/.test(expectedSha)) throw new Error("expected head_sha is not a commit SHA");
           const dir = ".claude-review-input";
+          const bundle = ["checks-summary.txt", "diff.patch", "pr-body-excerpt.txt"].join("\n");
           const manifest = JSON.parse(readFileSync(join(dir, "manifest.json"), "utf8"));
+          if (manifest.source_run_id !== expectedRunId) throw new Error("source_run_id mismatch");
           if (manifest.pr_number !== expectedPr) throw new Error("pr_number mismatch");
           if (manifest.head_sha !== expectedSha) throw new Error("head_sha mismatch");
+          if (!Array.isArray(manifest.files) || manifest.files.map((f) => f.name).sort().join("\n") !== bundle)
+            throw new Error("manifest file list differs from the bundle");
+          const present = readdirSync(dir)
+            .filter((f) => f !== "manifest.json" && statSync(join(dir, f)).isFile())
+            .sort();
+          if (present.join("\n") !== bundle) throw new Error("bundle directory has unexpected or missing files");
           for (const f of manifest.files) {
             const digest = createHash("sha256")
               .update(readFileSync(join(dir, f.name)))
