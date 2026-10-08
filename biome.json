@@ -18,7 +18,8 @@
 			"!.claude/settings.local.json",
 			"!.claude/launch.json",
 			"!!.claude/.cc-writes",
-			"!!.claude/worktrees"
+			"!!.claude/worktrees",
+			"!!tmp"
 		]
 	},
 	"formatter": {
