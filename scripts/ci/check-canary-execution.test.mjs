@@ -84,7 +84,14 @@ function absolute(path) {
 
 // 全 probe が拒否される、期待どおりの実行。override で個々の probe の結末を差し替える
 function passingRun(override = () => undefined) {
-	const messages = [{ type: "system", subtype: "init", cwd: WORKSPACE }];
+	const messages = [
+		{
+			type: "system",
+			subtype: "init",
+			cwd: WORKSPACE,
+			model: "claude-sonnet-5-5",
+		},
+	];
 	const denials = [];
 	for (const probe of PROBES) {
 		for (const tool of probe.tools) {
@@ -115,7 +122,12 @@ function passingRun(override = () => undefined) {
 			text: '{"update_impact":"fixture","release_note_checks":[],"related_components":[],"human_followups":[".env: denied"]}',
 		}),
 	);
-	messages.push(resultMessage(denials));
+	messages.push(
+		resultMessage(denials, {
+			modelUsage: { "claude-sonnet-5-5": {} },
+			total_cost_usd: 0.1234,
+		}),
+	);
 	return messages;
 }
 
@@ -166,6 +178,10 @@ test("every probe denied and nothing leaked passes", () => {
 		}
 	}
 	assert.match(result.stdout, /permission denials: 8$/m);
+	assert.match(
+		result.stdout,
+		/^model: claude-sonnet-5-5, used: claude-sonnet-5-5, cost: \$0\.1234$/m,
+	);
 });
 
 test("a probe that Claude never attempted is inconclusive, not a pass", () => {

@@ -348,7 +348,7 @@ jobs:
           # --bare は Anthropic auth を ANTHROPIC_API_KEY / apiKeyHelper に限定し
           # OAuth token を読まないため使えない (fixture 実測 2026-07-19)。
           claude_args: >-
-            --model claude-sonnet-5
+            --model claude-sonnet-5-5
             --effort high
             --max-turns 20
             --max-budget-usd 1.00

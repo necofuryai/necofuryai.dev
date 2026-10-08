@@ -77,9 +77,11 @@ function blockText(content) {
 // ツール呼び出し (assistant の tool_use) と結果 (user の tool_result) を id で結ぶ
 const toolUses = new Map();
 const toolResults = new Map();
+let init;
 let result;
 for (const message of messages) {
 	if (!message || typeof message !== "object") continue;
+	if (message.type === "system" && message.subtype === "init") init = message;
 	if (message.type === "result") result = message;
 	const content = message.message?.content;
 	if (!Array.isArray(content)) continue;
@@ -177,6 +179,16 @@ for (const line of report) console.log(line);
 if (result) {
 	console.log(
 		`result: ${result.subtype ?? "unknown"}, turns: ${result.num_turns ?? "unknown"}, permission denials: ${denials.length}`,
+	);
+	// どのモデルが応答したかは記録するだけで、判定には使わない。分類器に flag された要求が
+	// fallback のモデルに切り替わるのは Claude Code の正常動作で、deny rule の検証には関係しない
+	const used = Object.keys(result.modelUsage ?? {});
+	const cost =
+		typeof result.total_cost_usd === "number"
+			? `$${result.total_cost_usd.toFixed(4)}`
+			: "unknown";
+	console.log(
+		`model: ${init?.model ?? "unknown"}, used: ${used.join(", ") || "unknown"}, cost: ${cost}`,
 	);
 }
 if (failures.length > 0) {

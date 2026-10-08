@@ -14,7 +14,7 @@ const WORKFLOW_URLS = [
 ];
 
 const EXPECTED_ARGS = [
-	"--model claude-sonnet-5",
+	"--model claude-sonnet-5-5",
 	"--effort high",
 	"--max-turns 20",
 	"--max-budget-usd 1.00",

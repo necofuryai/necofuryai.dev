@@ -211,7 +211,10 @@ test("the assertion step hands the execution file and the manifest to the checke
 		step,
 		/node scripts\/ci\/check-canary-execution\.mjs "\$EXECUTION_FILE" "\$RUNNER_TEMP\/canary-manifest\.json"/,
 	);
-	assert.match(step, /CLAUDE_OUTCOME" == "success"/);
+	assert.match(step, /CLAUDE_OUTCOME" != "success"/);
+	// 失敗の理由を二つに分けて示す: 起動後に止まった (execution file あり) か、起動前に壊れた (なし) か
+	assert.match(step, /Claude step failed after starting/);
+	assert.match(step, /failed before writing an execution file/);
 });
 
 test("the fixture refuses to run under debug logging instead of skipping", () => {

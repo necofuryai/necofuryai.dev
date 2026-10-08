@@ -138,7 +138,7 @@ jobs:
           # --bare は Anthropic auth を ANTHROPIC_API_KEY / apiKeyHelper に限定し
           # OAuth token を読まないため使えない (fixture 実測 2026-07-19)。
           claude_args: >-
-            --model claude-sonnet-5
+            --model claude-sonnet-5-5
             --effort high
             --max-turns 20
             --max-budget-usd 1.00
@@ -177,8 +177,22 @@ jobs:
         run: |
           set -euo pipefail
           echo "claude step outcome: $CLAUDE_OUTCOME"
-          [[ "$CLAUDE_OUTCOME" == "success" ]] || {
-            echo "Claude step failed: OAuth auth or Action execution is broken"; exit 1; }
+          if [[ "$CLAUDE_OUTCOME" != "success" ]]; then
+            if [[ -n "${EXECUTION_FILE:-}" && -f "$EXECUTION_FILE" ]]; then
+              # Claude は起動したが途中で終わった (turn や予算の上限、モデル側のエラーなど)。理由は result message にある
+              node -e '
+                const messages = JSON.parse(require("node:fs").readFileSync(process.argv[1], "utf8"));
+                const result = Array.isArray(messages) ? messages.find((m) => m && m.type === "result") : undefined;
+                console.log(result
+                  ? "result: " + result.subtype + ", turns: " + result.num_turns + ", errors: " + ((result.errors || []).join("; ") || "none")
+                  : "the execution file has no result message");
+              ' "$EXECUTION_FILE"
+              echo "Claude step failed after starting; see the result line above and the Claude step log"
+            else
+              echo "Claude step failed before writing an execution file: OAuth auth, the model id, or the Action install is broken; see the Claude step log"
+            fi
+            exit 1
+          fi
           [[ -n "${EXECUTION_FILE:-}" && -f "$EXECUTION_FILE" ]] || {
             echo "no execution file to inspect"; exit 1; }
           node scripts/ci/check-canary-execution.mjs "$EXECUTION_FILE" "$RUNNER_TEMP/canary-manifest.json"
