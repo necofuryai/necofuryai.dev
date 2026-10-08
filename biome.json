@@ -9,16 +9,17 @@
 		"ignoreUnknown": false,
 		"includes": [
 			"**",
-			"!**/src/**/*.css",
-			"!**/src/public/**/*",
-			"!**/dist/**/*",
-			"!**/node_modules/**/*",
-			"!**/.astro/**/*",
-			"!**/playwright-report/**/*",
-			"!**/test-results/**/*",
-			"!**/.claude/settings.local.json",
-			"!**/.claude/launch.json",
-			"!**/.claude/.cc-writes/**/*"
+			"!src/**/*.css",
+			"!!dist",
+			"!!node_modules",
+			"!.astro/**/*",
+			"!!playwright-report",
+			"!!test-results",
+			"!.claude/settings.local.json",
+			"!.claude/launch.json",
+			"!!.claude/.cc-writes",
+			"!!.claude/worktrees",
+			"!!tmp"
 		]
 	},
 	"formatter": {
