@@ -17,5 +17,9 @@
 		"source.fixAll": "explicit",
 		"source.organizeImports.biome": "always"
 	},
-	"frontMatter.dashboard.openOnStart": false
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.expand": false,
+	"explorer.fileNesting.patterns": {
+		"package.json": "pnpm-lock.yaml, pnpm-workspace.yaml, astro.config.mjs, biome.json, tsconfig.json, pagefind.yml, playwright.config.ts, wrangler.jsonc"
+	}
 }

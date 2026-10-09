@@ -103,7 +103,35 @@ export default defineConfig({
 				showCopyToClipboardButton: false,
 			},
 		}),
-		svelte(),
+		svelte({
+			// Svelte の設定は svelte.config.js ではなくここに置く。vite-plugin-svelte は
+			// これらのオプションをインラインで受け取り、configFile: false でファイルの
+			// 探索を止める (無いと astro dev / build / sync / check のたびに
+			// "no Svelte config found" を出す)。
+			configFile: false,
+			// preprocess は指定しない。<script lang="ts"> は Svelte 5 が自前で扱い、
+			// <style> は素の CSS だけなので vitePreprocess() の出番が無い。
+			// <style lang="scss"> などを導入するときは preprocess: [vitePreprocess()] を戻す。
+			// runes モードを自前のコンポーネントにだけ強制する。Svelte 5 は既定では
+			// コンポーネント単位で rune を使っているかどうかを見てレガシーモードへ落ちるため、
+			// rune を書いていないコンポーネントは暗黙に「トップレベルの let がリアクティブ」な
+			// レガシー挙動のままになる。true に固定しておけば export let / $: / on:click といった
+			// レガシー構文がコンパイルエラーになり、混在に気づかないまま戻ってしまうのを防げる。
+			//
+			// compilerOptions ではなく dynamicCompileOptions を使うのは、前者が node_modules 内の
+			// Svelte コンポーネントまで巻き込むため。依存パッケージがどちらのモードで書かれているかは
+			// こちらが決める話ではなく (Svelte 5 がモード混在を許しているのはライブラリが独立して
+			// 移行できるようにするため)、レガシー構文の依存を 1 つ入れただけで node_modules を指す
+			// エラーでビルドが落ちる。dynamicCompileOptions は dev / build 双方のコンパイル経路で
+			// 適用されるので、自前コードへの強制力は compilerOptions と変わらない。
+			//
+			// vitePlugin: { ... } で包まないこと。インラインでは vitePlugin キーは警告だけで
+			// 捨てられ、runes の強制が黙って失効する。
+			dynamicCompileOptions({ filename }) {
+				if (filename.includes("node_modules")) return;
+				return { runes: true };
+			},
+		}),
 		sitemap(),
 	],
 	markdown: {

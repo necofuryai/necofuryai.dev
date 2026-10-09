@@ -189,7 +189,8 @@ jobs:
               ' "$EXECUTION_FILE"
               echo "Claude step failed after starting; see the result line above and the Claude step log"
             else
-              echo "Claude step failed before writing an execution file: OAuth auth, the model id, or the Action install is broken; see the Claude step log"
+              # execution file は Claude の step が完走したときだけ出力される。起動前に壊れたか、step の timeout-minutes で打ち切られたか
+              echo "Claude step failed before writing an execution file: OAuth auth, the model id, the Action install, or the step timeout; see the Claude step log"
             fi
             exit 1
           fi
