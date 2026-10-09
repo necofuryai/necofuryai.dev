@@ -215,6 +215,8 @@ test("the assertion step hands the execution file and the manifest to the checke
 	// 失敗の理由を二つに分けて示す: 起動後に止まった (execution file あり) か、起動前に壊れた (なし) か
 	assert.match(step, /Claude step failed after starting/);
 	assert.match(step, /failed before writing an execution file/);
+	// step の timeout でも execution file は無いので、原因の候補に入っていること (本番の summary step と同じ区別)
+	assert.match(step, /step timeout/);
 });
 
 test("the fixture refuses to run under debug logging instead of skipping", () => {
