@@ -10,10 +10,12 @@ allowBuilds:
 # pnpm then no longer switches to the pinned version by itself; see AGENTS.md.
 pmOnFail: ignore
 
+# audit.ignore: http-cache-semantics (via astro) is unreachable at build time and
+# disputed upstream; see AGENTS.md. Remove the entry once the advisory is withdrawn
+# or a release fixes it. Keep these comments above the `audit:` key: `pnpm audit
+# --ignore` re-renders the `ignore:` block and drops any comment inside it.
 audit:
   ignore:
-    # http-cache-semantics (via astro): unreachable at build time and disputed upstream; see AGENTS.md.
-    # Remove once the advisory is withdrawn or a release fixes it.
     - GHSA-ch52-4w7c-c8xp
 
 overrides:
