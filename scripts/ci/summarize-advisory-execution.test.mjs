@@ -27,12 +27,12 @@ function usage(overrides = {}) {
 	};
 }
 
-// 実際の execution file と同じく、SDK message の配列を組み立てる。
-// hostile な入力に影響されうる assistant の本文も入れ、summary に出ないことを確かめる。
-// init や result を省くには null を渡す (undefined は既定値に置き換わるため)
-function execution({
-	init = { type: "system", subtype: "init", model: REQUESTED },
-	result = {
+function defaultInit() {
+	return { type: "system", subtype: "init", model: REQUESTED };
+}
+
+function defaultResult() {
+	return {
 		type: "result",
 		subtype: "success",
 		num_turns: 13,
@@ -42,8 +42,21 @@ function execution({
 			[REQUESTED]: usage(),
 			[HELPER]: usage({ inputTokens: 300, outputTokens: 20, costUSD: 0.0062 }),
 		},
-	},
-} = {}) {
+	};
+}
+
+// 省略できる値は、キーが渡されたかどうかで既定値と差し替える。既定引数や分割代入の既定値は
+// undefined を渡しても既定値に戻ってしまい、「省いた」つもりのテストが既定値で通る
+function pick(options, key, fallback) {
+	return Object.hasOwn(options, key) ? options[key] : fallback();
+}
+
+// 実際の execution file と同じく、SDK message の配列を組み立てる。
+// hostile な入力に影響されうる assistant の本文も入れ、summary に出ないことを確かめる。
+// init や result はキーを渡したときだけ差し替わり、undefined や null を渡せば省ける
+function execution(options = {}) {
+	const init = pick(options, "init", defaultInit);
+	const result = pick(options, "result", defaultResult);
 	return [
 		init,
 		{
@@ -62,8 +75,9 @@ function execution({
 	].filter(Boolean);
 }
 
-// outcome に null を渡すと引数を省く (undefined は既定値に置き換わるため)
-function run(content, outcome = "success") {
+// outcome はキーを渡したときだけ差し替わり、undefined を渡せば引数そのものを省く
+function run(content, options = {}) {
+	const outcome = pick(options, "outcome", () => "success");
 	const dir = mkdtempSync(join(tmpdir(), "advisory-summary-"));
 	try {
 		const file = join(dir, "claude-execution-output.json");
@@ -72,15 +86,15 @@ function run(content, outcome = "success") {
 			typeof content === "string" ? content : JSON.stringify(content),
 		);
 		const args = [SCRIPT, file];
-		if (outcome !== null) args.push(outcome);
+		if (outcome !== undefined) args.push(outcome);
 		return spawnSync(process.execPath, args, { encoding: "utf8" });
 	} finally {
 		rmSync(dir, { recursive: true, force: true });
 	}
 }
 
-function expectSummary(content, outcome) {
-	const result = run(content, outcome);
+function expectSummary(content, options) {
+	const result = run(content, options);
 	assert.equal(result.status, 0, `expected exit 0, stderr: ${result.stderr}`);
 	assert.match(result.stdout, /^## Claude advisory analysis\n\n/);
 	assert.ok(result.stdout.endsWith("\n\n"), "summary ends with a blank line");
@@ -140,7 +154,7 @@ test("a failed Claude step with a result message still records what ran", () => 
 				modelUsage: { [REQUESTED]: usage() },
 			},
 		}),
-		"failure",
+		{ outcome: "failure" },
 	);
 	assert.match(out, /^- Claude step outcome: failure$/m);
 	assert.match(
@@ -150,14 +164,27 @@ test("a failed Claude step with a result message still records what ran", () => 
 });
 
 test("missing init or result messages are named instead of failing", () => {
-	const noResult = expectSummary(execution({ result: null }));
+	const noResult = expectSummary(execution({ result: undefined }));
 	assert.match(noResult, /^- Requested model: `claude-sonnet-5-5`$/m);
 	assert.match(noResult, /^- Result: \(no result message\)$/m);
 
-	const noInit = expectSummary(execution({ init: null }));
+	const noInit = expectSummary(execution({ init: undefined }));
 	assert.match(noInit, /^- Requested model: \(no init message\)$/m);
 	assert.match(noInit, /^\| `claude-sonnet-5-5` \| 1200/m);
 	assert.match(noInit, /does not appear in modelUsage/);
+});
+
+test("omitting a message really omits it from the fixture", () => {
+	// 既定値への差し戻しが戻ってきたら、ここで分かる
+	assert.equal(
+		execution({ result: undefined }).some((m) => m.type === "result"),
+		false,
+	);
+	assert.equal(
+		execution({ init: null }).some((m) => m.type === "system"),
+		false,
+	);
+	assert.equal(execution().length, 3);
 });
 
 test("the first init and the last result win when the engine re-emits them", () => {
@@ -197,7 +224,7 @@ test("values that do not look like model ids, words, or numbers are replaced", (
 				},
 			},
 		}),
-		"ok!",
+		{ outcome: "ok!" },
 	);
 	assert.match(out, /^- Claude step outcome: \(invalid\)$/m);
 	assert.match(out, /^- Requested model: \(invalid\)$/m);
@@ -250,7 +277,7 @@ test("an unparseable execution file is reported in the summary with exit 0", () 
 });
 
 test("an omitted outcome is shown as unknown", () => {
-	const out = expectSummary(execution(), null);
+	const out = expectSummary(execution(), { outcome: undefined });
 	assert.match(out, /^- Claude step outcome: \(unknown\)$/m);
 });
 

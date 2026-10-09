@@ -375,6 +375,7 @@ jobs:
       # modelUsage を見ないと切り替わりに気付けない。summary は run を開ける人なら誰でも読めるため、
       # 書くのはモデル ID と件数と費用だけで、Claude の本文は出さない (display_report: false のまま)。
       # Claude の step が失敗した場合も記録し、この step 自体の失敗で analyze を落とさない。
+      # job の cancel や job の timeout ではこの step も走らないので、記録できるのは step 単位の失敗まで。
       - name: Record the responding model in the step summary
         if: steps.gate.outputs.run_claude == 'true'
         env:

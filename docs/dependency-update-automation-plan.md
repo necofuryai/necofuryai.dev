@@ -1657,6 +1657,8 @@ Action 自身の summary（`display_report`）は Claude の本文とツール�
 Claude の step が失敗した場合も記録し、execution file が無い場合は、OAuth auth、モデル ID、Action の install のいずれかが壊れているか、step の timeout で打ち切られた旨を書く。
 script 自体が失敗したときも見出しと outcome だけは書き、`::warning::` を出す。
 この step の失敗で `analyze` は落とさない。
+job の cancel や job の timeout ではこの step も実行されないので、記録できるのは Claude の step 単位の失敗までである。
+fixture の検査 step が execution file の無いときに出す文言にも、同じ step timeout の候補を加えた。
 検査は `scripts/ci/summarize-advisory-execution.test.mjs` と `tests/unit/advisory-summary-workflow.test.mjs` が確かめる。
 
 ### 7 節の要求に実装が届いていない項目
