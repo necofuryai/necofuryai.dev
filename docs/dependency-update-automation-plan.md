@@ -1588,7 +1588,7 @@ Dependabot の docker ecosystem は Dockerfile などの manifest を対象と�
 「7 節の要求に実装が届いていない項目」に挙げる要求は取り下げず、実装が満たしていない要求として残す。
 VRT と画像診断に関する記述は冒頭の「2026-07-22 運用変更」の注記が、patch 更新だけを自動マージの対象とする前提は「自動マージ条件の緩和（2026-07-20 改訂）」が扱っているので、本節では繰り返さない。
 
-現行の構成は `.github/workflows/dependabot-advisory-review.yml`、`.github/workflows/advisory-canary-fixture.yml`、`.github/claude/advisory-permissions.json`、`scripts/ci/extract-advisory-json.mjs`、`scripts/ci/render-advisory-comment.mjs`、`scripts/ci/check-canary-execution.mjs` を正とする。
+現行の構成は `.github/workflows/dependabot-advisory-review.yml`、`.github/workflows/advisory-canary-fixture.yml`、`.github/claude/advisory-permissions.json`、`scripts/ci/extract-advisory-json.mjs`、`scripts/ci/render-advisory-comment.mjs`、`scripts/ci/check-canary-execution.mjs`、`scripts/ci/summarize-advisory-execution.mjs` を正とする。
 二つの Workflow の Action pin と `claude_args` が一致することは、`scripts/ci/advisory-workflow-config.test.mjs` が検査する。
 差異の多くは、Workflow を追加した PR #27（2026-07-19）の時点で、すでに 7 節と異なる形で実装されていた。
 後から変わった項目には、変更した PR を記す。
@@ -1648,6 +1648,16 @@ structured output は execution file の最後の assistant text から、PR com
 sanitized artifact は、fixture に `sanitize` job が無いので存在しない。
 fixture は execution file の検査をもって、この三つの検査に代える。
 Action log については、後述の追記のとおり値を mask して確かめる。
+
+**2026-10-09 追記（応答モデルの記録）:** `analyze` job は、Claude の step の直後に `scripts/ci/summarize-advisory-execution.mjs` で、execution file の `init` message の `model`、result message の `subtype`、turn 数、`permission_denials` の件数、`total_cost_usd`、`modelUsage` のモデルごとの token 数と費用を run の step summary に書く。
+Sonnet 5.5 は分類器に flag されると Sonnet 5 で再実行され、Claude の step はその場合も success で終わるので、`modelUsage` を見なければ切り替わりに気付けない。
+Opus 5.5 でも cyber の flag は Opus 4.8 で再実行されるので、モデルを上げても記録の必要は消えない。
+step summary は run を開ける人なら誰でも読めるため、Claude の本文やツール結果は書かず、モデル ID と数値は形式を確かめてから書き、合わない値は `(invalid)` に置き換える。
+Action 自身の summary（`display_report`）は Claude の本文とツール呼び出しを含むので、無効のままにする。
+Claude の step が失敗した場合も記録し、execution file が無い場合は、OAuth auth、モデル ID、Action の install のいずれかが壊れているか、step の timeout で打ち切られた旨を書く。
+script 自体が失敗したときも見出しと outcome だけは書き、`::warning::` を出す。
+この step の失敗で `analyze` は落とさない。
+検査は `scripts/ci/summarize-advisory-execution.test.mjs` と `tests/unit/advisory-summary-workflow.test.mjs` が確かめる。
 
 ### 7 節の要求に実装が届いていない項目
 

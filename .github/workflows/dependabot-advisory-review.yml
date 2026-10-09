@@ -370,6 +370,34 @@ jobs:
             禁止事項: approve / merge / label / branch 更新の提案、
             「自動マージ可能」という趣旨の判断、check 結果への言及による安全宣言。
 
+      # どのモデルが応答したかを run の step summary に残す。Sonnet 5.5 は分類器に flag されると
+      # Sonnet 5 で再実行されるが、Claude の step はその場合も success で終わるので、result message の
+      # modelUsage を見ないと切り替わりに気付けない。summary は run を開ける人なら誰でも読めるため、
+      # 書くのはモデル ID と件数と費用だけで、Claude の本文は出さない (display_report: false のまま)。
+      # Claude の step が失敗した場合も記録し、この step 自体の失敗で analyze を落とさない。
+      - name: Record the responding model in the step summary
+        if: steps.gate.outputs.run_claude == 'true'
+        env:
+          EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+          CLAUDE_OUTCOME: ${{ steps.claude.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${EXECUTION_FILE:-}" || ! -f "$EXECUTION_FILE" ]]; then
+            # execution file は Claude の step が完走したときだけ出力される。無いのは、起動前に壊れた
+            # (OAuth auth、モデル ID、Action の install) か、step の timeout-minutes で打ち切られたとき。
+            # fixture の検査 step と同じ区別だが、timeout を他の失敗と見分けられる steps.* の値は無い
+            printf '## Claude advisory analysis\n\n- Claude step outcome: %s\n- No execution file: the Claude step ended before writing one (OAuth auth, the model id, the Action install, or the step timeout); see the Claude step log\n\n' \
+              "$CLAUDE_OUTCOME" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if ! node scripts/ci/summarize-advisory-execution.mjs "$EXECUTION_FILE" "$CLAUDE_OUTCOME" >> "$GITHUB_STEP_SUMMARY"; then
+            # script は出力を最後に一度だけ書くので、失敗したときの summary は空のまま。見出しと outcome だけ残す
+            printf '## Claude advisory analysis\n\n- Claude step outcome: %s\n- Could not summarize the execution file; see the log of this step\n\n' \
+              "$CLAUDE_OUTCOME" >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::could not summarize the Claude execution file; see the log of this step"
+          fi
+
       - name: Extract structured advisory output
         if: steps.gate.outputs.run_claude == 'true' && steps.claude.outcome == 'success'
         id: extract
