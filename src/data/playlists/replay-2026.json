@@ -1,7 +1,7 @@
 {
 	"placeholder": false,
 	"order": 1,
-	"fetchedAt": "2026-10-05T21:14:55.125Z",
+	"fetchedAt": "2026-10-12T21:47:15.726Z",
 	"id": "pl.rp-lellcVyY1yj",
 	"storefront": "jp",
 	"name": "リプレイ2026",
@@ -127,16 +127,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/47/f3/49/47f3490b-4395-28ba-e6a9-88c9dd7be8fa/4547366841732.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1647132944",
-			"title": "CHAINSAW BLOOD",
-			"artist": "Vaundy",
-			"album": "CHAINSAW BLOOD - Single",
-			"durationMs": 200997,
-			"url": "https://music.apple.com/jp/album/chainsaw-blood/1647132937?i=1647132944",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e1/13/8b/e1138b12-ad1b-45e6-3545-8c4f8765ce8b/mzaf_16193442776413626505.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/c9/de/16/c9de1632-3d12-19c3-2699-22090b4bfcc1/4547366588620.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1734552686",
 			"title": "OH MY GOD",
 			"artist": "シーズ",
@@ -145,6 +135,26 @@
 			"url": "https://music.apple.com/jp/album/oh-my-god/1734552685?i=1734552686",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2e/2c/e6/2e2ce683-ccef-f684-863a-2c8ae7f6e2c5/mzaf_6746704345981850540.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "6807197459",
+			"title": "Bass Persuades",
+			"artist": "マイリー・サイラス",
+			"album": "Bass Persuades",
+			"durationMs": 202461,
+			"url": "https://music.apple.com/jp/album/bass-persuades/6807197456?i=6807197459",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/68/a5/9f/68a59fc5-beab-4298-acd0-ebbe587f9cfb/mzaf_16357440697032856219.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ff/af/51/ffaf51a6-d711-6f92-a5d6-f90e98014f0f/075679564061.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1647132944",
+			"title": "CHAINSAW BLOOD",
+			"artist": "Vaundy",
+			"album": "CHAINSAW BLOOD - Single",
+			"durationMs": 200997,
+			"url": "https://music.apple.com/jp/album/chainsaw-blood/1647132937?i=1647132944",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e1/13/8b/e1138b12-ad1b-45e6-3545-8c4f8765ce8b/mzaf_16193442776413626505.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/c9/de/16/c9de1632-3d12-19c3-2699-22090b4bfcc1/4547366588620.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1860538548",
@@ -165,16 +175,6 @@
 			"url": "https://music.apple.com/jp/album/%E3%81%AA%E3%82%93%E3%82%82%E3%81%AD%E3%81%88/6781198667?i=6781198668",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/c9/28/83/c9288393-3515-ef7b-6d51-1186cf21bedc/mzaf_14081471784850322326.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/6e/28/00/6e280007-5f1f-388e-4041-e593d43d1297/4988021077361.png/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "6807197459",
-			"title": "Bass Persuades",
-			"artist": "マイリー・サイラス",
-			"album": "Bass Persuades",
-			"durationMs": 202461,
-			"url": "https://music.apple.com/jp/album/bass-persuades/6807197456?i=6807197459",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/00/d4/32/00d432e3-a454-b3c9-d905-415d3afcb5f7/mzaf_4705230866933064384.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ff/af/51/ffaf51a6-d711-6f92-a5d6-f90e98014f0f/075679564061.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1889076498",
@@ -387,6 +387,26 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/5f/e1/aa/5fe1aa0e-89a1-be9e-bf38-49acc365188b/jacket_SRCL07605B00Z_550.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "6812593940",
+			"title": "FX戦士くるみちゃん",
+			"artist": "福賀くるみ(CV:鈴木愛奈)",
+			"album": "TVアニメ「FX戦士くるみちゃん」オープニングテーマ&エンディングテーマ - EP",
+			"durationMs": 199923,
+			"url": "https://music.apple.com/jp/album/fx%E6%88%A6%E5%A3%AB%E3%81%8F%E3%82%8B%E3%81%BF%E3%81%A1%E3%82%83%E3%82%93/6812593936?i=6812593940",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c1/72/3a/c1723a05-39ab-133b-265a-48d481a58f8f/mzaf_47078439635106650.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/66/e8/d6/66e8d6fa-9d2a-6cca-0e57-701f4e8bfabb/PA00227484_0_254802_jacket.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1836352947",
+			"title": "ニャオシグニャル",
+			"artist": "みらくらぱーく!",
+			"album": "ニャオシグニャル - EP",
+			"durationMs": 179988,
+			"url": "https://music.apple.com/jp/album/%E3%83%8B%E3%83%A3%E3%82%AA%E3%82%B7%E3%82%B0%E3%83%8B%E3%83%A3%E3%83%AB/1836352946?i=1836352947",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/85/3f/df/853fdfd3-e9fd-3d80-5291-e04e5d4830b3/mzaf_7278493055519088016.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9a/14/ea/9a14ea3e-084a-6f10-d4ac-793a8e75206c/4540774247738.png/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1869843680",
 			"title": "Ex-Otogibanashi",
 			"artist": "ryo (supercell), かぐや(cv.夏吉ゆうこ), 超かぐや姫! & 月見ヤチヨ(cv.早見沙織)",
@@ -467,6 +487,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/ec/01/aeec011c-b4c2-0e80-e032-472679eec7c2/4517331101260.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "6812593943",
+			"title": "$・¥・€",
+			"artist": "福賀くるみ(CV:鈴木愛奈)",
+			"album": "TVアニメ「FX戦士くるみちゃん」オープニングテーマ&エンディングテーマ - EP",
+			"durationMs": 218473,
+			"url": "https://music.apple.com/jp/album/%24-%C2%A5-%E2%82%AC/6812593936?i=6812593943",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a5/9b/2e/a59b2efd-02e3-e1de-41ff-7226fd081ed2/mzaf_3421456159196013517.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/66/e8/d6/66e8d6fa-9d2a-6cca-0e57-701f4e8bfabb/PA00227484_0_254802_jacket.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1797455083",
 			"title": "おいでよ!石川大観光",
 			"artist": "蓮ノ空女学院スクールアイドルクラブ",
@@ -515,16 +545,6 @@
 			"url": "https://music.apple.com/jp/album/midnight-parade/1770958209?i=1770958213",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/91/ff/a5/91ffa546-652e-e508-25d0-d38a218862bb/mzaf_13198143086450132276.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1836352947",
-			"title": "ニャオシグニャル",
-			"artist": "みらくらぱーく!",
-			"album": "ニャオシグニャル - EP",
-			"durationMs": 179988,
-			"url": "https://music.apple.com/jp/album/%E3%83%8B%E3%83%A3%E3%82%AA%E3%82%B7%E3%82%B0%E3%83%8B%E3%83%A3%E3%83%AB/1836352946?i=1836352947",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/85/3f/df/853fdfd3-e9fd-3d80-5291-e04e5d4830b3/mzaf_7278493055519088016.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/9a/14/ea/9a14ea3e-084a-6f10-d4ac-793a8e75206c/4540774247738.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1771366342",
@@ -737,6 +757,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1d/a8/b4/1da8b456-dddb-8da0-dda7-ea36bfc518f5/26UMGIM62361.rgb.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1837310876",
+			"title": "Killah",
+			"artist": "レディー・ガガ & Gesaffelstein",
+			"album": "MAYHEM",
+			"durationMs": 210651,
+			"url": "https://music.apple.com/jp/album/killah/1837310866?i=1837310876",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/05/eb/09/05eb0938-8772-e152-cf26-aa20a5f70a29/mzaf_17291412946221466025.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/c5/43/8b/c5438b81-75e8-3a0a-05ee-4f29ae0b9bb3/25UMGIM07433.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "6781168863",
 			"title": "ハイメンテナンスガール",
 			"artist": "オーイシマサヨシ",
@@ -877,6 +907,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b3/1b/50/b31b50d3-c70b-3272-bfea-e370638593b3/4550752693389_cover.png/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "6818017940",
+			"title": "Patient Zero",
+			"artist": "テイラー・スウィフト",
+			"album": "Patient Zero (Video Bundle) - Single",
+			"durationMs": 225868,
+			"url": "https://music.apple.com/jp/album/patient-zero/6818017938?i=6818017940",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/8a/c9/30/8ac93032-6874-d549-94ec-fd519d21cce0/mzaf_18384913378170579302.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/04/6c/a2/046ca23f-517e-d872-d2bc-2f13129da63d/26UM1IM28233.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "1869843659",
 			"title": "Remember",
 			"artist": "yuigot, 超かぐや姫! & 月見ヤチヨ(cv.早見沙織)",
@@ -913,7 +953,7 @@
 			"album": "TVアニメーション『Angel Beats!』劇中歌 Girls Dead Monster「Little Braver」 - Single",
 			"durationMs": 296640,
 			"url": "https://music.apple.com/jp/album/shine-days/838212719?i=838212736",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/01/54/35/015435f2-0bf0-fb8e-4555-dc396dd576b2/mzaf_17194541801902406154.plus.aac.p.m4a",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4b/eb/99/4beb9903-9281-27ff-fc61-68a4d6543d73/mzaf_1683718355955963082.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/28/8c/c2/288cc24f-b2fa-9582-6f71-c8ae48023c6f/4933032006039_cover.png/{w}x{h}bb.jpg"
 		},
 		{
@@ -975,46 +1015,6 @@
 			"url": "https://music.apple.com/jp/album/%E3%82%88%E3%82%8F%E3%82%88%E3%82%8F-%E3%81%A4%E3%82%88%E3%81%A4%E3%82%88-%E3%81%BF%E3%81%AB%E3%81%BF%E3%81%AB-%E3%81%93%E3%82%8F%E3%81%93%E3%82%8F/1884216443?i=1884216444",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/3f/19/ae/3f19ae79-16fb-79fd-acb8-dc4353a14acb/mzaf_18426135737248318394.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/3c/34/10/3c34104f-efc2-bbc7-11ba-81eb48209a8c/4540774748464.png/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1783002567",
-			"title": "NASTY",
-			"artist": "ONE OK ROCK",
-			"album": "DETOX",
-			"durationMs": 203922,
-			"url": "https://music.apple.com/jp/album/nasty/1783002566?i=1783002567",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/37/69/86/376986d8-42c9-4052-5418-45e3838bea0a/mzaf_14168492795312105692.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/39/7a/b4/397ab414-2b1f-c016-ca0f-248828eb0631/075679624505.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1377826728",
-			"title": "Welcome To The Jungle",
-			"artist": "ガンズ・アンド・ローゼズ",
-			"album": "Appetite For Destruction (Super Deluxe)",
-			"durationMs": 273483,
-			"url": "https://music.apple.com/jp/album/welcome-to-the-jungle/1377826053?i=1377826728",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/1f/70/d6/1f70d6e8-edab-5ea1-4c3b-e51744cc79c7/mzaf_2766266430694093633.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/56/47/b7/5647b700-6b9d-9e72-ec9f-51140b6d4492/00602567673781.rgb.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1894074882",
-			"title": "Echo",
-			"artist": "ザ・チェインスモーカーズ & Oaks",
-			"album": "Love Is Kind - EP",
-			"durationMs": 219785,
-			"url": "https://music.apple.com/jp/album/echo/1894074877?i=1894074882",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/a9/0d/8f/a90d8f6c-9a18-9164-ea79-833de857e2e0/mzaf_10887079905074469071.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/8e/5c/2e/8e5c2ef4-34c1-7993-018c-6ae46c5682f0/196874319826.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1869542939",
-			"title": "ENDROLL",
-			"artist": "川上洋平, SennaRin & 澤野弘之",
-			"album": "LOSTandFOUND",
-			"durationMs": 182772,
-			"url": "https://music.apple.com/jp/album/endroll/1869542654?i=1869542939",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/34/94/b8/3494b835-8b1b-e72b-9124-d34ead0a4fbb/mzaf_9592005285602048161.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d7/7e/d3/d77ed313-5710-b526-8a8a-60f857cbcee4/4547366801774.jpg/{w}x{h}bb.jpg"
 		}
 	]
 }
