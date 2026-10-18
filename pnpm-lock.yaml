@@ -64,10 +64,10 @@ importers:
         version: 1.2.4
       '@iconify-json/material-symbols':
         specifier: ^1.2.50
-        version: 1.2.94
+        version: 1.2.95
       '@iconify-json/simple-icons':
         specifier: ^1.2.90
-        version: 1.2.99
+        version: 1.2.100
       '@iconify/svelte':
         specifier: ^5.2.2
         version: 5.2.2(svelte@5.57.2)
@@ -145,7 +145,7 @@ importers:
         version: 2.1.0
       sanitize-html:
         specifier: ^2.17.0
-        version: 2.18.0
+        version: 2.18.1
       sharp:
         specifier: ^0.35.3
         version: 0.35.5(@types/node@24.19.0)
@@ -699,11 +699,11 @@ packages:
   '@iconify-json/fa6-solid@1.2.4':
     resolution: {integrity: sha512-LmDNNdJVyvF5mPm1yxWvL8KjCc/E8LzoqnF1LNTVpyY2ZJRUlGOWuPIThdbuFBF2IovgttkIyumhyqfmlHdwKg==}
 
-  '@iconify-json/material-symbols@1.2.94':
-    resolution: {integrity: sha512-9fcCVDfSF9tUy7j9BJmyIAeHJNsxv92U1sGgF0Lm9asu2hzsU8dmxeD5ckOApnC28Ira/N+5Nms/0h38P7c57Q==}
+  '@iconify-json/material-symbols@1.2.95':
+    resolution: {integrity: sha512-n34GNbwe8We3LPXK2N8JuQewEQkITJiRsmX/0UYJsOyKzviVl22mNfLUiGGtXLKDPqxZa17q1Hg57zdA3BYa0w==}
 
-  '@iconify-json/simple-icons@1.2.99':
-    resolution: {integrity: sha512-kouZhqvUoNdxEe+lZksbJJZMCZv4b4Ob62O1GW3fcpz/I0mVPzM+9/Qf/DUuv5ns8l6c46D8M/ubhJjjbLp9HQ==}
+  '@iconify-json/simple-icons@1.2.100':
+    resolution: {integrity: sha512-536pN2RCEQyy5bYwzayrs4e9egr8cmtVcbdSHLaQl/ULUsihzn1eZ0+Hhn50zgz9cbEotiynKsKQSEjFJ7qKmw==}
 
   '@iconify/svelte@5.2.2':
     resolution: {integrity: sha512-XMXxD3nzH7yB68C3K4sNwzrJ1TBscODR0ZqCeNf0KGuEMCTSuCo0jHNDZ0o0iRXTylO41NSz/DWam/4atLG1yw==}
@@ -2620,8 +2620,8 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
-  sanitize-html@2.18.0:
-    resolution: {integrity: sha512-CvY+PV+NBhxe3BnjFI5f//vEDKLULm9OlZArso7gdgVsWvanBuq9PNDx+/2llfL+8XFYa/UNBxvqRBg3TWU2Ug==}
+  sanitize-html@2.18.1:
+    resolution: {integrity: sha512-2X5lC8fYla8YaT8g73Nj+HcLWXan5dLyCWLgVvaOmfw7JI78IRsyNtIDytTHdn7hBQbIkCah7Zbmd5jabzeDig==}
     engines: {node: '>=22.12.0'}
 
   satteri@0.10.5:
@@ -3646,11 +3646,11 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/material-symbols@1.2.94':
+  '@iconify-json/material-symbols@1.2.95':
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/simple-icons@1.2.99':
+  '@iconify-json/simple-icons@1.2.100':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -6024,9 +6024,8 @@ snapshots:
       '@rolldown/binding-win32-arm64-msvc': 1.2.12
       '@rolldown/binding-win32-x64-msvc': 1.2.12
 
-  sanitize-html@2.18.0:
+  sanitize-html@2.18.1:
     dependencies:
-      deepmerge: 4.3.1
       escape-string-regexp: 4.0.0
       htmlparser2: 12.0.0
       is-plain-object: 5.1.0
