@@ -58,10 +58,10 @@ export const FILES = [
 //   で取り出して改変を当て直す。左側 (記録済みの値) を渡せば旧版を取り出せるので、上流で何が変わったかを
 //   旧版と新版の比較で確かめられる。
 export const LOCALLY_MODIFIED = new Map([
-	["wrangler/SKILL.md", "d40515fdfc52c02cc06cabff07a5619a734a386b"],
+	["wrangler/SKILL.md", "1d2f6ed1c3f55279d1aa9202501d03a6f1af9f6b"],
 	[
 		"workers-best-practices/SKILL.md",
-		"ac2f180fa01fc00761870142c8fbeb441b1d3a25",
+		"a669596e421f1945bd6a37d5f4dc012752428919",
 	],
 ]);
 

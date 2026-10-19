@@ -1,19 +1,19 @@
 ---
 name: wrangler
-description: Run or troubleshoot Wrangler CLI commands and configure Worker projects for local development, Previews, deployment, and Cloudflare resource management.
+description: Run or troubleshoot Wrangler CLI commands in projects that have a wrangler.jsonc, wrangler.json, or wrangler.toml file, including local development, Previews, deployment, and resource management. For new projects and projects without a Wrangler configuration file, use the cf CLI instead.
 ---
 
 > **Modified by necofuryai:** this file is a modified copy of [`skills/wrangler/SKILL.md`](https://github.com/cloudflare/skills/blob/main/skills/wrangler/SKILL.md) from [cloudflare/skills](https://github.com/cloudflare/skills), licensed under the [Apache License 2.0](../LICENSE). The "Edit config or add a binding" row notes that `config-schema.json` is absent in this repository. See "上流からの改変点" in [`../README.md`](../README.md) for details.
 
 # Wrangler CLI
 
-If the project has a `cloudflare.config.ts` file, or the user has asked you to use the `cf` CLI, do not use this skill. Follow the [Cloudflare CLI documentation](https://developers.cloudflare.com/cf/index.md) instead.
+Use this skill only when the project has `wrangler.jsonc`, `wrangler.json`, or `wrangler.toml` and no `cloudflare.config.ts`, or when the user asks for Wrangler. For a new project, a project with `cloudflare.config.ts`, or a project with no Cloudflare configuration, use the Cloudflare CLI (`cf`) instead: load the `cf-cli` skill if it is installed, or follow [Use cf with coding agents](https://developers.cloudflare.com/cf/agents/index.md). Do not add Wrangler to those projects.
 
 Use the project's Wrangler version and retrieve the relevant documentation before writing commands or configuration. CLI flags and configuration fields change; do not rely on memorized examples.
 
 ## Inspect the Project
 
-- Find the package manager, installed Wrangler version, package scripts, framework, and Wrangler config. Run commands through the project's scripts or package manager so they use its local version. Install dependencies using the existing lockfile when needed; do not silently upgrade Wrangler to match current docs. If Wrangler is not a dependency, follow the [installation guide](https://developers.cloudflare.com/workers/wrangler/install-and-update/index.md) to add it locally.
+- Find the package manager, installed Wrangler version, package scripts, framework, and Wrangler config. Run commands through the project's scripts or package manager so they use its local version. Install dependencies using the existing lockfile when needed; do not silently upgrade Wrangler to match current docs. If the project has a Wrangler configuration file but Wrangler is not a dependency, follow the [installation guide](https://developers.cloudflare.com/workers/wrangler/install-and-update/index.md) to add it locally.
 - Identify the config used by the build or deploy command, including framework-generated config. Edit its source rather than generated output.
 - Establish the target account, Worker, environment, and resource before running commands that change them. For data operations, determine whether the target is local or remote.
 
