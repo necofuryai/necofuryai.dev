@@ -1,7 +1,7 @@
 {
 	"placeholder": false,
 	"order": 1,
-	"fetchedAt": "2026-10-12T21:47:15.726Z",
+	"fetchedAt": "2026-10-19T19:23:36.321Z",
 	"id": "pl.rp-lellcVyY1yj",
 	"storefront": "jp",
 	"name": "リプレイ2026",
@@ -67,16 +67,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6b/50/9c/6b509c4b-6550-40f7-2086-008eaed86c5f/jacket_SRCL07315B00Z_550.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1856531495",
-			"title": "KAWAII♡めたもる交響曲",
-			"artist": "I'm a Cutie Finder",
-			"album": "THE IDOLM@STER SHINY COLORS Song for Prism カウントダウンラブ / KAWAII♡めたもる交響曲 - EP",
-			"durationMs": 193033,
-			"url": "https://music.apple.com/jp/album/kawaii-%E3%82%81%E3%81%9F%E3%82%82%E3%82%8B%E4%BA%A4%E9%9F%BF%E6%9B%B2/1856531493?i=1856531495",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/30/f6/07/30f6072b-e69d-1686-c7c4-0489fff5f0a4/mzaf_878300900720401168.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/62/92/44/6292441c-7aab-7b51-e444-1dac97a9ce1f/4540774248216.png/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "1770958215",
 			"title": "Poison Berry Daughters",
 			"artist": "シャイニーカラーズ",
@@ -85,6 +75,16 @@
 			"url": "https://music.apple.com/jp/album/poison-berry-daughters/1770958209?i=1770958215",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/c5/fb/7c/c5fb7cd1-1a67-232d-6aed-b939aef6591a/mzaf_14202854054834671613.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/3f/87/be/3f87be11-2149-153f-2411-679824e36bc8/4540774251278.png/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1856531495",
+			"title": "KAWAII♡めたもる交響曲",
+			"artist": "I'm a Cutie Finder",
+			"album": "THE IDOLM@STER SHINY COLORS Song for Prism カウントダウンラブ / KAWAII♡めたもる交響曲 - EP",
+			"durationMs": 193033,
+			"url": "https://music.apple.com/jp/album/kawaii-%E3%82%81%E3%81%9F%E3%82%82%E3%82%8B%E4%BA%A4%E9%9F%BF%E6%9B%B2/1856531493?i=1856531495",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/30/f6/07/30f6072b-e69d-1686-c7c4-0489fff5f0a4/mzaf_878300900720401168.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/62/92/44/6292441c-7aab-7b51-e444-1dac97a9ce1f/4540774248216.png/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "6767490584",
@@ -127,16 +127,6 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/47/f3/49/47f3490b-4395-28ba-e6a9-88c9dd7be8fa/4547366841732.jpg/{w}x{h}bb.jpg"
 		},
 		{
-			"id": "1734552686",
-			"title": "OH MY GOD",
-			"artist": "シーズ",
-			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
-			"durationMs": 224473,
-			"url": "https://music.apple.com/jp/album/oh-my-god/1734552685?i=1734552686",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2e/2c/e6/2e2ce683-ccef-f684-863a-2c8ae7f6e2c5/mzaf_6746704345981850540.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
-		},
-		{
 			"id": "6807197459",
 			"title": "Bass Persuades",
 			"artist": "マイリー・サイラス",
@@ -145,6 +135,16 @@
 			"url": "https://music.apple.com/jp/album/bass-persuades/6807197456?i=6807197459",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/68/a5/9f/68a59fc5-beab-4298-acd0-ebbe587f9cfb/mzaf_16357440697032856219.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ff/af/51/ffaf51a6-d711-6f92-a5d6-f90e98014f0f/075679564061.jpg/{w}x{h}bb.jpg"
+		},
+		{
+			"id": "1734552686",
+			"title": "OH MY GOD",
+			"artist": "シーズ",
+			"album": "THE IDOLM@STER SHINY COLORS L@YERED WING 08 - EP",
+			"durationMs": 224473,
+			"url": "https://music.apple.com/jp/album/oh-my-god/1734552685?i=1734552686",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2e/2c/e6/2e2ce683-ccef-f684-863a-2c8ae7f6e2c5/mzaf_6746704345981850540.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/1d/84/8c/1d848cb7-670f-ac4a-374e-fa9e8780e1ff/4540774241187.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1647132944",
@@ -487,6 +487,16 @@
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/ae/ec/01/aeec011c-b4c2-0e80-e032-472679eec7c2/4517331101260.jpg/{w}x{h}bb.jpg"
 		},
 		{
+			"id": "1444575349",
+			"title": "Fight The Blues (Remastered 2018)",
+			"artist": "宇多田ヒカル",
+			"album": "HEART STATION (2018 Remastered Album)",
+			"durationMs": 250503,
+			"url": "https://music.apple.com/jp/album/fight-the-blues-remastered-2018/1444575348?i=1444575349",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/18/01/18/1801187b-5f1e-b5d3-a358-3b4ffeb12b8b/mzaf_3094754378278140696.plus.aac.p.m4a",
+			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6c/bc/52/6cbc526c-ce69-b94e-5f0e-c130ee0cbd0f/00602577312717.rgb.jpg/{w}x{h}bb.jpg"
+		},
+		{
 			"id": "6812593943",
 			"title": "$・¥・€",
 			"artist": "福賀くるみ(CV:鈴木愛奈)",
@@ -625,16 +635,6 @@
 			"url": "https://music.apple.com/jp/album/%E9%A2%A8%E3%81%AE%E3%82%A2%E3%83%B3%E3%82%BB%E3%83%A0-feat-suis-from-%E3%83%A8%E3%83%AB%E3%82%B7%E3%82%AB/1887808018?i=1887808019",
 			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/36/c5/17/36c51707-47b1-48a0-c9fc-16786cdf05ad/mzaf_1946369685844015416.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d1/7c/7b/d17c7b99-365a-0f5d-a3f7-b93c4766e4d2/4517331100713.jpg/{w}x{h}bb.jpg"
-		},
-		{
-			"id": "1444575349",
-			"title": "Fight The Blues (Remastered 2018)",
-			"artist": "宇多田ヒカル",
-			"album": "HEART STATION (2018 Remastered Album)",
-			"durationMs": 250503,
-			"url": "https://music.apple.com/jp/album/fight-the-blues-remastered-2018/1444575348?i=1444575349",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/18/01/18/1801187b-5f1e-b5d3-a358-3b4ffeb12b8b/mzaf_3094754378278140696.plus.aac.p.m4a",
-			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/6c/bc/52/6cbc526c-ce69-b94e-5f0e-c130ee0cbd0f/00602577312717.rgb.jpg/{w}x{h}bb.jpg"
 		},
 		{
 			"id": "1839384370",
@@ -973,7 +973,7 @@
 			"album": "THE IDOLM@STER SHINY COLORS GR@DATE WING 02 - Single",
 			"durationMs": 254133,
 			"url": "https://music.apple.com/jp/album/happy-funny-lucky/1734550603?i=1734550605",
-			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/63/3f/31/633f3109-f873-d480-dafd-4b83b6b0ed61/mzaf_12963381498937869123.plus.aac.p.m4a",
+			"previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/1d/96/0b/1d960b18-d087-d2d1-052d-8fbe6a7f3711/mzaf_3313197004761298130.plus.aac.p.m4a",
 			"artworkUrlTemplate": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2c/74/cd/2c74cd39-ed84-e403-f4fb-cdf80216d91b/4540774149834.jpg/{w}x{h}bb.jpg"
 		},
 		{
