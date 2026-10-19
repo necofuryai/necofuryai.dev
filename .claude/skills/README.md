@@ -44,7 +44,9 @@ Apache-2.0 第 4 条 (b) は、改変したファイル自身に変更した旨�
 
 参照資料 (`references/` 以下) は上流と同一のまま置いている。
 `references/configuration.md` にも `node_modules/wrangler/config-schema.json` への言及が残るが、上記 2 の注記が入口の `SKILL.md` で先に読まれるため改変していない。
-`references/observability/README.md` 末尾の `../analytics-engine/` などへの相対リンクは上流の包括スキル内の資料を指しており、このリポジトリには同梱していないためリンク切れになる。
+`references/observability/README.md` 末尾の `../tail-workers/README.md` への相対リンクは上流の包括スキル内の資料を指しており、このリポジトリには同梱していないためリンク切れになる。
+両 `SKILL.md` は Cloudflare CLI (`cf`) 向けの `cf-cli` スキルにも言及するが、同梱していない。
+このリポジトリは `wrangler.jsonc` を持ち `cloudflare.config.ts` を持たないため、どちらの `SKILL.md` の分岐でも `wrangler` スキルの側に入る。
 
 ## 上流への再同期
 
