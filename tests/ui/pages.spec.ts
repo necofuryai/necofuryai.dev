@@ -316,7 +316,6 @@ test("playlist controls survive a Swup revisit", async ({ page }) => {
 test("desktop home banner rules shift the grid and keep the sidebar sticky offset", async ({
 	page,
 }) => {
-	// バナーは src/config.ts で無効なので、body に enable-banner を付けて CSS だけを確かめる。
 	// Tailwind v4 では @layer 内のクラスに lg: バリアントが付かず、トップでも記事ページと
 	// 同じ 35vh の帯になっていた。#sidebar-sticky のルールがユーティリティ top-4 に負けない
 	// ことも確かめる。遷移アニメーション中の値を読まないよう transition は止める。
@@ -324,7 +323,7 @@ test("desktop home banner rules shift the grid and keep the sidebar sticky offse
 		await page.addStyleTag({
 			content: "*, *::before, *::after { transition: none !important; }",
 		});
-		await page.evaluate(() => document.body.classList.add("enable-banner"));
+		await expect(page.locator("body")).toHaveClass(/\benable-banner\b/);
 		return {
 			extend: await page.evaluate(() =>
 				Number.parseFloat(
@@ -352,4 +351,52 @@ test("desktop home banner rules shift the grid and keep the sidebar sticky offse
 	const archive = await readBannerLayout();
 	expect(archive.gridTranslate).toBe("none");
 	expect(archive.sidebarTop).toBe("16px");
+});
+
+test("banner and avatar use the prepared WebP images and credit the artist", async ({
+	page,
+}) => {
+	// CI は SITE_ASSETS_SOURCE=placeholder で同じ寸法の仮の画像を使う。原画が無くても
+	// srcset の幅と URL、クレジットのリンクは本番と同じになる。
+	await page.goto("/", { waitUntil: "load" });
+
+	const banner = page.locator("#banner img");
+	await expect(banner).toHaveCount(1);
+	await expect(banner).toHaveAttribute("fetchpriority", "high");
+	await expect(banner).toHaveAttribute("width", "3840");
+	const candidates = ((await banner.getAttribute("srcset")) ?? "")
+		.split(",")
+		.map((candidate) => candidate.trim().split(/\s+/));
+	expect(candidates.map(([, width]) => width)).toEqual([
+		"1366w",
+		"1920w",
+		"2560w",
+		"2880w",
+		"3200w",
+		"3840w",
+	]);
+	for (const [candidateUrl] of candidates) {
+		expect(candidateUrl).toMatch(/^\/_astro\/witch-banner\.[\w-]+\.webp$/);
+	}
+	await expect
+		.poll(() =>
+			banner.evaluate((img: HTMLImageElement) =>
+				img.complete ? img.naturalWidth : 0,
+			),
+		)
+		.toBeGreaterThan(0);
+
+	const credit = page.locator("#banner-credit");
+	await expect(credit).toHaveAttribute(
+		"href",
+		"https://coconala.com/users/1586223",
+	);
+	await expect(credit).toContainText("Illustration: こでびる");
+
+	const avatar = page.locator('img[alt="Profile Image of the Author"]');
+	await expect(avatar).toHaveAttribute(
+		"src",
+		/^\/_astro\/witch-avatar\.[\w-]+\.webp$/,
+	);
+	await expect(avatar).toHaveAttribute("width", "1024");
 });

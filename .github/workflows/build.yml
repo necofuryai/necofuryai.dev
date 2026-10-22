@@ -13,6 +13,14 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  # The banner and avatar are commissioned artwork kept out of the repository, and
+  # failed UI runs upload screenshots as artifacts, so CI builds with same-size
+  # placeholders. That is already the default outside Workers Builds; it is set here
+  # so a later default change cannot bring the originals into CI (see AGENTS.md
+  # "Banner and avatar"). `pnpm build` also fails if an original reaches dist.
+  SITE_ASSETS_SOURCE: placeholder
+
 jobs:
   check:
     runs-on: ubuntu-latest

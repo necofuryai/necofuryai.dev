@@ -60,16 +60,25 @@ if (isLocal) {
 		.replace(/\\/g, "/");
 	const file = files[normalizedPath];
 	if (!file) {
-		console.error(
-			`\n[ERROR] Image file not found: ${normalizedPath.replace("../../", "src/")}`,
+		// 以前は console.error の後で undefined を呼び、原因の分からない TypeError で
+		// ビルドが落ちていた (saicaca/fuwari#185)。バナーとアバターは
+		// scripts/prepare-site-assets.mjs が dev と build の前に書き出す
+		throw new Error(
+			`Image file not found: ${normalizedPath.replace("../../", "src/")}`,
 		);
 	}
 	img = await file();
 }
 
+// 寸法と形式は clone から読む。Astro の画像プロキシは clone と fsPath 以外の
+// プロパティを読むと原本を「直接使われている」と記録し、ビルドで dist に残す。
+// 直接読むと、srcset を作るだけでバナーの原本まで配信されてしまう。clone はプロキシが
+// 実行時に返すコピーで ImageMetadata の型には無い (Astro の getImage も同じ読み方をする)
+const meta = (img as (ImageMetadata & { clone?: ImageMetadata }) | undefined)
+	?.clone ?? img;
 const responsive =
-	img && coverHeightVh !== undefined && img.format !== "svg"
-		? coverImageSrcset(img.width, img.height, coverHeightVh)
+	meta && coverHeightVh !== undefined && meta.format !== "svg"
+		? coverImageSrcset(meta.width, meta.height, coverHeightVh)
 		: undefined;
 
 const imageClass = "w-full h-full object-cover";

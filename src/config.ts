@@ -16,13 +16,14 @@ export const siteConfig: SiteConfig = {
 		fixed: false, // Hide the theme color picker for visitors
 	},
 	banner: {
-		enable: false,
-		src: "", // Set an image path (relative to /src) before enabling. Relative to the /public directory if it starts with '/'
+		enable: true,
+		// Written by scripts/prepare-site-assets.mjs before dev and build (not committed; see AGENTS.md "Banner and avatar")
+		src: "assets/images/witch-banner.webp", // Set an image path (relative to /src) before enabling. Relative to the /public directory if it starts with '/'
 		position: "center", // Equivalent to object-position, only supports 'top', 'center', 'bottom'. 'center' by default
 		credit: {
-			enable: false, // Display the credit text of the banner image
-			text: "", // Credit text to be displayed
-			url: "", // (Optional) URL link to the original artwork or artist's page
+			enable: true, // Display the credit text of the banner image
+			text: "Illustration: こでびる", // Credit text to be displayed
+			url: "https://coconala.com/users/1586223", // (Optional) URL link to the original artwork or artist's page
 		},
 	},
 	toc: {
@@ -54,7 +55,8 @@ export const navBarConfig: NavBarConfig = {
 };
 
 export const profileConfig: ProfileConfig = {
-	avatar: "assets/images/avatar.svg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+	// Written by scripts/prepare-site-assets.mjs, like the banner
+	avatar: "assets/images/witch-avatar.webp", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "necofuryai",
 	bio: "技術メモと開発記録を書いています。",
 	links: [
