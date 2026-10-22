@@ -316,7 +316,6 @@ test("playlist controls survive a Swup revisit", async ({ page }) => {
 test("desktop home banner rules shift the grid and keep the sidebar sticky offset", async ({
 	page,
 }) => {
-	// バナーは src/config.ts で無効なので、body に enable-banner を付けて CSS だけを確かめる。
 	// Tailwind v4 では @layer 内のクラスに lg: バリアントが付かず、トップでも記事ページと
 	// 同じ 35vh の帯になっていた。#sidebar-sticky のルールがユーティリティ top-4 に負けない
 	// ことも確かめる。遷移アニメーション中の値を読まないよう transition は止める。
@@ -324,7 +323,7 @@ test("desktop home banner rules shift the grid and keep the sidebar sticky offse
 		await page.addStyleTag({
 			content: "*, *::before, *::after { transition: none !important; }",
 		});
-		await page.evaluate(() => document.body.classList.add("enable-banner"));
+		await expect(page.locator("body")).toHaveClass(/\benable-banner\b/);
 		return {
 			extend: await page.evaluate(() =>
 				Number.parseFloat(
@@ -352,4 +351,305 @@ test("desktop home banner rules shift the grid and keep the sidebar sticky offse
 	const archive = await readBannerLayout();
 	expect(archive.gridTranslate).toBe("none");
 	expect(archive.sidebarTop).toBe("16px");
+});
+
+test("banner and avatar use the prepared WebP images and credit the artist", async ({
+	page,
+}) => {
+	// CI は SITE_ASSETS_SOURCE=placeholder で同じ寸法の仮の画像を使う。原画が無くても
+	// srcset の幅と URL、クレジットのリンクは本番と同じになる。
+	await page.goto("/", { waitUntil: "load" });
+
+	const banner = page.locator("#banner img");
+	await expect(banner).toHaveCount(1);
+	await expect(banner).toHaveAttribute("fetchpriority", "high");
+	await expect(banner).toHaveAttribute("width", "3840");
+	const candidates = ((await banner.getAttribute("srcset")) ?? "")
+		.split(",")
+		.map((candidate) => candidate.trim().split(/\s+/));
+	expect(candidates.map(([, width]) => width)).toEqual([
+		"1366w",
+		"1920w",
+		"2560w",
+		"2880w",
+		"3200w",
+		"3840w",
+	]);
+	for (const [candidateUrl] of candidates) {
+		expect(candidateUrl).toMatch(/^\/_astro\/witch-banner\.[\w-]+\.webp$/);
+	}
+	await expect
+		.poll(() =>
+			banner.evaluate((img: HTMLImageElement) =>
+				img.complete ? img.naturalWidth : 0,
+			),
+		)
+		.toBeGreaterThan(0);
+
+	const credit = page.locator("#banner-credit");
+	await expect(credit).toHaveAttribute(
+		"href",
+		"https://coconala.com/users/1586223",
+	);
+	await expect(credit).toContainText("Illustration: こでびる");
+
+	const avatar = page.locator('img[alt="Profile Image of the Author"]');
+	await expect(avatar).toHaveAttribute(
+		"src",
+		/^\/_astro\/witch-avatar\.[\w-]+\.webp$/,
+	);
+	await expect(avatar).toHaveAttribute("width", "1024");
+});
+
+test("pages share the prepared 1200x630 JPEG as the default social image", async ({
+	page,
+	request,
+}) => {
+	// CI は仮の画像から切り抜く。URL、寸法の宣言、配信の形式は本番と同じになる
+	const expected = "https://necofuryai.dev/og/witch-banner.jpg";
+	for (const path of ["/", "/posts/hello-world/"]) {
+		await page.goto(path, { waitUntil: "load" });
+		const meta = (selector: string) => page.locator(`head ${selector}`);
+		await expect(meta('meta[property="og:image"]')).toHaveAttribute(
+			"content",
+			expected,
+		);
+		await expect(meta('meta[name="twitter:image"]')).toHaveAttribute(
+			"content",
+			expected,
+		);
+		await expect(meta('meta[property="og:image:type"]')).toHaveAttribute(
+			"content",
+			"image/jpeg",
+		);
+		await expect(meta('meta[property="og:image:width"]')).toHaveAttribute(
+			"content",
+			"1200",
+		);
+		await expect(meta('meta[property="og:image:height"]')).toHaveAttribute(
+			"content",
+			"630",
+		);
+		await expect(meta('meta[property="og:image:alt"]')).toHaveAttribute(
+			"content",
+			/こでびる/,
+		);
+		await expect(meta('meta[name="twitter:image:alt"]')).toHaveAttribute(
+			"content",
+			/こでびる/,
+		);
+	}
+	// 記事の JSON-LD も同じ画像を指す
+	const jsonLd = JSON.parse(
+		(await page.locator('script[type="application/ld+json"]').textContent()) ??
+			"{}",
+	);
+	expect(jsonLd.image).toBe(expected);
+
+	// request は page.route を通らないので、外部への中断の対象にならない
+	const response = await request.get(new URL(expected).pathname);
+	expect(response.status()).toBe(200);
+	expect(response.headers()["content-type"]).toMatch(/^image\/jpeg\b/);
+	expect([...(await response.body()).subarray(0, 3)]).toEqual([
+		0xff, 0xd8, 0xff,
+	]);
+});
+
+// 依頼時のガイドの顔の枠 (3840x2160 の原画での座標)。原画は使わず、同じ寸法の仮の
+// 画像の描画位置から写像する
+const GUIDE = {
+	width: 3840,
+	height: 2160,
+	face: { left: 1100, right: 2740, top: 940, bottom: 1260 },
+} as const;
+const CREDIT_HREF = "https://coconala.com/users/1586223";
+
+async function measureBannerCredit(page: Page) {
+	return page.evaluate(async ({ width, height, face }) => {
+		// バナーの transition とクレジットの onload-animation が終わってから測る
+		await Promise.all(
+			["banner-wrapper", "main-grid"].flatMap((id) =>
+				(document.getElementById(id)?.getAnimations({ subtree: true }) ?? [])
+					.filter(
+						(animation) =>
+							animation.effect?.getComputedTiming().endTime !==
+							Number.POSITIVE_INFINITY,
+					)
+					.map((animation) => animation.finished.catch(() => undefined)),
+			),
+		);
+		const rect = (selector: string) => {
+			const element = document.querySelector(selector);
+			if (!element) throw new Error(`${selector} not found`);
+			return element.getBoundingClientRect();
+		};
+		const img = rect("#banner img");
+		const [px, py] = getComputedStyle(
+			document.querySelector("#banner img") as Element,
+		)
+			.objectPosition.split(" ")
+			.map((value) => Number.parseFloat(value) / 100);
+		const scale = Math.max(img.width / width, img.height / height);
+		const ox = img.left + (img.width - width * scale) * px;
+		const oy = img.top + (img.height - height * scale) * py;
+		const credit = rect("#banner-credit");
+		const hit = document.elementFromPoint(
+			(credit.left + credit.right) / 2,
+			(credit.top + credit.bottom) / 2,
+		);
+		return {
+			credit: {
+				left: credit.left,
+				top: credit.top,
+				right: credit.right,
+				bottom: credit.bottom,
+			},
+			face: {
+				left: ox + face.left * scale,
+				top: oy + face.top * scale,
+				right: ox + face.right * scale,
+				bottom: oy + face.bottom * scale,
+			},
+			textWidth: rect("#banner-credit > div").width,
+			navbarBottom: rect("#navbar-wrapper").bottom,
+			gridTop: rect("#main-grid").top,
+			creditOnTop: Boolean(hit?.closest("#banner-credit")),
+		};
+	}, GUIDE);
+}
+
+// 背の低いスマホでは、顔の枠が画面の幅をほぼ横切るので、クレジットは枠の下の帯
+// (枠の下端からカードの上端まで) に収める。390x750 と 375x627 は、実機の Safari の
+// vh (ツールバーを除いた高さ) に近い値
+for (const [width, height] of [
+	[375, 667],
+	[360, 780],
+	[390, 750],
+	[375, 627],
+] as const) {
+	for (const path of ["/", "/posts/hello-world/"]) {
+		test(`banner credit clears the guide face box at ${width}x${height} ${path}`, async ({
+			page,
+		}) => {
+			await page.setViewportSize({ width, height });
+			await page.goto(path, { waitUntil: "load" });
+			const credit = page.locator("#banner-credit");
+			await expect(credit).toBeVisible();
+			await expect(page.locator("#banner")).not.toHaveClass(/scale-105/);
+			const m = await measureBannerCredit(page);
+			const clear =
+				m.credit.top >= m.face.bottom + 2 ||
+				m.credit.bottom <= m.face.top - 2 ||
+				m.credit.left >= m.face.right + 2 ||
+				m.credit.right <= m.face.left - 2;
+			expect(
+				clear,
+				`credit ${JSON.stringify(m.credit)} vs face ${JSON.stringify(m.face)}`,
+			).toBe(true);
+			// バナーの見える帯に収まり、ほかの要素に覆われない
+			expect(m.credit.top).toBeGreaterThanOrEqual(m.navbarBottom);
+			expect(m.credit.bottom).toBeLessThanOrEqual(m.gridTop);
+			expect(m.creditOnTop).toBe(true);
+			expect(m.textWidth).toBeGreaterThan(60);
+			await expect(credit).toHaveAccessibleName(/Illustration: こでびる/);
+		});
+	}
+}
+
+test("banner credit hides where it would reach the face or the band cannot hold it, and the footer and profile still credit the artist", async ({
+	page,
+}) => {
+	// 375x553 と 390x580 は顔の枠に 2px 以内まで近づく高さ。844x390 と 667x375 は
+	// ナビバーとカードの間に収まらない横向きの画面
+	for (const [width, height] of [
+		[375, 553],
+		[390, 580],
+		[844, 390],
+		[667, 375],
+	] as const) {
+		await page.setViewportSize({ width, height });
+		await page.goto("/posts/hello-world/", { waitUntil: "load" });
+		await expect(page.locator("#banner-credit")).toBeHidden();
+		await expect(
+			page
+				.locator(`.footer a[href="${CREDIT_HREF}"]`)
+				.filter({ visible: true }),
+		).toHaveText("Illustration: こでびる");
+		await expect(page.locator("#sidebar")).toContainText("こでびる");
+	}
+});
+
+test("desktop keeps the banner credit pill above the cards", async ({
+	page,
+}) => {
+	for (const path of ["/", "/posts/hello-world/"]) {
+		await page.goto(path, { waitUntil: "load" });
+		await expect(page.locator("#banner-credit")).toBeVisible();
+		const m = await measureBannerCredit(page);
+		const gridRight = await page
+			.locator("#main-grid")
+			.evaluate((element) => element.getBoundingClientRect().right);
+		expect(m.credit.bottom - m.credit.top).toBeCloseTo(36, 0);
+		expect(m.credit.top).toBeCloseTo(m.gridTop - 52, 0);
+		expect(m.credit.right).toBeCloseTo(gridRight - 16, 0);
+		expect(m.creditOnTop).toBe(true);
+	}
+});
+
+test("dark mode fades the banner's bottom edge inside the card overlap", async ({
+	page,
+}) => {
+	// project は colorScheme: "light" 固定なので、テーマは localStorage とボタンで選ぶ
+	await page.addInitScript(() => {
+		if (localStorage.getItem("theme") === null) {
+			localStorage.setItem("theme", "light");
+		}
+	});
+	const html = page.locator("html");
+	const wrapper = page.locator("#banner-wrapper");
+	const maskImage = () =>
+		wrapper.evaluate((element) =>
+			getComputedStyle(element).getPropertyValue("mask-image"),
+		);
+
+	await page.goto("/", { waitUntil: "load" });
+	await expect(html).not.toHaveClass(/\bdark\b/);
+	expect(await maskImage()).toBe("none");
+
+	await page.getByRole("button", { name: "Light/Dark Mode" }).click();
+	await expect(html).toHaveClass(/\bdark\b/);
+	await expect.poll(maskImage).toContain("linear-gradient");
+
+	// フェードの長さは、カードの上端からバナーの下端までの重なりと同じ。トップ (wrapper
+	// ごと translate する) と記事 (#banner だけがずれる) の両方で確かめる
+	for (const path of ["/", "/posts/hello-world/"]) {
+		await page.goto(path, { waitUntil: "load" });
+		await page.addStyleTag({
+			content: "*, *::before, *::after { transition: none !important; }",
+		});
+		await expect(html).toHaveClass(/\bdark\b/);
+		expect(await maskImage()).toContain("linear-gradient");
+		const { fade, overlap } = await wrapper.evaluate((element) => {
+			const rootFontSize = Number.parseFloat(
+				getComputedStyle(document.documentElement).fontSize,
+			);
+			const grid = document.getElementById("main-grid");
+			return {
+				fade:
+					Number.parseFloat(
+						getComputedStyle(element).getPropertyValue("--banner-fade-length"),
+					) * rootFontSize,
+				overlap: grid
+					? element.getBoundingClientRect().bottom -
+						grid.getBoundingClientRect().top
+					: Number.NaN,
+			};
+		});
+		expect(fade).toBe(56);
+		expect(overlap).toBeCloseTo(fade, 0);
+	}
+
+	// md 未満はカードが全幅でバナーの下端を覆うので、ダークでも掛けない
+	await page.setViewportSize({ width: 375, height: 667 });
+	expect(await maskImage()).toBe("none");
 });

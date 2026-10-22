@@ -18,11 +18,17 @@ import {
 	DARK_MODE,
 	DEFAULT_THEME,
 	LIGHT_MODE,
+	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 	PAGE_WIDTH,
 } from "../constants/constants";
 import { defaultFavicons } from "../constants/icon";
 import type { Favicon } from "../types/config";
-import { pathsEqual, resolveOgImageUrl, url } from "../utils/url-utils";
+import {
+	DEFAULT_OG_IMAGE,
+	pathsEqual,
+	resolveOgImage,
+	url,
+} from "../utils/url-utils";
 import "katex/dist/katex.css";
 
 interface Props {
@@ -40,7 +46,8 @@ const { image } = Astro.props;
 const canonicalUrl = Astro.site
 	? new URL(Astro.url.pathname, Astro.site).href
 	: undefined;
-const ogImage = resolveOgImageUrl(image, Astro.site);
+// 寸法・形式・代替テキストが分かるのは、ビルド時に作る既定の画像だけ。その場合だけ meta に出す
+const ogImage = resolveOgImage(image, Astro.site);
 
 // apply a class to the body element to decide the height of the banner, only used for initial page load
 // Swup can update the body for each page visit, but it's after the page transition, causing a delay for banner height change
@@ -145,7 +152,15 @@ const gaInlineScript = gaMeasurementId
 		<meta property="og:url" content={Astro.url}>
 		<meta property="og:title" content={pageTitle}>
 		<meta property="og:description" content={description || pageTitle}>
-		{ogImage && <meta property="og:image" content={ogImage} />}
+		{ogImage && <meta property="og:image" content={ogImage.url} />}
+		{ogImage?.isDefault && (
+			<>
+				<meta property="og:image:type" content={DEFAULT_OG_IMAGE.type} />
+				<meta property="og:image:width" content={String(DEFAULT_OG_IMAGE.width)} />
+				<meta property="og:image:height" content={String(DEFAULT_OG_IMAGE.height)} />
+				<meta property="og:image:alt" content={DEFAULT_OG_IMAGE.alt} />
+			</>
+		)}
 		{setOGTypeArticle ? (
         <meta property="og:type" content="article" />
         ) : (
@@ -156,7 +171,8 @@ const gaInlineScript = gaMeasurementId
 		<meta property="twitter:url" content={Astro.url}>
 		<meta name="twitter:title" content={pageTitle}>
 		<meta name="twitter:description" content={description || pageTitle}>
-		{ogImage && <meta name="twitter:image" content={ogImage} />}
+		{ogImage && <meta name="twitter:image" content={ogImage.url} />}
+		{ogImage?.isDefault && <meta name="twitter:image:alt" content={DEFAULT_OG_IMAGE.alt} />}
 
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
@@ -222,6 +238,7 @@ const gaInlineScript = gaMeasurementId
 	bannerOffset,
 	'banner-height-home': `${BANNER_HEIGHT_HOME}vh`,
 	'banner-height': `${BANNER_HEIGHT}vh`,
+	'banner-fade-length': `${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem`,
 }}>
 @reference "../styles/global.css";
 @layer components {
@@ -261,6 +278,46 @@ const gaInlineScript = gaMeasurementId
 	}
 	.enable-banner.lg\:is-home #sidebar-sticky {
 		@apply top-[calc(1rem_-_var(--banner-height-extend))];
+	}
+}
+
+/*
+ * #banner-credit (MainGridLayout.astro) を、顔にかかる高さと、ナビバー (4.5rem) の下端と
+ * カードの上端 (35vh - 3.5rem) の間に収まらない高さ (横向きのスマホなど) では隠す。
+ * 収まらないまま残すと、ナビバーの下に隠れたままフォーカスを受ける。作者の表記は
+ * フッターとプロフィールにもある。
+ * - md 未満 (rem は 14px): ピルの上端は 35vh - 5rem = 0.35h - 70px。縦長の画面では画像が
+ *   高さで合わさり、依頼時のガイドの顔の枠の下端 (原画の y 1260、banner.position center)
+ *   は -15vh + 1260 * 65vh / 2160 = 0.229h。2px 空けるには 0.121h - 70 >= 2 から 596px。
+ *   ナビバーに収まる条件 (380px) はこれに含まれる
+ * - md 以上 (rem は 16px): ピルの上端は 35vh - 6.75rem。35vh - 6.75rem >= 4.5rem から 514.3px
+ * - media query の rem は html の文字サイズではなく 16px で解釈されるので px で書く。
+ *   BANNER_HEIGHT、BANNER_HEIGHT_EXTEND、MAIN_PANEL_OVERLAPS_BANNER_HEIGHT、banner.position、
+ *   ピルの -top-6 と md:-top-[3.25rem] を変えたら計算し直す。幅の境目はピルの md: と同じ 48rem
+ * - @layer の外に置き、ユーティリティの flex に勝たせる
+ */
+@media (width < 48rem) and (height < 596px), (width >= 48rem) and (height < 514.3px) {
+	#banner-credit {
+		display: none;
+	}
+}
+
+/*
+ * ダークモードでは、明るいバナーの下端が暗いページの背景と接して横線になる。この線は
+ * md 以上で、カードの外側の余白と、カードの間のすき間 (md:px-4、lg の gap-4) にだけ
+ * 見える (md 未満はカードが全幅で覆う)。バナーの下端はカードの上端より
+ * MAIN_PANEL_OVERLAPS_BANNER_HEIGHT (3.5rem) 下にあるので、この帯だけを背景に溶かす。
+ * カードより上に見えている絵は変わらない。--banner-fade-length をこれより長くすると、
+ * 全幅に見えている帯まで暗くなる。
+ * - #banner ではなく #banner-wrapper に掛ける。記事ページの #banner は bannerOffset の分
+ *   下にずれていて、見えている下端は wrapper の overflow-hidden の端。wrapper の高さは
+ *   トップと記事で同じで (トップの lg は translate で動くだけ)、マスクは箱と一緒に動く
+ * - 透けて見えるのは html の背景なので、色はテーマの背景と常に一致する
+ * - 48rem はカードの md:px-4 と同じ境目
+ */
+@media (width >= 48rem) {
+	:root.dark .enable-banner #banner-wrapper {
+		mask-image: linear-gradient(to bottom, #000 calc(100% - var(--banner-fade-length)), transparent);
 	}
 }
 </style>

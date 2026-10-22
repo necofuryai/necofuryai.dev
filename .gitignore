@@ -18,6 +18,18 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# commissioned artwork (banner and avatar): kept out of the public repository.
+# Originals live in .site-assets/ locally and in a private R2 bucket for Workers
+# Builds; scripts/prepare-site-assets.mjs writes witch-banner.webp, witch-avatar.webp,
+# and the social image public/og/witch-banner.jpg (and their temporary files) before
+# each build.
+.site-assets/
+src/assets/images/witch-*
+public/og/
+
+# wrangler state (r2 object get/put without --remote write local copies here)
+.wrangler/
+
 # environment variables
 .env*
 !.env.example
