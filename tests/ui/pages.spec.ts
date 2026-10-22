@@ -400,3 +400,57 @@ test("banner and avatar use the prepared WebP images and credit the artist", asy
 	);
 	await expect(avatar).toHaveAttribute("width", "1024");
 });
+
+test("pages share the prepared 1200x630 JPEG as the default social image", async ({
+	page,
+	request,
+}) => {
+	// CI は仮の画像から切り抜く。URL、寸法の宣言、配信の形式は本番と同じになる
+	const expected = "https://necofuryai.dev/og/witch-banner.jpg";
+	for (const path of ["/", "/posts/hello-world/"]) {
+		await page.goto(path, { waitUntil: "load" });
+		const meta = (selector: string) => page.locator(`head ${selector}`);
+		await expect(meta('meta[property="og:image"]')).toHaveAttribute(
+			"content",
+			expected,
+		);
+		await expect(meta('meta[name="twitter:image"]')).toHaveAttribute(
+			"content",
+			expected,
+		);
+		await expect(meta('meta[property="og:image:type"]')).toHaveAttribute(
+			"content",
+			"image/jpeg",
+		);
+		await expect(meta('meta[property="og:image:width"]')).toHaveAttribute(
+			"content",
+			"1200",
+		);
+		await expect(meta('meta[property="og:image:height"]')).toHaveAttribute(
+			"content",
+			"630",
+		);
+		await expect(meta('meta[property="og:image:alt"]')).toHaveAttribute(
+			"content",
+			/こでびる/,
+		);
+		await expect(meta('meta[name="twitter:image:alt"]')).toHaveAttribute(
+			"content",
+			/こでびる/,
+		);
+	}
+	// 記事の JSON-LD も同じ画像を指す
+	const jsonLd = JSON.parse(
+		(await page.locator('script[type="application/ld+json"]').textContent()) ??
+			"{}",
+	);
+	expect(jsonLd.image).toBe(expected);
+
+	// request は page.route を通らないので、外部への中断の対象にならない
+	const response = await request.get(new URL(expected).pathname);
+	expect(response.status()).toBe(200);
+	expect(response.headers()["content-type"]).toMatch(/^image\/jpeg\b/);
+	expect([...(await response.body()).subarray(0, 3)]).toEqual([
+		0xff, 0xd8, 0xff,
+	]);
+});

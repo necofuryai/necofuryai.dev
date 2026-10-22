@@ -1,5 +1,11 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
+import {
+	DEFAULT_OG_IMAGE,
+	resolveOgImage as resolveOgImageWith,
+} from "./og-image.mjs";
+
+export { DEFAULT_OG_IMAGE };
 
 export function pathsEqual(path1: string, path2: string): boolean {
 	const normalizedPath1 = path1.replace(/^\/|\/$/g, "").toLowerCase();
@@ -43,17 +49,20 @@ export function url(path: string): string {
 	return joinUrl("", import.meta.env.BASE_URL, path);
 }
 
-export const DEFAULT_OG_IMAGE = "/og-default.png";
-
 // og:image / JSON-LD 用にカバー画像を絶対 URL へ解決する。
 // 相対パスのカバー (astro:assets がビルド時に解決するもの) は head からは
-// 参照できないため、デフォルト OG 画像にフォールバックする。
+// 参照できないため、デフォルト OG 画像にフォールバックする。判定は単体テストの
+// ため og-image.mjs に置いている。寸法と代替テキストが分かるのはデフォルト画像だけ
+export function resolveOgImage(
+	image: string | undefined,
+	site: URL | undefined,
+) {
+	return resolveOgImageWith(image, site, url);
+}
+
 export function resolveOgImageUrl(
 	image: string | undefined,
 	site: URL | undefined,
 ): string | undefined {
-	if (!site) return undefined;
-	if (image && /^https?:\/\//.test(image)) return image;
-	if (image?.startsWith("/")) return new URL(url(image), site).href;
-	return new URL(url(DEFAULT_OG_IMAGE), site).href;
+	return resolveOgImage(image, site)?.url;
 }
