@@ -7,6 +7,10 @@
  * import.meta.glob で読み込んだ画像の原本も dist に出力するので、原画の PNG ではなく
  * この WebP を原本にして、可逆の原画が配信されないようにする。
  *
+ * バナーからは、SNS で共有したときの画像 (og:image の既定) も同じ原画から作る。原画を
+ * og.crop で切り抜いて 1200x630 の JPEG にし、public/og/ に書き出す (Astro がそのまま
+ * dist/og/ に写す)。WebP の og:image は LINE・Facebook・Slack で表示がそろわないため JPEG にする。
+ *
  * 取得元 (SITE_ASSETS_SOURCE):
  * - placeholder: 原画を使わず同じ寸法の仮の画像を書き出す (Workers Builds 以外の既定。
  *                CI、AI エージェント、Workers Builds の本番以外のブランチも必ずこれ)
@@ -24,6 +28,7 @@ import { z } from "astro/zod";
 
 export const ORIGINALS_DIR = ".site-assets";
 export const WEBP_QUALITY = 92;
+export const OG_JPEG_QUALITY = 85;
 export const SOURCES = ["local", "r2", "placeholder"];
 // Workers Builds の本番ブランチ (ダッシュボードの Settings > Build > Production branch)
 export const PRODUCTION_BRANCH = "main";
@@ -45,6 +50,15 @@ export const SITE_ASSETS = [
 		width: 3840,
 		height: 2160,
 		output: "src/assets/images/witch-banner.webp",
+		// SNS 用の画像 (src/utils/og-image.mjs の DEFAULT_OG_IMAGE と同じパスと寸法)。crop は
+		// 原画の座標 (px) で、縦横比は width:height (40:21) と正確に同じにする。全幅で切る
+		// (上下 72px だけ落とす)。顔を中心に寄せる候補は { left: 800, top: 330, width: 2240, height: 1176 }
+		og: {
+			output: "public/og/witch-banner.jpg",
+			crop: { left: 0, top: 72, width: 3840, height: 2016 },
+			width: 1200,
+			height: 630,
+		},
 	},
 	{
 		key: "witch-avatar.png",
@@ -144,7 +158,7 @@ async function writeAtomic(file, data) {
 	}
 }
 
-async function readIfExists(file) {
+export async function readIfExists(file) {
 	try {
 		return await readFile(file);
 	} catch (error) {
@@ -168,16 +182,117 @@ export async function toWebp(sharp, asset, original) {
 		.toBuffer();
 }
 
-/** 原画と同じ寸法の仮の画像。中身はイラストと無関係なグラデーション */
+/** og の指定が原画に収まり、縮小だけで歪まないかを確かめる (取得や変換の前に呼ぶ) */
+export function validateOg(asset) {
+	const { og } = asset;
+	if (og === undefined) return;
+	const { crop } = og;
+	if (!/^public\/.+\.jpg$/.test(og.output)) {
+		throw new Error(
+			`${asset.key}: og.output must be a .jpg under public/, got ${og.output}`,
+		);
+	}
+	const numbers = [
+		crop.left,
+		crop.top,
+		crop.width,
+		crop.height,
+		og.width,
+		og.height,
+	];
+	if (
+		!numbers.every(Number.isInteger) ||
+		crop.left < 0 ||
+		crop.top < 0 ||
+		!(crop.width > 0 && crop.height > 0 && og.width > 0 && og.height > 0)
+	) {
+		throw new Error(
+			`${asset.key}: og.crop and the og size must be integers, with positive sizes and a non-negative offset`,
+		);
+	}
+	if (
+		crop.left + crop.width > asset.width ||
+		crop.top + crop.height > asset.height
+	) {
+		throw new Error(
+			`${asset.key}: og.crop ${crop.width}x${crop.height} at (${crop.left}, ${crop.top}) must fit inside ${asset.width}x${asset.height}`,
+		);
+	}
+	if (crop.width * og.height !== crop.height * og.width) {
+		throw new Error(
+			`${asset.key}: og.crop ${crop.width}x${crop.height} must have the aspect ratio of ${og.width}x${og.height}`,
+		);
+	}
+	if (crop.width < og.width) {
+		throw new Error(
+			`${asset.key}: og.crop ${crop.width}x${crop.height} must not be smaller than ${og.width}x${og.height}`,
+		);
+	}
+}
+
+/** public/ の出力が dist/ のどこに写るか */
+export function distPathOf(output) {
+	return `dist/${output.slice("public/".length)}`;
+}
+
+/** 原画を og.crop で切り抜き、og.width x og.height の JPEG にする (ベースライン。アルファは WebP と同じく外す) */
+export async function toOgJpeg(sharp, asset, original) {
+	const { crop, width, height } = asset.og;
+	return sharp(original)
+		.extract(crop)
+		.resize(width, height)
+		.removeAlpha()
+		.jpeg({ quality: OG_JPEG_QUALITY })
+		.toBuffer();
+}
+
+/**
+ * 原画と同じ寸法の仮の原画 (SVG)。中身はイラストと無関係なグラデーション。
+ * SNS 用の画像は、ここから原画と同じ切り抜きで作るので、crop の誤りも CI で止まる
+ */
+export function placeholderOriginal(asset) {
+	return Buffer.from(
+		`<svg xmlns="http://www.w3.org/2000/svg" width="${asset.width}" height="${asset.height}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9db4e8"/><stop offset="1" stop-color="#d9c8ef"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g)"/></svg>`,
+	);
+}
+
+/** 原画と同じ寸法の仮の画像 */
 export async function placeholderWebp(sharp, asset) {
-	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${asset.width}" height="${asset.height}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9db4e8"/><stop offset="1" stop-color="#d9c8ef"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g)"/></svg>`;
-	return sharp(Buffer.from(svg)).webp({ quality: 80 }).toBuffer();
+	return sharp(placeholderOriginal(asset)).webp({ quality: 80 }).toBuffer();
+}
+
+/** local と r2 の原画を、照合してから返す (r2 は .site-assets/ に無いか古いときだけ取得する) */
+async function loadOriginal({ root, source, asset, fetchOriginal }) {
+	const originalPath = path.join(root, ORIGINALS_DIR, asset.key);
+	let original = await readIfExists(originalPath);
+	if (original !== undefined && sha256Hex(original) !== asset.sha256) {
+		if (source === "local") verifyOriginal(asset, original);
+		original = undefined; // r2: 古い原画は取り直す
+	}
+	if (original === undefined) {
+		if (source === "local") {
+			throw new Error(
+				`${path.join(ORIGINALS_DIR, asset.key)} is missing. Put the original there, or run with SITE_ASSETS_SOURCE=r2 and the R2 variables`,
+			);
+		}
+		original = await fetchOriginal(asset.key);
+		verifyOriginal(asset, original);
+		await writeAtomic(originalPath, original);
+	}
+	return original;
+}
+
+/** 中身が同じなら書き込まない (dev サーバーの再読み込みを起こさないため) */
+async function writeIfChanged(file, data) {
+	const current = await readIfExists(file);
+	if (current?.equals(data)) return false;
+	await writeAtomic(file, data);
+	return true;
 }
 
 /**
  * 一覧の画像をすべて用意する。fetchOriginal(key) は r2 のときだけ呼ばれ、原画の
- * Buffer を返す。書き出す内容が既存のファイルと同じなら書き込まない (dev サーバーの
- * 再読み込みを起こさないため)。
+ * Buffer を返す。SNS 用の JPEG も同じ原画から作る (r2 でも取得は 1 回)。
  */
 export async function prepareSiteAssets({
 	root,
@@ -188,38 +303,39 @@ export async function prepareSiteAssets({
 	log = () => {},
 }) {
 	const source = resolveSource(env);
+	// 切り抜き範囲の誤りは、取得や変換の前に止める
+	for (const asset of assets) validateOg(asset);
 	const results = [];
 	for (const asset of assets) {
-		let webp;
+		// 出力をすべて作ってから書き込む (原画の寸法が違えば、何も書かずに止まる)
+		const outputs = [];
 		if (source === "placeholder") {
-			webp = await placeholderWebp(sharp, asset);
+			outputs.push([asset.output, await placeholderWebp(sharp, asset)]);
+			if (asset.og !== undefined) {
+				outputs.push([
+					asset.og.output,
+					await toOgJpeg(sharp, asset, placeholderOriginal(asset)),
+				]);
+			}
 		} else {
-			const originalPath = path.join(root, ORIGINALS_DIR, asset.key);
-			let original = await readIfExists(originalPath);
-			if (original !== undefined && sha256Hex(original) !== asset.sha256) {
-				if (source === "local") verifyOriginal(asset, original);
-				original = undefined; // r2: 古い原画は取り直す
+			const original = await loadOriginal({
+				root,
+				source,
+				asset,
+				fetchOriginal,
+			});
+			outputs.push([asset.output, await toWebp(sharp, asset, original)]);
+			if (asset.og !== undefined) {
+				outputs.push([asset.og.output, await toOgJpeg(sharp, asset, original)]);
 			}
-			if (original === undefined) {
-				if (source === "local") {
-					throw new Error(
-						`${path.join(ORIGINALS_DIR, asset.key)} is missing. Put the original there, or run with SITE_ASSETS_SOURCE=r2 and the R2 variables`,
-					);
-				}
-				original = await fetchOriginal(asset.key);
-				verifyOriginal(asset, original);
-				await writeAtomic(originalPath, original);
-			}
-			webp = await toWebp(sharp, asset, original);
 		}
-		const outputPath = path.join(root, asset.output);
-		const current = await readIfExists(outputPath);
-		const changed = current === undefined || !current.equals(webp);
-		if (changed) await writeAtomic(outputPath, webp);
-		log(
-			`${asset.output} (${source}${changed ? "" : ", unchanged"}, ${webp.length} bytes)`,
-		);
-		results.push({ output: asset.output, source, changed, bytes: webp.length });
+		for (const [output, data] of outputs) {
+			const changed = await writeIfChanged(path.join(root, output), data);
+			log(
+				`${output} (${source}${changed ? "" : ", unchanged"}, ${data.length} bytes)`,
+			);
+			results.push({ output, source, changed, bytes: data.length });
+		}
 	}
 	return results;
 }
@@ -252,6 +368,66 @@ export function findPublishingProblems(
 		if (copies.length === 0) {
 			problems.push(`no resized copy of ${stem} in dist/_astro`);
 		}
+	}
+	return problems;
+}
+
+/**
+ * dist に写った SNS 用の画像を調べる。無い、原画や WebP と同じ中身、寸法か形式が違う、
+ * public/ の版と食い違う、または出力先に別のファイル (止まった実行が残した一時ファイルなど)
+ * があれば問題として返す。
+ *
+ * ogFiles: { [og.output]: { sha256, preparedSha256, format, width, height } } (dist にあるものだけ)
+ * distEntries: 出力先のディレクトリ (dist/og) にあるファイル ("dist/og/<name>")
+ * outputDigests: findPublishingProblems と同じ WebP のハッシュ
+ */
+export function findOgProblems(
+	ogFiles,
+	distEntries,
+	outputDigests,
+	assets = SITE_ASSETS,
+) {
+	const problems = [];
+	const originals = new Set(assets.map((asset) => asset.sha256));
+	const expected = new Set();
+	for (const asset of assets) {
+		if (asset.og === undefined) continue;
+		const published = distPathOf(asset.og.output);
+		expected.add(published);
+		const file = ogFiles[asset.og.output];
+		if (file === undefined) {
+			problems.push(
+				`missing ${published} (scripts/prepare-site-assets.mjs writes ${asset.og.output})`,
+			);
+			continue;
+		}
+		if (originals.has(file.sha256)) {
+			problems.push(`original published: ${published}`);
+		}
+		for (const [output, digest] of Object.entries(outputDigests)) {
+			if (digest === file.sha256) {
+				problems.push(`${published} is a copy of ${output}`);
+			}
+		}
+		if (
+			file.format !== "jpeg" ||
+			file.width !== asset.og.width ||
+			file.height !== asset.og.height
+		) {
+			const actual =
+				file.format === undefined
+					? "unreadable"
+					: `${file.format} ${file.width}x${file.height}`;
+			problems.push(
+				`${published} is ${actual}, expected a ${asset.og.width}x${asset.og.height} JPEG`,
+			);
+		}
+		if (file.preparedSha256 !== file.sha256) {
+			problems.push(`${published} differs from ${asset.og.output}`);
+		}
+	}
+	for (const entry of distEntries) {
+		if (!expected.has(entry)) problems.push(`unexpected file: ${entry}`);
 	}
 	return problems;
 }

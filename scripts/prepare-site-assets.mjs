@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * dev と build の前に、バナーとアバターの WebP を src/assets/images/ に書き出す。
+ * dev と build の前に、バナーとアバターの WebP を src/assets/images/ に、バナーから
+ * 切り抜いた SNS 用の JPEG (og:image の既定) を public/og/ に書き出す。
  * 取得元と仕組みは scripts/site-assets.mjs の冒頭のコメントを参照。
  *
  * 実行: pnpm site-assets (pnpm dev / pnpm build からも呼ばれる)

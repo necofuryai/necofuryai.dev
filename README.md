@@ -32,7 +32,8 @@ pnpm format           # Biome フォーマット
 ## バナーとアバター
 
 バナーとアバターのイラストは、[こでびる様](https://coconala.com/users/1586223)に依頼して制作していただいた作品です。
-原画はこのリポジトリに含めず、ビルドの前に `scripts/prepare-site-assets.mjs` が WebP に変換して `src/assets/images/` に書き出します (どちらも Git の管理外)。
+原画はこのリポジトリに含めず、ビルドの前に `scripts/prepare-site-assets.mjs` が WebP に変換して `src/assets/images/` に書き出します。
+SNS で共有したときに表示する画像 (`og:image`) も、同じ原画のバナーを切り抜いた 1200x630 の JPEG として `public/og/witch-banner.jpg` に書き出します (いずれも Git の管理外。WebP の `og:image` を表示しないサービスがあるため JPEG にしています)。
 
 - 手元: 既定では同じ寸法の仮の画像を使います。原画で確かめるときは、原画を `.site-assets/` に置き、`SITE_ASSETS_SOURCE=local pnpm dev` のようにそのコマンドにだけ指定します (シェルの設定には書きません。AI エージェントのコマンドにも引き継がれるため)
 - 本番 (Cloudflare Workers Builds): 非公開の R2 バケットから取得します。ビルド用のシークレット `SITE_ASSETS_R2_ACCOUNT_ID`、`SITE_ASSETS_R2_ACCESS_KEY_ID`、`SITE_ASSETS_R2_SECRET_ACCESS_KEY` (アカウント ID と、バケットを限定した読み取り専用の R2 API トークン) が必要です

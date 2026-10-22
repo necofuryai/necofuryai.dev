@@ -1,6 +1,6 @@
 ---
 
-import { profileConfig } from "../config";
+import { profileConfig, siteConfig } from "../config";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import { url } from "../utils/url-utils";
@@ -18,5 +18,11 @@ const currentYear = new Date().getFullYear();
         Powered by
         <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://astro.build">Astro</a> &
         <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://github.com/saicaca/fuwari">Fuwari</a>
+        {siteConfig.banner.credit.enable && <>
+            <br>
+            {siteConfig.banner.credit.url
+                ? <a class="transition link text-[var(--primary)] font-medium" target="_blank" rel="noopener" href={siteConfig.banner.credit.url}>{siteConfig.banner.credit.text}</a>
+                : siteConfig.banner.credit.text}
+        </>}
     </div>
 </div>
