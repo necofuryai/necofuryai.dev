@@ -556,10 +556,14 @@ for (const [width, height] of [
 	}
 }
 
-test("banner credit hides where the band cannot hold it, and the footer and profile still credit the artist", async ({
+test("banner credit hides where it would reach the face or the band cannot hold it, and the footer and profile still credit the artist", async ({
 	page,
 }) => {
+	// 375x553 と 390x580 は顔の枠に 2px 以内まで近づく高さ。844x390 と 667x375 は
+	// ナビバーとカードの間に収まらない横向きの画面
 	for (const [width, height] of [
+		[375, 553],
+		[390, 580],
 		[844, 390],
 		[667, 375],
 	] as const) {

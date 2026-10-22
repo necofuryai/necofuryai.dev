@@ -282,17 +282,21 @@ const gaInlineScript = gaMeasurementId
 }
 
 /*
- * #banner-credit (MainGridLayout.astro) が、ナビバー (4.5rem) の下端とカードの上端
- * (35vh - 3.5rem) の間に収まらない高さ (横向きのスマホなど) では隠す。残すとナビバーの
- * 下に隠れたままフォーカスを受ける。作者の表記はフッターとプロフィールにもある。
- * - md 未満 (rem は 14px): ピルの上端は 35vh - 5rem。35vh - 5rem >= 4.5rem から 380px
+ * #banner-credit (MainGridLayout.astro) を、顔にかかる高さと、ナビバー (4.5rem) の下端と
+ * カードの上端 (35vh - 3.5rem) の間に収まらない高さ (横向きのスマホなど) では隠す。
+ * 収まらないまま残すと、ナビバーの下に隠れたままフォーカスを受ける。作者の表記は
+ * フッターとプロフィールにもある。
+ * - md 未満 (rem は 14px): ピルの上端は 35vh - 5rem = 0.35h - 70px。縦長の画面では画像が
+ *   高さで合わさり、依頼時のガイドの顔の枠の下端 (原画の y 1260、banner.position center)
+ *   は -15vh + 1260 * 65vh / 2160 = 0.229h。2px 空けるには 0.121h - 70 >= 2 から 596px。
+ *   ナビバーに収まる条件 (380px) はこれに含まれる
  * - md 以上 (rem は 16px): ピルの上端は 35vh - 6.75rem。35vh - 6.75rem >= 4.5rem から 514.3px
  * - media query の rem は html の文字サイズではなく 16px で解釈されるので px で書く。
- *   BANNER_HEIGHT、MAIN_PANEL_OVERLAPS_BANNER_HEIGHT、ピルの -top-6 と md:-top-[3.25rem]
- *   を変えたら計算し直す。幅の境目はピルの md: と同じ 48rem
+ *   BANNER_HEIGHT、BANNER_HEIGHT_EXTEND、MAIN_PANEL_OVERLAPS_BANNER_HEIGHT、banner.position、
+ *   ピルの -top-6 と md:-top-[3.25rem] を変えたら計算し直す。幅の境目はピルの md: と同じ 48rem
  * - @layer の外に置き、ユーティリティの flex に勝たせる
  */
-@media (width < 48rem) and (height < 380px), (width >= 48rem) and (height < 514.3px) {
+@media (width < 48rem) and (height < 596px), (width >= 48rem) and (height < 514.3px) {
 	#banner-credit {
 		display: none;
 	}
