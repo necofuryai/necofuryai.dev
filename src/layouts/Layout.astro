@@ -278,6 +278,23 @@ const gaInlineScript = gaMeasurementId
 		@apply top-[calc(1rem_-_var(--banner-height-extend))];
 	}
 }
+
+/*
+ * #banner-credit (MainGridLayout.astro) が、ナビバー (4.5rem) の下端とカードの上端
+ * (35vh - 3.5rem) の間に収まらない高さ (横向きのスマホなど) では隠す。残すとナビバーの
+ * 下に隠れたままフォーカスを受ける。作者の表記はフッターとプロフィールにもある。
+ * - md 未満 (rem は 14px): ピルの上端は 35vh - 5rem。35vh - 5rem >= 4.5rem から 380px
+ * - md 以上 (rem は 16px): ピルの上端は 35vh - 6.75rem。35vh - 6.75rem >= 4.5rem から 514.3px
+ * - media query の rem は html の文字サイズではなく 16px で解釈されるので px で書く。
+ *   BANNER_HEIGHT、MAIN_PANEL_OVERLAPS_BANNER_HEIGHT、ピルの -top-6 と md:-top-[3.25rem]
+ *   を変えたら計算し直す。幅の境目はピルの md: と同じ 48rem
+ * - @layer の外に置き、ユーティリティの flex に勝たせる
+ */
+@media (width < 48rem) and (height < 380px), (width >= 48rem) and (height < 514.3px) {
+	#banner-credit {
+		display: none;
+	}
+}
 </style>
 
 <script>

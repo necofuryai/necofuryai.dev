@@ -58,7 +58,7 @@ export const profileConfig: ProfileConfig = {
 	// Written by scripts/prepare-site-assets.mjs, like the banner
 	avatar: "assets/images/witch-avatar.webp", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "necofuryai",
-	bio: "技術メモと開発記録を書いています。",
+	bio: "技術メモと開発記録を書いています。アイコンとバナーのイラストは、こでびるさんに描いていただきました。",
 	links: [
 		// Visit https://icones.js.org/ for icon codes
 		// You will need to install the corresponding icon set if it's not already included
