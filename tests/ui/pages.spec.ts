@@ -591,3 +591,61 @@ test("desktop keeps the banner credit pill above the cards", async ({
 		expect(m.creditOnTop).toBe(true);
 	}
 });
+
+test("dark mode fades the banner's bottom edge inside the card overlap", async ({
+	page,
+}) => {
+	// project は colorScheme: "light" 固定なので、テーマは localStorage とボタンで選ぶ
+	await page.addInitScript(() => {
+		if (localStorage.getItem("theme") === null) {
+			localStorage.setItem("theme", "light");
+		}
+	});
+	const html = page.locator("html");
+	const wrapper = page.locator("#banner-wrapper");
+	const maskImage = () =>
+		wrapper.evaluate((element) =>
+			getComputedStyle(element).getPropertyValue("mask-image"),
+		);
+
+	await page.goto("/", { waitUntil: "load" });
+	await expect(html).not.toHaveClass(/\bdark\b/);
+	expect(await maskImage()).toBe("none");
+
+	await page.getByRole("button", { name: "Light/Dark Mode" }).click();
+	await expect(html).toHaveClass(/\bdark\b/);
+	await expect.poll(maskImage).toContain("linear-gradient");
+
+	// フェードの長さは、カードの上端からバナーの下端までの重なりと同じ。トップ (wrapper
+	// ごと translate する) と記事 (#banner だけがずれる) の両方で確かめる
+	for (const path of ["/", "/posts/hello-world/"]) {
+		await page.goto(path, { waitUntil: "load" });
+		await page.addStyleTag({
+			content: "*, *::before, *::after { transition: none !important; }",
+		});
+		await expect(html).toHaveClass(/\bdark\b/);
+		expect(await maskImage()).toContain("linear-gradient");
+		const { fade, overlap } = await wrapper.evaluate((element) => {
+			const rootFontSize = Number.parseFloat(
+				getComputedStyle(document.documentElement).fontSize,
+			);
+			const grid = document.getElementById("main-grid");
+			return {
+				fade:
+					Number.parseFloat(
+						getComputedStyle(element).getPropertyValue("--banner-fade-length"),
+					) * rootFontSize,
+				overlap: grid
+					? element.getBoundingClientRect().bottom -
+						grid.getBoundingClientRect().top
+					: Number.NaN,
+			};
+		});
+		expect(fade).toBe(56);
+		expect(overlap).toBeCloseTo(fade, 0);
+	}
+
+	// md 未満はカードが全幅でバナーの下端を覆うので、ダークでも掛けない
+	await page.setViewportSize({ width: 375, height: 667 });
+	expect(await maskImage()).toBe("none");
+});

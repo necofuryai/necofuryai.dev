@@ -18,6 +18,7 @@ import {
 	DARK_MODE,
 	DEFAULT_THEME,
 	LIGHT_MODE,
+	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 	PAGE_WIDTH,
 } from "../constants/constants";
 import { defaultFavicons } from "../constants/icon";
@@ -237,6 +238,7 @@ const gaInlineScript = gaMeasurementId
 	bannerOffset,
 	'banner-height-home': `${BANNER_HEIGHT_HOME}vh`,
 	'banner-height': `${BANNER_HEIGHT}vh`,
+	'banner-fade-length': `${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem`,
 }}>
 @reference "../styles/global.css";
 @layer components {
@@ -293,6 +295,25 @@ const gaInlineScript = gaMeasurementId
 @media (width < 48rem) and (height < 380px), (width >= 48rem) and (height < 514.3px) {
 	#banner-credit {
 		display: none;
+	}
+}
+
+/*
+ * ダークモードでは、明るいバナーの下端が暗いページの背景と接して横線になる。この線は
+ * md 以上で、カードの外側の余白と、カードの間のすき間 (md:px-4、lg の gap-4) にだけ
+ * 見える (md 未満はカードが全幅で覆う)。バナーの下端はカードの上端より
+ * MAIN_PANEL_OVERLAPS_BANNER_HEIGHT (3.5rem) 下にあるので、この帯だけを背景に溶かす。
+ * カードより上に見えている絵は変わらない。--banner-fade-length をこれより長くすると、
+ * 全幅に見えている帯まで暗くなる。
+ * - #banner ではなく #banner-wrapper に掛ける。記事ページの #banner は bannerOffset の分
+ *   下にずれていて、見えている下端は wrapper の overflow-hidden の端。wrapper の高さは
+ *   トップと記事で同じで (トップの lg は translate で動くだけ)、マスクは箱と一緒に動く
+ * - 透けて見えるのは html の背景なので、色はテーマの背景と常に一致する
+ * - 48rem はカードの md:px-4 と同じ境目
+ */
+@media (width >= 48rem) {
+	:root.dark .enable-banner #banner-wrapper {
+		mask-image: linear-gradient(to bottom, #000 calc(100% - var(--banner-fade-length)), transparent);
 	}
 }
 </style>
