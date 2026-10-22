@@ -21,8 +21,6 @@ import {
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 	PAGE_WIDTH,
 } from "../constants/constants";
-import { defaultFavicons } from "../constants/icon";
-import type { Favicon } from "../types/config";
 import {
 	DEFAULT_OG_IMAGE,
 	pathsEqual,
@@ -72,9 +70,6 @@ if (title) {
 } else {
 	pageTitle = `${siteConfig.title} - ${siteConfig.subtitle}`;
 }
-
-const favicons: Favicon[] =
-	siteConfig.favicon.length > 0 ? siteConfig.favicon : defaultFavicons;
 
 // const siteLang = siteConfig.lang.replace('_', '-')
 if (!lang) {
@@ -176,7 +171,7 @@ const gaInlineScript = gaMeasurementId
 
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		{favicons.map(favicon => (
+		{siteConfig.favicon.map(favicon => (
 			<link rel="icon"
 				  href={favicon.src.startsWith('/') ? url(favicon.src) : favicon.src}
 				  sizes={favicon.sizes}

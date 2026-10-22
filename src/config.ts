@@ -6,6 +6,10 @@ import type {
 	SiteConfig,
 } from "./types/config";
 import { LinkPreset } from "./types/config";
+import { AVATAR_FAVICONS } from "./utils/favicon.mjs";
+
+// The artist of the banner and the avatar, credited in the banner, the footer, and the profile
+const ILLUSTRATOR = { name: "こでびる", url: "https://x.com/kodebiru2" };
 
 export const siteConfig: SiteConfig = {
 	title: "necofuryai.dev",
@@ -22,22 +26,17 @@ export const siteConfig: SiteConfig = {
 		position: "center", // Equivalent to object-position, only supports 'top', 'center', 'bottom'. 'center' by default
 		credit: {
 			enable: true, // Display the credit text of the banner image
-			text: "Illustration: こでびる", // Credit text to be displayed
-			url: "https://coconala.com/users/1586223", // (Optional) URL link to the original artwork or artist's page
+			label: "Illustration:", // (Optional) Text shown before the credit text; the footer leaves it out of the link
+			text: ILLUSTRATOR.name, // Credit text to be displayed
+			url: ILLUSTRATOR.url, // (Optional) URL link to the original artwork or artist's page
 		},
 	},
 	toc: {
 		enable: true, // Display the table of contents on the right side of the post
 		depth: 2, // Maximum heading depth to show in the table, from 1 to 3
 	},
-	favicon: [
-		// Leave this array empty to use the default favicon
-		// {
-		//   src: '/favicon/icon.png',    // Path of the favicon, relative to the /public directory
-		//   theme: 'light',              // (Optional) Either 'light' or 'dark', set only if you have different favicons for light and dark mode
-		//   sizes: '32x32',              // (Optional) Size of the favicon, set only if you have favicons of different sizes
-		// }
-	],
+	// Resized from the avatar by scripts/prepare-site-assets.mjs, like the banner (not committed)
+	favicon: [...AVATAR_FAVICONS],
 };
 
 export const navBarConfig: NavBarConfig = {
@@ -58,7 +57,14 @@ export const profileConfig: ProfileConfig = {
 	// Written by scripts/prepare-site-assets.mjs, like the banner
 	avatar: "assets/images/witch-avatar.webp", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 	name: "necofuryai",
-	bio: "技術メモと開発記録を書いています。アイコンとバナーのイラストは、こでびるさんに描いていただきました。",
+	bio: "技術メモと開発記録を書いています。",
+	// (Optional) A line under the bio: the label, the text linked to the URL, then the suffix
+	credit: {
+		label: "icon & header:",
+		text: ILLUSTRATOR.name,
+		url: ILLUSTRATOR.url,
+		suffix: "様",
+	},
 	links: [
 		// Visit https://icones.js.org/ for icon codes
 		// You will need to install the corresponding icon set if it's not already included
