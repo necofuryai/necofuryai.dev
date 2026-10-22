@@ -29,6 +29,15 @@ pnpm lint             # Biome チェック (自動修正あり)
 pnpm format           # Biome フォーマット
 ```
 
+## バナーとアバター
+
+バナーとアバターのイラストは、[こでびる様](https://coconala.com/users/1586223)に依頼して制作していただいた作品です。
+原画はこのリポジトリに含めず、ビルドの前に `scripts/prepare-site-assets.mjs` が WebP に変換して `src/assets/images/` に書き出します (どちらも Git の管理外)。
+
+- 手元: 既定では同じ寸法の仮の画像を使います。原画で確かめるときは、原画を `.site-assets/` に置き、`SITE_ASSETS_SOURCE=local pnpm dev` のようにそのコマンドにだけ指定します (シェルの設定には書きません。AI エージェントのコマンドにも引き継がれるため)
+- 本番 (Cloudflare Workers Builds): 非公開の R2 バケットから取得します。ビルド用のシークレット `SITE_ASSETS_R2_ACCOUNT_ID`、`SITE_ASSETS_R2_ACCESS_KEY_ID`、`SITE_ASSETS_R2_SECRET_ACCESS_KEY` (アカウント ID と、バケットを限定した読み取り専用の R2 API トークン) が必要です
+- CI (GitHub Actions): 常に仮の画像を使います
+
 ## アクセス解析
 
 Google アナリティクス 4 (GA4) を使用しています。
@@ -41,6 +50,7 @@ Google アナリティクス 4 (GA4) を使用しています。
 - コード: [MIT License](LICENSE) (`.claude/skills/` を除く)
 - 記事コンテンツ: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 - `.claude/skills/` 以下 ([cloudflare/skills](https://github.com/cloudflare/skills) から同梱したスキルと参照資料、およびその改変): [Apache License 2.0](.claude/skills/LICENSE)。上流からの改変点は [.claude/skills/README.md](.claude/skills/README.md) を参照
+- バナーとアバターのイラスト: こでびる様の作品で、リポジトリには含まれず、上記のどのライセンスの対象でもありません
 
 ## Credits
 
