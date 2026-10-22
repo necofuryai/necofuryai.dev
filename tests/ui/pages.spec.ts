@@ -353,6 +353,9 @@ test("desktop home banner rules shift the grid and keep the sidebar sticky offse
 	expect(archive.sidebarTop).toBe("16px");
 });
 
+// こでびる様の X のプロフィール。バナーのピル、フッター、プロフィール欄が指す
+const CREDIT_HREF = "https://x.com/kodebiru2";
+
 test("banner and avatar use the prepared WebP images and credit the artist", async ({
 	page,
 }) => {
@@ -387,11 +390,29 @@ test("banner and avatar use the prepared WebP images and credit the artist", asy
 		.toBeGreaterThan(0);
 
 	const credit = page.locator("#banner-credit");
-	await expect(credit).toHaveAttribute(
-		"href",
-		"https://coconala.com/users/1586223",
-	);
+	await expect(credit).toHaveAttribute("href", CREDIT_HREF);
 	await expect(credit).toContainText("Illustration: こでびる");
+
+	// フッターは名前だけをリンクにし、"Illustration:" はリンクの外に置く
+	const footerCredit = page
+		.locator(`.footer a[href="${CREDIT_HREF}"]`)
+		.filter({ visible: true });
+	await expect(footerCredit).toHaveText("こでびる");
+	await expect(footerCredit).toHaveAttribute("rel", "noopener");
+	// フッターは PC 用とスマホ用の 2 つがあり、見えているのは片方だけ
+	await expect(page.locator(".footer").filter({ visible: true })).toContainText(
+		"Illustration: こでびる",
+	);
+
+	// プロフィール欄の紹介文の下にも、名前だけをリンクにして載せる
+	const profileCredit = page.locator(`#sidebar a[href="${CREDIT_HREF}"]`);
+	await expect(profileCredit).toHaveText("こでびる");
+	await expect(profileCredit).toHaveAttribute("target", "_blank");
+	await expect(profileCredit).toHaveAttribute("rel", "noopener");
+	await expect(profileCredit.locator("..")).toContainText(
+		"icon & header: こでびる 様",
+	);
+	await expect(page.locator('a[href*="coconala.com"]')).toHaveCount(0);
 
 	const avatar = page.locator('img[alt="Profile Image of the Author"]');
 	await expect(avatar).toHaveAttribute(
@@ -455,6 +476,47 @@ test("pages share the prepared 1200x630 JPEG as the default social image", async
 	]);
 });
 
+test("pages link the favicons resized from the avatar", async ({
+	page,
+	request,
+}) => {
+	// CI は仮の画像から縮小する。パス、寸法の宣言、配信の形式は本番と同じになる
+	const expected = [32, 128, 180, 192].map((size) => ({
+		href: `/favicon/witch-avatar-${size}.png`,
+		sizes: `${size}x${size}`,
+		media: null,
+	}));
+	for (const path of ["/", "/posts/hello-world/"]) {
+		await page.goto(path, { waitUntil: "load" });
+		const icons = await page
+			.locator('head link[rel="icon"]')
+			.evaluateAll((links) =>
+				links.map((link) => ({
+					href: link.getAttribute("href"),
+					sizes: link.getAttribute("sizes"),
+					media: link.getAttribute("media"),
+				})),
+			);
+		expect(icons).toEqual(expected);
+	}
+
+	// request は page.route を通らないので、外部への中断の対象にならない
+	for (const { href, sizes } of expected) {
+		const response = await request.get(href);
+		expect(response.status()).toBe(200);
+		expect(response.headers()["content-type"]).toMatch(/^image\/png\b/);
+		// PNG の署名と、IHDR に書かれた幅と高さ (ビッグエンディアン)
+		const body = await response.body();
+		expect([...body.subarray(0, 8)]).toEqual([
+			0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
+		]);
+		expect(`${body.readUInt32BE(16)}x${body.readUInt32BE(20)}`).toBe(sizes);
+	}
+	// テンプレートの favicon はもう配信しない
+	const template = await request.get("/favicon/favicon-light-32.png");
+	expect(template.status()).toBe(404);
+});
+
 // 依頼時のガイドの顔の枠 (3840x2160 の原画での座標)。原画は使わず、同じ寸法の仮の
 // 画像の描画位置から写像する
 const GUIDE = {
@@ -462,7 +524,6 @@ const GUIDE = {
 	height: 2160,
 	face: { left: 1100, right: 2740, top: 940, bottom: 1260 },
 } as const;
-const CREDIT_HREF = "https://coconala.com/users/1586223";
 
 async function measureBannerCredit(page: Page) {
 	return page.evaluate(async ({ width, height, face }) => {
@@ -574,8 +635,15 @@ test("banner credit hides where it would reach the face or the band cannot hold 
 			page
 				.locator(`.footer a[href="${CREDIT_HREF}"]`)
 				.filter({ visible: true }),
-		).toHaveText("Illustration: こでびる");
-		await expect(page.locator("#sidebar")).toContainText("こでびる");
+		).toHaveText("こでびる");
+		await expect(
+			page.locator(".footer").filter({ visible: true }),
+		).toContainText("Illustration: こでびる");
+		await expect(
+			page
+				.locator(`#sidebar a[href="${CREDIT_HREF}"]`)
+				.filter({ visible: true }),
+		).toHaveText("こでびる");
 	}
 });
 

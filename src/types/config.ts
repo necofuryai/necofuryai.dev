@@ -26,6 +26,7 @@ export type SiteConfig = {
 		position?: "top" | "center" | "bottom";
 		credit: {
 			enable: boolean;
+			label?: string;
 			text: string;
 			url?: string;
 		};
@@ -65,6 +66,12 @@ export type ProfileConfig = {
 	avatar?: string;
 	name: string;
 	bio?: string;
+	credit?: {
+		label: string;
+		text: string;
+		url: string;
+		suffix?: string;
+	};
 	links: {
 		name: string;
 		url: string;

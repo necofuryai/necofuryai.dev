@@ -10,6 +10,7 @@
  * バナーからは、SNS で共有したときの画像 (og:image の既定) も同じ原画から作る。原画を
  * og.crop で切り抜いて 1200x630 の JPEG にし、public/og/ に書き出す (Astro がそのまま
  * dist/og/ に写す)。WebP の og:image は LINE・Facebook・Slack で表示がそろわないため JPEG にする。
+ * アバターからは、同じように favicon の PNG を作り、public/favicon/ に書き出す。
  *
  * 取得元 (SITE_ASSETS_SOURCE):
  * - placeholder: 原画を使わず同じ寸法の仮の画像を書き出す (Workers Builds 以外の既定。
@@ -66,6 +67,14 @@ export const SITE_ASSETS = [
 		width: 1024,
 		height: 1024,
 		output: "src/assets/images/witch-avatar.webp",
+		// favicon (src/utils/favicon.mjs の AVATAR_FAVICONS と同じパスと寸法)。原画を切り抜かずに
+		// 正方形のまま縮小する
+		favicons: [
+			{ output: "public/favicon/witch-avatar-32.png", size: 32 },
+			{ output: "public/favicon/witch-avatar-128.png", size: 128 },
+			{ output: "public/favicon/witch-avatar-180.png", size: 180 },
+			{ output: "public/favicon/witch-avatar-192.png", size: 192 },
+		],
 	},
 ];
 
@@ -230,6 +239,36 @@ export function validateOg(asset) {
 	}
 }
 
+/**
+ * favicon の上限 (px)。favicon は可逆の PNG なので、原画に近い大きさで作ると、WebP で
+ * 避けている可逆の原画の配信と変わらなくなる。512 は Web アプリのアイコンの最大の寸法
+ */
+export const FAVICON_MAX_SIZE = 512;
+
+/** favicon の指定が正方形の原画から縮小だけで作れるかを確かめる (取得や変換の前に呼ぶ) */
+export function validateFavicons(asset) {
+	const { favicons } = asset;
+	if (favicons === undefined) return;
+	if (asset.width !== asset.height) {
+		throw new Error(
+			`${asset.key}: favicons need a square original, got ${asset.width}x${asset.height}`,
+		);
+	}
+	const limit = Math.min(asset.width, FAVICON_MAX_SIZE);
+	for (const { output, size } of favicons) {
+		if (!/^public\/.+\.png$/.test(output)) {
+			throw new Error(
+				`${asset.key}: favicon output must be a .png under public/, got ${output}`,
+			);
+		}
+		if (!Number.isInteger(size) || size <= 0 || size > limit) {
+			throw new Error(
+				`${asset.key}: favicon size must be a positive integer up to ${limit}, got ${size}`,
+			);
+		}
+	}
+}
+
 /** public/ の出力が dist/ のどこに写るか */
 export function distPathOf(output) {
 	return `dist/${output.slice("public/".length)}`;
@@ -246,9 +285,30 @@ export async function toOgJpeg(sharp, asset, original) {
 		.toBuffer();
 }
 
+/** 原画を size x size の PNG にする (アルファは WebP と同じく外す) */
+export async function toFaviconPng(sharp, size, original) {
+	return sharp(original).resize(size, size).removeAlpha().png().toBuffer();
+}
+
+/**
+ * public/ に書き出す画像 (SNS 用の JPEG と favicon の PNG) と、その形式と寸法。
+ * check-published-assets.mjs は、dist/ に写ったものをこの一覧と照合する
+ */
+export function publicOutputsOf(asset) {
+	const outputs = [];
+	if (asset.og !== undefined) {
+		const { output, width, height } = asset.og;
+		outputs.push({ output, format: "jpeg", width, height });
+	}
+	for (const { output, size } of asset.favicons ?? []) {
+		outputs.push({ output, format: "png", width: size, height: size });
+	}
+	return outputs;
+}
+
 /**
  * 原画と同じ寸法の仮の原画 (SVG)。中身はイラストと無関係なグラデーション。
- * SNS 用の画像は、ここから原画と同じ切り抜きで作るので、crop の誤りも CI で止まる
+ * SNS 用の画像と favicon は、ここから原画と同じ手順で作るので、crop の誤りも CI で止まる
  */
 export function placeholderOriginal(asset) {
 	return Buffer.from(
@@ -292,7 +352,7 @@ async function writeIfChanged(file, data) {
 
 /**
  * 一覧の画像をすべて用意する。fetchOriginal(key) は r2 のときだけ呼ばれ、原画の
- * Buffer を返す。SNS 用の JPEG も同じ原画から作る (r2 でも取得は 1 回)。
+ * Buffer を返す。SNS 用の JPEG と favicon の PNG も同じ原画から作る (r2 でも取得は 1 回)。
  */
 export async function prepareSiteAssets({
 	root,
@@ -303,31 +363,28 @@ export async function prepareSiteAssets({
 	log = () => {},
 }) {
 	const source = resolveSource(env);
-	// 切り抜き範囲の誤りは、取得や変換の前に止める
-	for (const asset of assets) validateOg(asset);
+	// 切り抜き範囲や favicon の寸法の誤りは、取得や変換の前に止める
+	for (const asset of assets) {
+		validateOg(asset);
+		validateFavicons(asset);
+	}
 	const results = [];
 	for (const asset of assets) {
 		// 出力をすべて作ってから書き込む (原画の寸法が違えば、何も書かずに止まる)
 		const outputs = [];
+		let original;
 		if (source === "placeholder") {
+			original = placeholderOriginal(asset);
 			outputs.push([asset.output, await placeholderWebp(sharp, asset)]);
-			if (asset.og !== undefined) {
-				outputs.push([
-					asset.og.output,
-					await toOgJpeg(sharp, asset, placeholderOriginal(asset)),
-				]);
-			}
 		} else {
-			const original = await loadOriginal({
-				root,
-				source,
-				asset,
-				fetchOriginal,
-			});
+			original = await loadOriginal({ root, source, asset, fetchOriginal });
 			outputs.push([asset.output, await toWebp(sharp, asset, original)]);
-			if (asset.og !== undefined) {
-				outputs.push([asset.og.output, await toOgJpeg(sharp, asset, original)]);
-			}
+		}
+		if (asset.og !== undefined) {
+			outputs.push([asset.og.output, await toOgJpeg(sharp, asset, original)]);
+		}
+		for (const { output, size } of asset.favicons ?? []) {
+			outputs.push([output, await toFaviconPng(sharp, size, original)]);
 		}
 		for (const [output, data] of outputs) {
 			const changed = await writeIfChanged(path.join(root, output), data);
@@ -373,16 +430,16 @@ export function findPublishingProblems(
 }
 
 /**
- * dist に写った SNS 用の画像を調べる。無い、原画や WebP と同じ中身、寸法か形式が違う、
- * public/ の版と食い違う、または出力先に別のファイル (止まった実行が残した一時ファイルなど)
- * があれば問題として返す。
+ * dist に写った SNS 用の画像と favicon (publicOutputsOf の一覧) を調べる。無い、原画や
+ * WebP と同じ中身、寸法か形式が違う、public/ の版と食い違う、または出力先に別のファイル
+ * (止まった実行が残した一時ファイルなど) があれば問題として返す。
  *
- * ogFiles: { [og.output]: { sha256, preparedSha256, format, width, height } } (dist にあるものだけ)
- * distEntries: 出力先のディレクトリ (dist/og) にあるファイル ("dist/og/<name>")
+ * publicFiles: { [output]: { sha256, preparedSha256, format, width, height } } (dist にあるものだけ)
+ * distEntries: 出力先のディレクトリ (dist/og と dist/favicon) にあるファイル ("dist/og/<name>")
  * outputDigests: findPublishingProblems と同じ WebP のハッシュ
  */
-export function findOgProblems(
-	ogFiles,
+export function findPublicProblems(
+	publicFiles,
 	distEntries,
 	outputDigests,
 	assets = SITE_ASSETS,
@@ -390,40 +447,41 @@ export function findOgProblems(
 	const problems = [];
 	const originals = new Set(assets.map((asset) => asset.sha256));
 	const expected = new Set();
-	for (const asset of assets) {
-		if (asset.og === undefined) continue;
-		const published = distPathOf(asset.og.output);
+	for (const { output, format, width, height } of assets.flatMap(
+		publicOutputsOf,
+	)) {
+		const published = distPathOf(output);
 		expected.add(published);
-		const file = ogFiles[asset.og.output];
+		const file = publicFiles[output];
 		if (file === undefined) {
 			problems.push(
-				`missing ${published} (scripts/prepare-site-assets.mjs writes ${asset.og.output})`,
+				`missing ${published} (scripts/prepare-site-assets.mjs writes ${output})`,
 			);
 			continue;
 		}
 		if (originals.has(file.sha256)) {
 			problems.push(`original published: ${published}`);
 		}
-		for (const [output, digest] of Object.entries(outputDigests)) {
+		for (const [webp, digest] of Object.entries(outputDigests)) {
 			if (digest === file.sha256) {
-				problems.push(`${published} is a copy of ${output}`);
+				problems.push(`${published} is a copy of ${webp}`);
 			}
 		}
 		if (
-			file.format !== "jpeg" ||
-			file.width !== asset.og.width ||
-			file.height !== asset.og.height
+			file.format !== format ||
+			file.width !== width ||
+			file.height !== height
 		) {
 			const actual =
 				file.format === undefined
 					? "unreadable"
 					: `${file.format} ${file.width}x${file.height}`;
 			problems.push(
-				`${published} is ${actual}, expected a ${asset.og.width}x${asset.og.height} JPEG`,
+				`${published} is ${actual}, expected a ${width}x${height} ${format.toUpperCase()}`,
 			);
 		}
 		if (file.preparedSha256 !== file.sha256) {
-			problems.push(`${published} differs from ${asset.og.output}`);
+			problems.push(`${published} differs from ${output}`);
 		}
 	}
 	for (const entry of distEntries) {

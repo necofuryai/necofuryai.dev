@@ -16,17 +16,21 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import {
 	distPathOf,
-	findOgProblems,
+	FAVICON_MAX_SIZE,
+	findPublicProblems,
 	findPublishingProblems,
 	ORIGINALS_DIR,
 	placeholderWebp,
 	prepareSiteAssets,
+	publicOutputsOf,
 	readR2Credentials,
 	resolveSource,
 	SITE_ASSETS,
 	sha256Hex,
+	validateFavicons,
 	validateOg,
 } from "../../scripts/site-assets.mjs";
+import { AVATAR_FAVICONS } from "../../src/utils/favicon.mjs";
 import { DEFAULT_OG_IMAGE } from "../../src/utils/og-image.mjs";
 
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
@@ -373,14 +377,60 @@ test("the social image matches DEFAULT_OG_IMAGE", () => {
 	);
 });
 
-test("every prepared file is gitignored", () => {
-	const outputs = SITE_ASSETS.flatMap((asset) =>
-		asset.og === undefined ? [asset.output] : [asset.output, asset.og.output],
+test("the avatar resizes the favicons listed in AVATAR_FAVICONS", () => {
+	const [banner, avatar] = SITE_ASSETS;
+	assert.equal(banner.favicons, undefined);
+	assert.equal(avatar.width, avatar.height);
+	assert.deepEqual(
+		avatar.favicons.map(({ output, size }) => ({
+			src: output.slice("public".length),
+			sizes: `${size}x${size}`,
+		})),
+		AVATAR_FAVICONS,
 	);
+	for (const { output } of avatar.favicons) {
+		assert.match(output, /^public\/favicon\/witch-avatar-\d+\.png$/);
+	}
+	validateFavicons(avatar);
+	assert.ok(Object.isFrozen(AVATAR_FAVICONS));
+	assert.ok(AVATAR_FAVICONS.every(Object.isFrozen));
+});
+
+test("publicOutputsOf lists the social JPEG and the favicon PNGs with their sizes", () => {
+	const [banner, avatar] = SITE_ASSETS;
+	assert.deepEqual(publicOutputsOf(banner), [
+		{
+			output: "public/og/witch-banner.jpg",
+			format: "jpeg",
+			width: 1200,
+			height: 630,
+		},
+	]);
+	assert.deepEqual(
+		publicOutputsOf(avatar).map(({ format, width, height }) => [
+			format,
+			width,
+			height,
+		]),
+		[
+			["png", 32, 32],
+			["png", 128, 128],
+			["png", 180, 180],
+			["png", 192, 192],
+		],
+	);
+});
+
+test("every prepared file is gitignored", () => {
+	const outputs = SITE_ASSETS.flatMap((asset) => [
+		asset.output,
+		...publicOutputsOf(asset).map(({ output }) => output),
+	]);
 	for (const output of [
 		...outputs,
 		`${ORIGINALS_DIR}/witch-banner.png`,
 		"public/og/witch-banner.jpg.4242.tmp",
+		"public/favicon/witch-avatar-32.png.4242.tmp",
 	]) {
 		const { status } = spawnSync(
 			"git",
@@ -533,9 +583,196 @@ test("an unchanged social image is not rewritten, and a stale one is", async (t)
 	assert.deepEqual(await readdir(path.join(root, "public/og")), ["sample.jpg"]);
 });
 
+// favicon は正方形の原画を切り抜かずに縮小する。赤は右へ、緑は下へ行くほど強くなる
+// 8x8 の PNG (不透明なアルファ付き。依頼イラストの原画と同じ形) を使う。どの画素も
+// 色が違うので、切り抜くと同じ寸法でも中身が変わり、縮小した画素の平均もずれる
+const FAVICON_PIXELS = Buffer.alloc(8 * 8 * 4);
+for (let y = 0; y < 8; y++) {
+	for (let x = 0; x < 8; x++) {
+		FAVICON_PIXELS.set([x * 32 + 16, y * 32 + 16, 128, 255], (y * 8 + x) * 4);
+	}
+}
+
+async function faviconFixture() {
+	const root = await mkdtemp(path.join(tmpdir(), "site-assets-favicon-"));
+	const png = await sharp(FAVICON_PIXELS, {
+		raw: { width: 8, height: 8, channels: 4 },
+	})
+		.png()
+		.toBuffer();
+	const asset = {
+		key: "sample.png",
+		sha256: sha256Hex(png),
+		width: 8,
+		height: 8,
+		output: "src/assets/images/sample.webp",
+		favicons: [
+			{ output: "public/favicon/sample-2.png", size: 2 },
+			{ output: "public/favicon/sample-8.png", size: 8 },
+		],
+	};
+	return { root, png, asset };
+}
+
+test("validateFavicons rejects a non-square original, a non-PNG output, and an upscale", async () => {
+	const { asset } = await faviconFixture();
+	const withFavicon = (favicon) => ({ ...asset, favicons: [favicon] });
+	assert.throws(
+		() => validateFavicons({ ...asset, height: 6 }),
+		/need a square original, got 8x6/,
+	);
+	assert.throws(
+		() =>
+			validateFavicons(
+				withFavicon({ output: "public/favicon/sample.ico", size: 2 }),
+			),
+		/must be a \.png under public\//,
+	);
+	assert.throws(
+		() =>
+			validateFavicons(
+				withFavicon({ output: "src/assets/images/sample.png", size: 2 }),
+			),
+		/must be a \.png under public\//,
+	);
+	for (const size of [0, 1.5, 16]) {
+		assert.throws(
+			() =>
+				validateFavicons(
+					withFavicon({ output: "public/favicon/sample.png", size }),
+				),
+			/must be a positive integer up to 8/,
+		);
+	}
+	validateFavicons(asset);
+	validateFavicons({ ...asset, favicons: undefined, height: 6 });
+});
+
+test("validateFavicons keeps favicons of the avatar small enough not to republish it losslessly", () => {
+	const avatar = SITE_ASSETS[1];
+	const withSize = (size) => ({
+		...avatar,
+		favicons: [{ output: "public/favicon/witch-avatar.png", size }],
+	});
+	validateFavicons(withSize(FAVICON_MAX_SIZE));
+	for (const size of [FAVICON_MAX_SIZE + 1, avatar.width]) {
+		assert.throws(
+			() => validateFavicons(withSize(size)),
+			/must be a positive integer up to 512, got/,
+		);
+	}
+	assert.ok(avatar.favicons.every(({ size }) => size <= FAVICON_MAX_SIZE));
+});
+
+test("a bad favicon stops every asset before fetching or writing", async (t) => {
+	const { root, asset } = await faviconFixture();
+	t.after(() => rm(root, { recursive: true, force: true }));
+	const plain = { ...asset, key: "plain.png", favicons: undefined };
+	const bad = {
+		...asset,
+		favicons: [{ output: "public/favicon/sample-16.png", size: 16 }],
+	};
+	await assert.rejects(
+		prepareSiteAssets({
+			root,
+			env: { SITE_ASSETS_SOURCE: "r2" },
+			sharp,
+			assets: [plain, bad],
+			fetchOriginal: () =>
+				assert.fail("a bad favicon must stop before fetching"),
+		}),
+		/must be a positive integer up to 8/,
+	);
+	assert.deepEqual(await readdir(root), []);
+});
+
+test("local writes the WebP and the opaque, uncropped favicons from one original", async (t) => {
+	const { root, png, asset } = await faviconFixture();
+	t.after(() => rm(root, { recursive: true, force: true }));
+	await mkdir(path.join(root, ORIGINALS_DIR));
+	await writeFile(path.join(root, ORIGINALS_DIR, asset.key), png);
+
+	const results = await prepareSiteAssets({
+		root,
+		env: { SITE_ASSETS_SOURCE: "local" },
+		sharp,
+		assets: [asset],
+		fetchOriginal: () => assert.fail("local must not fetch"),
+	});
+
+	assert.deepEqual(
+		results.map((r) => r.output),
+		[asset.output, ...asset.favicons.map((f) => f.output)],
+	);
+	for (const { output, size } of asset.favicons) {
+		const meta = await sharp(path.join(root, output)).metadata();
+		assert.deepEqual(
+			[meta.format, meta.width, meta.height, meta.hasAlpha],
+			["png", size, size, false],
+		);
+	}
+	const raw = (name) =>
+		sharp(path.join(root, "public/favicon", name))
+			.raw()
+			.toBuffer();
+	// 原画と同じ寸法なら、アルファを外しただけの同じ画素になる (切り抜けば変わる)
+	const same = await raw("sample-8.png");
+	for (let i = 0; i < 8 * 8; i++) {
+		assert.deepEqual(
+			[...same.subarray(i * 3, i * 3 + 3)],
+			[...FAVICON_PIXELS.subarray(i * 4, i * 4 + 3)],
+			`pixel ${i}`,
+		);
+	}
+	// 2x2 の各画素は、受け持つ 4x4 の区画の平均 (赤・緑とも 64 か 192) に近い。中央や
+	// 上半分を切り抜いてから縮小すると、14 以上ずれる
+	const small = await raw("sample-2.png");
+	for (const [i, [red, green]] of [
+		[64, 64],
+		[192, 64],
+		[64, 192],
+		[192, 192],
+	].entries()) {
+		const [r, g, b] = small.subarray(i * 3, i * 3 + 3);
+		assert.ok(
+			Math.abs(r - red) <= 6 && Math.abs(g - green) <= 6 && b === 128,
+			`pixel ${i}: ${[r, g, b]}, expected about ${[red, green, 128]}`,
+		);
+	}
+});
+
+test("placeholder resizes the favicons from a same-size placeholder", async (t) => {
+	const { root, asset } = await faviconFixture();
+	t.after(() => rm(root, { recursive: true, force: true }));
+	await prepareSiteAssets({
+		root,
+		env: { SITE_ASSETS_SOURCE: "placeholder" },
+		sharp,
+		assets: [asset],
+		fetchOriginal: () => assert.fail("placeholder must not fetch"),
+	});
+	for (const { output, size } of asset.favicons) {
+		const meta = await sharp(path.join(root, output)).metadata();
+		assert.deepEqual(
+			[meta.format, meta.width, meta.height],
+			["png", size, size],
+		);
+	}
+	assert.deepEqual(
+		await readFile(path.join(root, asset.output)),
+		await placeholderWebp(sharp, asset),
+	);
+	await assert.rejects(stat(path.join(root, ORIGINALS_DIR)), {
+		code: "ENOENT",
+	});
+});
+
+const [BANNER] = SITE_ASSETS;
 const OG_OUTPUT = "public/og/witch-banner.jpg";
 const OG_PUBLISHED = "dist/og/witch-banner.jpg";
-const ogFile = (fields) => ({
+const FAVICON_OUTPUT = "public/favicon/witch-avatar-32.png";
+const FAVICON_PUBLISHED = "dist/favicon/witch-avatar-32.png";
+const publicFile = (fields) => ({
 	sha256: "c".repeat(64),
 	preparedSha256: "c".repeat(64),
 	format: "jpeg",
@@ -544,22 +781,35 @@ const ogFile = (fields) => ({
 	...fields,
 });
 
-test("findOgProblems accepts the prepared JPEG", () => {
-	assert.deepEqual(
-		findOgProblems({ [OG_OUTPUT]: ogFile({}) }, [OG_PUBLISHED], DIGESTS),
-		[],
-	);
+// dist に一覧どおりのファイルがそろった状態
+function preparedPublicFiles() {
+	const outputs = SITE_ASSETS.flatMap(publicOutputsOf);
+	return {
+		files: Object.fromEntries(
+			outputs.map(({ output, format, width, height }) => [
+				output,
+				publicFile({ format, width, height }),
+			]),
+		),
+		entries: outputs.map(({ output }) => distPathOf(output)),
+	};
+}
+
+test("findPublicProblems accepts the prepared JPEG and favicons", () => {
+	const { files, entries } = preparedPublicFiles();
+	assert.equal(entries.length, 5);
+	assert.deepEqual(findPublicProblems(files, entries, DIGESTS), []);
 });
 
-test("findOgProblems reports a missing, wrong, copied, or stray file", () => {
-	assert.deepEqual(findOgProblems({}, [], DIGESTS), [
+test("findPublicProblems reports a missing, wrong, copied, or stray social image", () => {
+	assert.deepEqual(findPublicProblems({}, [], DIGESTS, [BANNER]), [
 		`missing ${OG_PUBLISHED} (scripts/prepare-site-assets.mjs writes ${OG_OUTPUT})`,
 	]);
-	const original = SITE_ASSETS[0].sha256;
+	const original = BANNER.sha256;
 	assert.deepEqual(
-		findOgProblems(
+		findPublicProblems(
 			{
-				[OG_OUTPUT]: ogFile({
+				[OG_OUTPUT]: publicFile({
 					sha256: original,
 					preparedSha256: original,
 					format: "png",
@@ -569,6 +819,7 @@ test("findOgProblems reports a missing, wrong, copied, or stray file", () => {
 			},
 			[OG_PUBLISHED],
 			DIGESTS,
+			[BANNER],
 		),
 		[
 			`original published: ${OG_PUBLISHED}`,
@@ -577,17 +828,18 @@ test("findOgProblems reports a missing, wrong, copied, or stray file", () => {
 	);
 	const webp = DIGESTS["src/assets/images/witch-banner.webp"];
 	assert.deepEqual(
-		findOgProblems(
-			{ [OG_OUTPUT]: ogFile({ sha256: webp, preparedSha256: webp }) },
+		findPublicProblems(
+			{ [OG_OUTPUT]: publicFile({ sha256: webp, preparedSha256: webp }) },
 			[OG_PUBLISHED],
 			DIGESTS,
+			[BANNER],
 		),
 		[`${OG_PUBLISHED} is a copy of src/assets/images/witch-banner.webp`],
 	);
 	assert.deepEqual(
-		findOgProblems(
+		findPublicProblems(
 			{
-				[OG_OUTPUT]: ogFile({
+				[OG_OUTPUT]: publicFile({
 					preparedSha256: "d".repeat(64),
 					format: undefined,
 					width: undefined,
@@ -596,11 +848,68 @@ test("findOgProblems reports a missing, wrong, copied, or stray file", () => {
 			},
 			[OG_PUBLISHED, `${OG_PUBLISHED}.4242.tmp`],
 			DIGESTS,
+			[BANNER],
 		),
 		[
 			`${OG_PUBLISHED} is unreadable, expected a 1200x630 JPEG`,
 			`${OG_PUBLISHED} differs from ${OG_OUTPUT}`,
 			`unexpected file: ${OG_PUBLISHED}.4242.tmp`,
 		],
+	);
+});
+
+test("findPublicProblems reports a missing, wrong, or stray favicon", () => {
+	const { files, entries } = preparedPublicFiles();
+	const { [FAVICON_OUTPUT]: _, ...withoutFavicon } = files;
+	assert.deepEqual(
+		findPublicProblems(
+			withoutFavicon,
+			entries.filter((entry) => entry !== FAVICON_PUBLISHED),
+			DIGESTS,
+		),
+		[
+			`missing ${FAVICON_PUBLISHED} (scripts/prepare-site-assets.mjs writes ${FAVICON_OUTPUT})`,
+		],
+	);
+	assert.deepEqual(
+		findPublicProblems(
+			{
+				...files,
+				[FAVICON_OUTPUT]: publicFile({ format: "jpeg", width: 32, height: 32 }),
+			},
+			entries,
+			DIGESTS,
+		),
+		[`${FAVICON_PUBLISHED} is jpeg 32x32, expected a 32x32 PNG`],
+	);
+	const avatar = DIGESTS["src/assets/images/witch-avatar.webp"];
+	assert.deepEqual(
+		findPublicProblems(
+			{
+				...files,
+				[FAVICON_OUTPUT]: publicFile({
+					sha256: avatar,
+					preparedSha256: avatar,
+					format: "webp",
+					width: 1024,
+					height: 1024,
+				}),
+			},
+			entries,
+			DIGESTS,
+		),
+		[
+			`${FAVICON_PUBLISHED} is a copy of src/assets/images/witch-avatar.webp`,
+			`${FAVICON_PUBLISHED} is webp 1024x1024, expected a 32x32 PNG`,
+		],
+	);
+	// テンプレートの favicon が残ったまま (public/favicon/ は生成物だけを置く)
+	assert.deepEqual(
+		findPublicProblems(
+			files,
+			[...entries, "dist/favicon/favicon-light-32.png"],
+			DIGESTS,
+		),
+		["unexpected file: dist/favicon/favicon-light-32.png"],
 	);
 });
