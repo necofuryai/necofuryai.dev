@@ -401,7 +401,7 @@ export async function prepareSiteAssets({
  * dist/_astro に、配信してはいけない原本が残っていないかを調べる。Astro は原本を
  * バイト単位でそのまま出力するので、ファイル名の形 (ハッシュに "_" が入ることがある)
  * ではなく内容のハッシュで、書き出した WebP と同じものを探す。原本が残る
- * (ImageWrapper が clone を通さずに寸法を読んだときなど) か、変換後の画像が 1 つも
+ * (ImageWrapper がインポートした画像の src を読んだときなど) か、変換後の画像が 1 つも
  * 無ければ問題として返す。
  *
  * distFiles: [{ name, sha256 }] (dist/_astro のファイル)

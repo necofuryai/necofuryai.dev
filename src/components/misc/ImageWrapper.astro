@@ -70,15 +70,14 @@ if (isLocal) {
 	img = await file();
 }
 
-// 寸法と形式は clone から読む。Astro の画像プロキシは clone と fsPath 以外の
-// プロパティを読むと原本を「直接使われている」と記録し、ビルドで dist に残す。
-// 直接読むと、srcset を作るだけでバナーの原本まで配信されてしまう。clone はプロキシが
-// 実行時に返すコピーで ImageMetadata の型には無い (Astro の getImage も同じ読み方をする)
-const meta = (img as (ImageMetadata & { clone?: ImageMetadata }) | undefined)
-	?.clone ?? img;
+// 寸法と形式は img から直接読む。Astro 7.4 以降、インポートした画像で原本を
+// 「直接使われている」と記録するのは src を読んだときだけで (createImageAsset の
+// getter)、記録された原本はビルドで dist に残る。ここで src を読むと、srcset を
+// 作るだけでバナーの原本まで配信されてしまう (<Image> と getImage は記録しない
+// 経路で src を読む)。漏れは build 後の scripts/check-published-assets.mjs が検出する
 const responsive =
-	meta && coverHeightVh !== undefined && meta.format !== "svg"
-		? coverImageSrcset(meta.width, meta.height, coverHeightVh)
+	img && coverHeightVh !== undefined && img.format !== "svg"
+		? coverImageSrcset(img.width, img.height, coverHeightVh)
 		: undefined;
 
 const imageClass = "w-full h-full object-cover";
