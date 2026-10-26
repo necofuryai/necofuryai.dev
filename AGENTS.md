@@ -100,7 +100,7 @@ Tailwind CSS 4 applies variants such as `lg:` only to its own utilities and `@ut
 
 The site uses two icon systems. Astro files use `astro-icon`, which embeds SVGs at build time from local `@iconify-json/*` packages; every such package listed in `package.json` is loaded, and the `include` map in `icon({ include })` in `astro.config.mjs` only narrows the icons kept for the sets it names, so a set absent from it (`simple-icons`, rendered by `Profile.astro`) is still available whole. Svelte islands use `@iconify/svelte`, which retrieves icons at runtime from `api.iconify.design` and therefore creates third-party requests.
 
-Neither system emits `iconify` or `iconify--*` classes. Do not write CSS or test selectors that depend on `.iconify`. Starting with `@iconify/svelte` 5.2.0, passing a `class` prop suppresses the component's own `iconify iconify--<prefix>` classes; 5.0.0 through 5.1.0 merged both, as v4 did. This differs from the React and Vue packages but is deliberate upstream (iconify/iconify@31aa84a, "feat(svelte): support custom classes, all variations"): skipping the generated classes lets a Svelte class object or array reach the element instead of being overwritten by string concatenation. It has no functional effect because the omitted class is only a CSS hook and is never read by the package. If class merging returns in a future version, the additional class will be harmless.
+Neither system emits `iconify` or `iconify--*` classes: `@iconify/svelte` omits them whenever a `class` prop is passed, as the islands do, and the omitted class is only a CSS hook that nothing reads. Do not write CSS or test selectors that depend on `.iconify`.
 
 ### Analytics (GA4)
 
