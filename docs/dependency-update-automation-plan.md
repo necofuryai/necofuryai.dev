@@ -1588,7 +1588,7 @@ Dependabot の docker ecosystem は Dockerfile などの manifest を対象と�
 「7 節の要求に実装が届いていない項目」に挙げる要求は取り下げず、実装が満たしていない要求として残す。
 VRT と画像診断に関する記述は冒頭の「2026-07-22 運用変更」の注記が、patch 更新だけを自動マージの対象とする前提は「自動マージ条件の緩和（2026-07-20 改訂）」が扱っているので、本節では繰り返さない。
 
-現行の構成は `.github/workflows/dependabot-advisory-review.yml`、`.github/workflows/advisory-canary-fixture.yml`、`.github/claude/advisory-permissions.json`、`scripts/ci/extract-advisory-json.mjs`、`scripts/ci/render-advisory-comment.mjs`、`scripts/ci/check-canary-execution.mjs`、`scripts/ci/summarize-advisory-execution.mjs` を正とする。
+現行の構成は `.github/workflows/dependabot-advisory-review.yml`、`.github/workflows/advisory-canary-fixture.yml`、`.github/claude/advisory-permissions.json`、`scripts/ci/render-advisory-comment.mjs`、`scripts/ci/check-canary-execution.mjs`、`scripts/ci/summarize-advisory-execution.mjs` を正とする。
 二つの Workflow の Action pin と `claude_args` が一致することは、`scripts/ci/advisory-workflow-config.test.mjs` が検査する。
 差異の多くは、Workflow を追加した PR #27（2026-07-19）の時点で、すでに 7 節と異なる形で実装されていた。
 後から変わった項目には、変更した PR を記す。
@@ -1643,6 +1643,8 @@ structured output は JSON Schema で生成しておらず、prompt で出力の
 `comment` job が起動して renderer が exit 1 で終わり、comment は投稿されず required checks も変わらないが、Workflow の run は failure になる。
 2026-10-02 時点で、この Workflow の run のうち failure は 2026-07-27 に `preflight` で失敗した一回だけで、この経路を通った run はない。
 
+**2026-10-26 追記:** この差異は、「本改訂で実装を 7 節に合わせた項目」の 2026-10-26 の追記で解消した。
+
 **2026-10-08 追記:** 7 節は structured output、Action log、PR comment、sanitized artifact のいずれにも canary が現れないことを fixture で確かめるとしているが、fixture が直接検査するのは Claude の execution file だけである。
 structured output は execution file の最後の assistant text から、PR comment はその structured output から、どちらも `scripts/ci/` の script が機械的に組み立てるので、execution file に canary が無ければ両方にも無い。
 sanitized artifact は、fixture に `sanitize` job が無いので存在しない。
@@ -1696,6 +1698,15 @@ Grep の path rule の扱いは文書に記載が無いが、この実行で `Re
 **2026-10-08 追記（Action log）:** canary の値は生成直後に `::add-mask::` で mask し、process environment の canary は step output ではなく `GITHUB_ENV` で渡し、`RUNNER_DEBUG` が有効な run は skip ではなく失敗にする。
 mask は log にだけ効き、ファイルには効かないので、execution file の検査には影響しない。
 run 37770659952 の log に canary の値は一つも現れず、step の `env` には `***` と表示された。
+
+**2026-10-26 追記（structured output の JSON Schema）:** 7 節どおり、structured output を固定 JSON Schema で生成する。
+二つの Workflow の `claude_args` に同じ `--json-schema` を渡すと、Action が起動する Claude Code が出力を schema で検証し、Action は result message の `structured_output` を `structured_output` output として返す。
+`--json-schema` を渡した run で result message に `structured_output` が無いと Action が Claude の step を失敗させるので、schema に合う出力が得られなければ `comment` job は skip される。
+`analyze` job は structured output が 64 KiB 以下であることを確かめてから base64 の一行 job output として渡し、文字列ごとの 2,000 byte と配列ごとの 10 件という上限は、引き続き `comment` job で `scripts/ci/render-advisory-comment.mjs` が検査する。
+最後の assistant text から JSON を切り出していた `scripts/ci/extract-advisory-json.mjs` は削除した。
+これに伴い、2026-10-08 の追記が execution file の検査で structured output と PR comment の検査に代えた根拠は次のとおり改める。
+structured output は result message の `structured_output` から Action が、PR comment はその structured output から `scripts/ci/render-advisory-comment.mjs` が組み立て、Action は result message をそのまま execution file に書くので、execution file に canary が無ければ両方にも無い。
+run 37770659952 は `--json-schema` を渡す前の構成で実行したので、この `claude_args` で Advisory Canary Fixture を改めて実行し、結果をここに記録する。
 
 ## 公式資料
 
