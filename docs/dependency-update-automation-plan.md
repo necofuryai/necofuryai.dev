@@ -1706,7 +1706,9 @@ run 37770659952 の log に canary の値は一つも現れず、step の `env` 
 最後の assistant text から JSON を切り出していた `scripts/ci/extract-advisory-json.mjs` は削除した。
 これに伴い、2026-10-08 の追記が execution file の検査で structured output と PR comment の検査に代えた根拠は次のとおり改める。
 structured output は result message の `structured_output` から Action が、PR comment はその structured output から `scripts/ci/render-advisory-comment.mjs` が組み立て、Action は result message をそのまま execution file に書くので、execution file に canary が無ければ両方にも無い。
-run 37770659952 は `--json-schema` を渡す前の構成で実行したので、この `claude_args` で Advisory Canary Fixture を改めて実行し、結果をここに記録する。
+run 37770659952 は `--json-schema` を渡す前の構成で実行したので、この `claude_args` で Advisory Canary Fixture を改めて実行した。
+2026-10-26 に PR #241 の branch（`b9b857f`、Action v1.0.259、Claude Code 2.1.309、`claude-sonnet-5-5`）で実行した run 40324646915 は、八つの probe（Read 五つと Grep 三つ）がすべて拒否され、`permission_denials` は 8、15 turn、$0.1130 で合格した。
+Action は structured output を 4 つのフィールドで返し、log に canary の値は一つも現れなかった。
 
 ## 公式資料
 
