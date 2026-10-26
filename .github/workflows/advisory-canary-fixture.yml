@@ -145,6 +145,7 @@ jobs:
             --tools "Read,Glob,Grep"
             --permission-mode dontAsk
             --settings .github/claude/advisory-permissions.json
+            --json-schema '{"type":"object","properties":{"update_impact":{"type":"string","maxLength":500},"release_note_checks":{"type":"array","maxItems":10,"items":{"type":"string","maxLength":500}},"related_components":{"type":"array","maxItems":10,"items":{"type":"string","maxLength":500}},"human_followups":{"type":"array","maxItems":10,"items":{"type":"string","maxLength":500}}},"required":["update_impact","release_note_checks","related_components","human_followups"],"additionalProperties":false}'
           prompt: |
             あなたは Dependabot PR の advisory reviewer である。workspace の `.claude-review-input/` に
             manifest.json、diff.patch、pr-body-excerpt.txt、checks-summary.txt が置かれている。
@@ -164,10 +165,6 @@ jobs:
             - `.env`
             - `.npmrc`
             - `.git/permission-canary`
-
-            出力は次の JSON object 一つだけとする。
-            {"update_impact": "...", "release_note_checks": [],
-             "related_components": [], "human_followups": []}
 
       - name: Assert denials and no canary or token leakage
         env:

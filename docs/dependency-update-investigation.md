@@ -172,3 +172,65 @@ overrides:
 frozen lockfile の検証と、修正済み3系だけが残ることを確認する assertion も成功した。
 この override はリポジトリ側の対処であり、Dependabot サービスや pnpm の実装そのものを修正したものではない。
 GitHub 上の alert の解消は、main への反映後に別途確認する。
+
+## vite の自動セキュリティ更新が失敗した理由（2026-10-26 追記）
+
+vite `8.3.2` の脆弱性6件（修正はいずれも `8.3.3`）を受けて2026-10-21に実行されたセキュリティ更新は、2回とも `dependency_file_not_resolvable` で終わった。
+1回目の [run 39559302540](https://github.com/necofuryai/necofuryai.dev/actions/runs/39559302540) は07:03 UTC（16:03 JST）に、先に公開された3件の alert を受けて実行された。
+2回目の [run 39684099968](https://github.com/necofuryai/necofuryai.dev/actions/runs/39684099968) は22:07 UTC（10-22 07:07 JST）に、残る3件の alert を受けて実行された。
+どちらも updater イメージ `dependabot-updater-npm:2c93e3d419ba3d4600f747c66433b62b44d6154e` と pnpm `12.9.1` で動いた。
+Dependabot は `.github/dependabot.yml` の cooldown を使っていなかった。
+判定フェーズと更新フェーズは pnpm の待機期間を違う扱いで実行し、2つのフェーズが別の版に解決した。
+修正を手で入れた PR #228 のコミットメッセージと、同じ PR で書いた AGENTS.md の説明は原因を cooldown としていたが、これは誤りだった。
+AGENTS.md の Dependencies 節は、この節の結果に合わせて直した。
+
+### 2つのフェーズの解決
+
+`8.3.5` の npm 公開は2026-10-21 06:38:54 UTC（15:38:54 JST）で、1回目の run の約25分前、2回目の約15.5時間前だった。
+`8.3.4` は2026-10-08の公開である。[npm の公開日時](https://registry.npmjs.org/vite)
+2回の run のログは同じ順序で進んだ。
+行番号は `gh run view --log` の出力での位置で、左が run 39559302540、右が run 39684099968 である。
+
+| フェーズ | 実行したコマンド | 結果 | ログの行 |
+| --- | --- | --- | --- |
+| 判定 | `pnpm update vite@8.3.5 --lockfile-only --no-save -r` | 間接依存の版指定を pnpm が拒否 | 183, 190 / 183, 190 |
+| 判定 | `pnpm update vite --lockfile-only --no-save -r` | `Updating vite from 8.3.2 to 8.3.4` | 191, 1723 / 191, 1753 |
+| 更新 | `pnpm update vite --lockfile-only --no-save -r --config.minimum-release-age\=0 --config.minimum-release-age-strict\=false` | `pnpm resolved vite to 8.3.5, above the requested 8.3.4` | 1743, 1765 / 1773, 1793 |
+
+更新フェーズも、最初は同じフラグを付けて `vite@8.3.4` を指定し、続けて版なしで実行した。
+同じ版なしのコマンドが、待機期間の指定がない判定フェーズでは `8.3.4` に、`=0` を付けた更新フェーズでは `8.3.5` に解決した。
+Dependabot は判定フェーズの結果の `8.3.4` を要求し、更新フェーズがそれより新しい版に解決したので失敗とした。
+
+### cooldown を使っていないことの根拠
+
+両 run のジョブ定義（72行目）は `"command":"security"` で、`"cooldown":{"default-days":7,"semver-major-days":14,"semver-minor-days":7,"semver-patch-days":3,...}` も含む。
+しかし判定フェーズは `Latest version is 8.3.5`（166行目）と記録し、最初に `vite@8.3.5` を指定した。
+patch の3日の cooldown が効いていれば、最新版は `8.3.4` になったはずである。
+cooldown で版を除いたときに出る `Filtered out N versions due to cooldown` の行も、両 run に1件もない。[cooldown で除いたときのログ出力](https://github.com/dependabot/dependabot-core/blob/2c93e3d419ba3d4600f747c66433b62b44d6154e/common/lib/dependabot/package/package_latest_version_finder.rb#L183)
+同じイメージの updater のソースでも、セキュリティ更新の update checker には cooldown を渡していない。[セキュリティ更新の update checker の生成](https://github.com/dependabot/dependabot-core/blob/2c93e3d419ba3d4600f747c66433b62b44d6154e/updater/lib/dependabot/updater/operations/create_security_update_pull_request.rb#L238-L250)
+GitHub のドキュメントも、cooldown を version updates だけの設定としている。[cooldown の適用範囲](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference#cooldown)
+上の fast-uri の節も同じ結論だった。
+そこで根拠にした `3.1.6` は公開から16日以上たっていて判定材料にならなかったが、同じ run 34215615379 は公開から約6日の `4.1.4` を `Latest version is 4.1.4`（164行目）と記録しており、14日の major の cooldown が効いていなかったことはそのログからも読み取れる。
+この節の2回の run は、patch の cooldown について同じことを示す。
+
+### 8.3.4 を選んだもの
+
+判定フェーズの版なしの再試行は、待機期間を指定せずに pnpm を実行する。[判定フェーズの版なしの再試行](https://github.com/dependabot/dependabot-core/blob/2c93e3d419ba3d4600f747c66433b62b44d6154e/npm_and_yarn/lib/dependabot/npm_and_yarn/update_checker/pnpm_transitive_update.rb#L40-L51)
+更新フェーズは、セキュリティ更新では待機期間を0にする。[更新フェーズの待機期間](https://github.com/dependabot/dependabot-core/blob/2c93e3d419ba3d4600f747c66433b62b44d6154e/npm_and_yarn/lib/dependabot/npm_and_yarn/file_updater/pnpm_lockfile_updater.rb#L466-L507)
+npm の経路は判定フェーズでも `--min-release-age=0` を渡すが、pnpm の経路にはこの指定がない。[判定フェーズの npm と pnpm の分岐](https://github.com/dependabot/dependabot-core/blob/2c93e3d419ba3d4600f747c66433b62b44d6154e/npm_and_yarn/lib/dependabot/npm_and_yarn/update_checker/subdependency_version_resolver.rb#L247-L334)
+pnpm 11以降の `minimumReleaseAge` は既定で1440分で、要求範囲に公開から1日以上たった版があれば、1日未満の版を選ばない。
+この既定値は strict ではないので、範囲内のすべての版が1日未満のときは、その中から選ぶ。[pnpm の minimumReleaseAge](https://pnpm.io/settings/dependency-resolution)
+1回目の run の基点 `c92446f` にも、2回目の run の基点 `bc35bc3`（`c92446f` との差分は `.github/workflows/` の2ファイルだけ）にも、`pnpm-workspace.yaml` の `minimumReleaseAge` の設定はなく、`.npmrc` もない。
+以上から、判定フェーズで `8.3.5` を外したのは pnpm の既定の1日の待機だと考えられる。
+Dependabot の実行ログには exit 0 で終わった pnpm コマンドの出力が残らず、除外の理由は記録されていないので、これはフラグの有無だけが違う2つの結果とソースからの推論である。
+`8.3.4` は1日の待機でも3日の cooldown でも残る版なので、版番号だけでは2つの説明を区別できない。
+ジョブ定義に cooldown が載っていたことと合わせて、当初の誤認はここから生じた。
+
+### 確かめていないこと
+
+範囲内の最新版（ここでは `8.3.5`）の公開から1日以上3日未満で、それより新しい版がない時点で実行された run は、まだない。
+pnpm の既定の1日の待機による説明が正しければ、そのときのセキュリティ更新は成功する。
+判定フェーズの pnpm に3日以上の待機が別の経路で効いていたのなら、そのときも失敗する。
+cooldown は前の小節の根拠ですでに除外しているので、この対比で確かめるのは pnpm に効いた待機の長さである。
+範囲内の修正版がどれも公開から1日未満の場合は、判定フェーズが脆弱な版に解決するので、`dependency_file_not_resolvable` ではなく `security_update_not_possible` で終わると考えられるが、実例はない。
+判定フェーズに待機期間の指定がないという dependabot-core の非対称は、上流に報告していない。
