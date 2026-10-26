@@ -40,7 +40,7 @@ Wrangler のコマンド、設定、デプロイ操作を扱う場合だけ、�
 変更内容に応じて次を実施する。
 
 - `wrangler.jsonc` の構文と設定値を確認する。
-- リポジトリ標準の format、lint、typecheck、build を実行する。
+- `AGENTS.md` の Commands と Pre-release checks に従って検証する。`check`、`type-check`、`build` など Astro/Vite を起動するコマンドは、ユーザーが環境ファイルと目的を許可した場合だけ実行し、実行しなかった検証は報告する。
 - headers、404、HTML handling、assets directory、observability の差分を確認する。
 - `git diff --check` と `git status --short` を確認する。
 - 実行していない deploy や外部検証を明示する。
