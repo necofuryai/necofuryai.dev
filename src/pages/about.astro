@@ -3,6 +3,7 @@
 import { getEntry, render } from "astro:content";
 import ExperienceTimeline from "@components/ExperienceTimeline.astro";
 import Markdown from "@components/misc/Markdown.astro";
+import OpenSourceContributions from "@components/OpenSourceContributions.astro";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
@@ -28,6 +29,7 @@ const { Content } = await render(aboutPost);
 				<Content />
 			</Markdown>
 			<ExperienceTimeline />
+			<OpenSourceContributions />
 			<p class="mt-10 border-t border-[var(--line-color)] pt-6 text-sm leading-6 text-50">
 				Built with <a class="link-underline text-[var(--primary)]" href="https://astro.build">Astro</a>
 				on the <a class="link-underline text-[var(--primary)]" href="https://github.com/saicaca/fuwari">fuwari</a>

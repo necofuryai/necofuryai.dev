@@ -24,9 +24,9 @@ for (const item of cases) {
 		const response = await page.goto(item.path, { waitUntil: "load" });
 		expect(response?.ok()).toBe(true);
 
-		const ready = page.locator(item.ready);
-		expect(await ready.count()).toBeGreaterThan(0);
-		await expect(ready.first()).toBeVisible();
+		// count() does not wait, and /archive/ renders its list in a client:only
+		// island after load; toBeVisible() retries until the element appears
+		await expect(page.locator(item.ready).first()).toBeVisible();
 	});
 }
 
@@ -250,6 +250,56 @@ test("about page exposes the profile and experience timeline", async ({
 		'section[aria-labelledby="experience-heading"] > ol > li',
 	);
 	expect(await experienceItems.count()).toBeGreaterThan(0);
+});
+
+test("about page lists open source contributions with a status on each", async ({
+	page,
+}) => {
+	// The list is static HTML; the page must not call the GitHub API at runtime
+	const githubApiRequests: string[] = [];
+	page.on("request", (request) => {
+		if (new URL(request.url()).hostname === "api.github.com") {
+			githubApiRequests.push(request.url());
+		}
+	});
+	await page.goto("/about/", { waitUntil: "load" });
+
+	const section = page.locator(
+		'section[aria-labelledby="open-source-heading"]',
+	);
+	await expect(
+		section.getByRole("heading", { level: 2, name: "Open Source" }),
+	).toBeVisible();
+	await expect(section.locator(":scope > p time")).toHaveAttribute(
+		"datetime",
+		/^\d{4}-\d{2}-\d{2}$/,
+	);
+
+	const entries = await section.locator(":scope > ol > li").all();
+	expect(entries.length).toBeGreaterThan(0);
+	const openedDates: (string | null)[] = [];
+	for (const entry of entries) {
+		await expect(
+			entry.locator('h3 a[href^="https://github.com/"]'),
+		).toHaveCount(1);
+		// A RegExp is matched against the raw text, which keeps the markup's whitespace
+		await expect(entry.locator("[data-status-tone]")).toHaveText(
+			/^\s*(Released|Merged|In review|Awaiting review)\s*$/,
+		);
+		// Astro keeps line breaks around inline elements, which would render as "2026 ."
+		expect(await entry.innerText()).not.toMatch(/\s[.,;:](\s|$)/);
+		openedDates.push(
+			await entry
+				.locator("p", { hasText: "Opened" })
+				.locator("time")
+				.getAttribute("datetime"),
+		);
+	}
+	// The intro promises newest first
+	expect(openedDates).toEqual([...openedDates].sort().reverse());
+
+	await page.waitForLoadState("networkidle");
+	expect(githubApiRequests).toEqual([]);
 });
 
 async function firstTrackList(page: Page) {
