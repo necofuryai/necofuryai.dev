@@ -31,7 +31,7 @@
         @apply -translate-y-1 opacity-0 pointer-events-none
     }
     .search-panel mark {
-        @apply bg-transparent text-[var(--primary)]
+        @apply bg-transparent text-[var(--primary-text)]
     }
 
     .btn-card {
@@ -43,14 +43,14 @@
     }
     .btn-plain {
         @apply transition relative flex items-center justify-center bg-none
-        text-black/75 hover:text-[var(--primary)] dark:text-white/75 dark:hover:text-[var(--primary)];
+        text-black/75 hover:text-[var(--primary-text)] dark:text-white/75 dark:hover:text-[var(--primary-text)];
         &:not(.scale-animation) {
             @apply hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)]
         }
         &.scale-animation {
             @apply expand-animation;
             &.current-theme-btn {
-                @apply before:scale-100 before:opacity-100 before:bg-[var(--btn-plain-bg-hover)] text-[var(--primary)]
+                @apply before:scale-100 before:opacity-100 before:bg-[var(--btn-plain-bg-hover)] text-[var(--primary-text)]
             }
         }
     }

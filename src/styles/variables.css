@@ -5,9 +5,13 @@
 }
 :root {
     --primary: oklch(0.7 0.14 var(--hue));
+    /* --primary は文字として 2.1〜2.9:1 しかないため、リンクやアイコンなど文字として読む箇所はこちらを使う。
+       L 0.48 は色相 0〜360 のすべてでカード・ページ背景・ホバーの下地に対し 4.5:1 以上 (最悪 4.87) */
+    --primary-text: oklch(0.48 0.14 var(--hue));
     --page-bg: oklch(0.95 0.01 var(--hue));
     --card-bg: white;
-    --btn-content: oklch(0.55 0.12 var(--hue));
+    /* ボタン・タグ・インラインコードの文字。通常・ホバー・押下のどの下地でも 4.5:1 以上 (最悪 4.85) */
+    --btn-content: oklch(0.42 0.12 var(--hue));
     --btn-regular-bg: oklch(0.95 0.025 var(--hue));
     --btn-regular-bg-hover: oklch(0.9 0.05 var(--hue));
     --btn-regular-bg-active: oklch(0.85 0.08 var(--hue));
@@ -19,7 +23,8 @@
     --enter-btn-bg-hover: var(--btn-regular-bg-hover);
     --enter-btn-bg-active: var(--btn-regular-bg-active);
     --deep-text: oklch(0.25 0.02 var(--hue));
-    --title-active: oklch(0.6 0.1 var(--hue));
+    /* 記事タイトル押下時。ホバーの --primary-text (L 0.48) と見分けられるよう一段濃くする */
+    --title-active: oklch(0.36 0.1 var(--hue));
     --line-divider: rgba(0,0,0,0.08);
     --line-color: rgba(0,0,0,0.1);
     --meta-divider: rgba(0,0,0,0.2);
@@ -30,7 +35,8 @@
     --codeblock-bg: oklch(0.17 0.015 var(--hue));
     --codeblock-topbar-bg: oklch(0.3 0.02 var(--hue));
     --license-block-bg: rgba(0,0,0,0.03);
-    --link-underline: oklch(0.93 0.04 var(--hue));
+    /* リンク文字は本文と明度が近いので、下線を色以外の手がかりとしてカードとページ背景に 3:1 以上で見せる */
+    --link-underline: oklch(0.6 0.12 var(--hue));
     --link-hover: oklch(0.95 0.025 var(--hue));
     --link-active: oklch(0.9 0.05 var(--hue));
     --float-panel-bg: white;
@@ -51,6 +57,13 @@
     --admonitions-color-important: oklch(0.7 0.14 310);
     --admonitions-color-warning: oklch(0.7 0.14 60);
     --admonitions-color-caution: oklch(0.6 0.2 25);
+    /* アドモニションの見出しとアイコン。上の色は白地で 2.46〜4.36:1 しかないため、文字にはこちらを使う。
+       上の色は左の帯と状態バッジの背景が使うので変えない。白地で最悪 4.81:1 (tip) */
+    --admonitions-text-tip: oklch(0.52 0.14 180);
+    --admonitions-text-note: oklch(0.52 0.14 250);
+    --admonitions-text-important: oklch(0.52 0.14 310);
+    --admonitions-text-warning: oklch(0.52 0.14 60);
+    --admonitions-text-caution: oklch(0.52 0.2 25);
     --toc-badge-bg: oklch(0.89 0.05 var(--hue));
     --toc-btn-hover: oklch(0.926 0.015 var(--hue));
     --toc-btn-active: oklch(0.9 0.015 var(--hue));
@@ -59,6 +72,10 @@
 }
 :root.dark {
     --primary: oklch(0.75 0.14 var(--hue));
+    /* ダークでは --primary のままで 5.8:1 以上あるので、同じ色を使う */
+    --primary-text: var(--primary);
+    /* ライトの値を濃くしたので、ダークは従来の値を明示して変えない */
+    --title-active: oklch(0.6 0.1 var(--hue));
     --page-bg: oklch(0.16 0.014 var(--hue));
     --card-bg: oklch(0.23 0.015 var(--hue));
     --btn-content: oklch(0.75 0.1 var(--hue));
@@ -76,7 +93,8 @@
     --codeblock-bg: oklch(0.17 0.015 var(--hue));
     --codeblock-topbar-bg: oklch(0.12 0.015 var(--hue));
     --license-block-bg: var(--codeblock-bg);
-    --link-underline: oklch(0.4 0.08 var(--hue));
+    /* ダークでもリンク文字と本文の明度差は 1.4〜1.6:1 しかないので、下線をカードとページ背景に 3:1 以上で見せる */
+    --link-underline: oklch(0.58 0.1 var(--hue));
     --link-hover: oklch(0.4 0.08 var(--hue));
     --link-active: oklch(0.35 0.07 var(--hue));
     --float-panel-bg: oklch(0.19 0.015 var(--hue));
@@ -91,6 +109,12 @@
     --admonitions-color-important: oklch(0.75 0.14 310);
     --admonitions-color-warning: oklch(0.75 0.14 60);
     --admonitions-color-caution: oklch(0.65 0.2 25);
+    /* ダークでは帯と同じ色のままでカードに 4.73:1 以上あるので、同じ色を使う */
+    --admonitions-text-tip: var(--admonitions-color-tip);
+    --admonitions-text-note: var(--admonitions-color-note);
+    --admonitions-text-important: var(--admonitions-color-important);
+    --admonitions-text-warning: var(--admonitions-color-warning);
+    --admonitions-text-caution: var(--admonitions-color-caution);
     --toc-badge-bg: var(--btn-regular-bg);
     --toc-btn-hover: oklch(0.22 0.02 var(--hue));
     --toc-btn-active: oklch(0.25 0.02 var(--hue));

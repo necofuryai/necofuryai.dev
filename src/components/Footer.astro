@@ -13,16 +13,16 @@ const credit = siteConfig.banner.credit;
 <div class="transition border-dashed border-[oklch(85%_0.01_var(--hue))] dark:border-white/15 rounded-2xl mb-12 flex flex-col items-center justify-center px-6">
     <div class="transition text-50 text-sm text-center">
         &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}. All Rights Reserved. /
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href={url('sitemap-index.xml')}>Sitemap</a> /
-        <a class="transition link text-[var(--primary)] font-medium" href={url('/privacy/')}>{i18n(I18nKey.privacyPolicy)}</a><br>
+        <a class="transition link link-underline text-[var(--primary-text)] font-medium" target="_blank" href={url('rss.xml')}>RSS</a> /
+        <a class="transition link link-underline text-[var(--primary-text)] font-medium" target="_blank" href={url('sitemap-index.xml')}>Sitemap</a> /
+        <a class="transition link link-underline text-[var(--primary-text)] font-medium" href={url('/privacy/')}>{i18n(I18nKey.privacyPolicy)}</a><br>
         Powered by
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://astro.build">Astro</a> &
-        <a class="transition link text-[var(--primary)] font-medium" target="_blank" href="https://github.com/saicaca/fuwari">Fuwari</a>
+        <a class="transition link link-underline text-[var(--primary-text)] font-medium" target="_blank" href="https://astro.build">Astro</a> &
+        <a class="transition link link-underline text-[var(--primary-text)] font-medium" target="_blank" href="https://github.com/saicaca/fuwari">Fuwari</a>
         {credit.enable && <>
             <br>
             {credit.label && `${credit.label} `}{credit.url
-                ? <a class="transition link text-[var(--primary)] font-medium" target="_blank" rel="noopener" href={credit.url}>{credit.text}</a>
+                ? <a class="transition link link-underline text-[var(--primary-text)] font-medium" target="_blank" rel="noopener" href={credit.url}>{credit.text}</a>
                 : credit.text}
         </>}
     </div>
