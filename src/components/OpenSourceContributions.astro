@@ -1,0 +1,107 @@
+---
+import StatusBadge from "@components/control/StatusBadge.astro";
+import type { ComponentProps } from "astro/types";
+import {
+	type ContributionStatus,
+	openSourceContributions,
+	statusCheckedAt,
+} from "../data/open-source";
+
+const STATUS_BADGES = {
+	released: { label: "Released", tone: "positive" },
+	merged: { label: "Merged", tone: "neutral" },
+	"in-review": { label: "In review", tone: "pending" },
+	"awaiting-review": { label: "Awaiting review", tone: "pending" },
+} as const satisfies Record<
+	ContributionStatus["state"],
+	{ label: string; tone: ComponentProps<typeof StatusBadge>["tone"] }
+>;
+
+// The dates are calendar days, so format them in UTC to keep the build's time zone out
+const dateFormat = new Intl.DateTimeFormat("en-US", {
+	dateStyle: "medium",
+	timeZone: "UTC",
+});
+const formatDate = (isoDate: string) =>
+	dateFormat.format(new Date(`${isoDate}T00:00:00Z`));
+
+const LINK = "link-underline text-[var(--primary)]";
+
+const contributions = [...openSourceContributions].sort((a, b) =>
+	b.opened.localeCompare(a.opened),
+);
+---
+
+<section class="mt-10" aria-labelledby="open-source-heading">
+	<h2 id="open-source-heading" class="text-2xl font-bold text-90">
+		Open Source
+	</h2>
+	<p class="mt-2 text-sm leading-6 text-50">
+		Contributions to projects maintained by others, newest first. Statuses were
+		last checked on <time datetime={statusCheckedAt}>{formatDate(statusCheckedAt)}</time>; anything marked In review or Awaiting review is not merged yet. Dates are in UTC.
+	</p>
+
+	<ol class="mt-7 flex list-none flex-col gap-4 p-0">
+		{
+			contributions.map((item) => {
+				const { status } = item;
+				const badge = STATUS_BADGES[status.state];
+				return (
+					<li class="flex flex-col rounded-xl border border-[var(--line-color)] px-5 py-4">
+						<h3 class="m-0 wrap-break-word text-base font-bold leading-6">
+							<a class={LINK} href={item.url}>{item.title}</a>
+						</h3>
+						{/* After the heading in the DOM, so heading navigation reaches the project and status, but shown above it */}
+						<div class="order-first mb-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+							<p class="m-0 text-sm font-bold text-75">
+								{item.project}
+								<span class="font-normal text-50">
+									{" · "}
+									{item.repo}
+								</span>
+							</p>
+							<StatusBadge tone={badge.tone}>{badge.label}</StatusBadge>
+						</div>
+						<p class="mt-1 mb-0 text-xs leading-5 text-75">
+							{item.type} #{item.number} · Opened{" "}
+							<time datetime={item.opened}>{formatDate(item.opened)}</time>
+						</p>
+
+						<p class="mt-3 mb-0 text-sm leading-6 text-75">{item.summary}</p>
+						<p class="mt-2 mb-0 text-sm leading-6 text-75">
+							{status.state === "released" ? (
+								<>
+									{item.type === "Bug report"
+										? "The fix was released in "
+										: "Released in "}
+									<a class={LINK} href={status.url}>{status.version}</a> on <time datetime={status.date}>{formatDate(status.date)}</time>.
+								</>
+							) : status.state === "merged" ? (
+								<>
+									Merged on <time datetime={status.date}>{formatDate(status.date)}</time>. {status.note}
+								</>
+							) : (
+								status.note
+							)}
+						</p>
+
+						{item.related && (
+							<ul class="mt-2 mb-0 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-sm">
+								{item.related.map((link) => (
+									<li>
+										<a class={LINK} href={link.url}>{link.label}</a>
+									</li>
+								))}
+							</ul>
+						)}
+						{item.aiDisclosure && (
+							<p class="mt-2 mb-0 text-xs leading-5 text-75">
+								{item.aiDisclosure}
+							</p>
+						)}
+					</li>
+				);
+			})
+		}
+	</ol>
+</section>

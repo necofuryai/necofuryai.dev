@@ -1,0 +1,30 @@
+---
+// A status pill whose label carries the meaning; the color only reinforces it.
+// The colors are the hue-fixed admonition tokens, so they do not follow the
+// visitor-selectable theme hue, and the text stays text-75 for contrast.
+interface Props {
+	tone: "positive" | "neutral" | "pending";
+}
+
+const TONE_COLORS = {
+	positive: "[--status-color:var(--admonitions-color-tip)]",
+	neutral: "[--status-color:var(--admonitions-color-note)]",
+	pending: "[--status-color:var(--admonitions-color-warning)]",
+} as const;
+
+const { tone } = Astro.props;
+---
+
+<span
+	class:list={[
+		"inline-flex h-6 shrink-0 items-center gap-1.5 rounded-md bg-[var(--status-color)]/18 px-2 text-xs font-bold text-75",
+		TONE_COLORS[tone],
+	]}
+	data-status-tone={tone}
+>
+	<span
+		class="h-1.5 w-1.5 rounded-full bg-[var(--status-color)]"
+		aria-hidden="true"
+	></span>
+	<slot />
+</span>
