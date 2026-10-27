@@ -20,7 +20,7 @@
     }
 
     a:not(.no-styling) {
-        @apply relative z-0 -m-1 rounded-md bg-none p-1 font-medium text-[var(--primary)] transition
+        @apply relative z-0 -m-1 rounded-md bg-none p-1 font-medium text-[var(--primary-text)] transition
         before:absolute before:inset-0 before:-z-10 before:scale-[0.85] before:rounded-[inherit] before:transition before:ease-out
         hover:before:scale-100 hover:before:bg-[var(--btn-plain-bg-hover)]
         active:bg-none active:before:bg-[var(--btn-plain-bg-active)]
@@ -84,13 +84,14 @@
         @apply opacity-100 fill-white dark:fill-white/75;
     }
     .copy-btn.success .copy-icon {
-        @apply opacity-0 fill-[var(--deep-text)]
+        @apply opacity-0
     }
     .copy-btn .success-icon {
         @apply opacity-0 fill-white;
     }
+    /* 成功時の明るい背景に白のチェックは 2.1〜2.4:1 しかないため、見えている側の印を濃くする */
     .copy-btn.success .success-icon {
-        @apply opacity-100
+        @apply opacity-100 fill-[var(--deep-text)]
     }
 
     .expressive-code {
@@ -103,7 +104,7 @@
 
     ul, ol {
         li::marker {
-            @apply text-[var(--primary)];
+            @apply text-[var(--primary-text)];
         }
     }
 

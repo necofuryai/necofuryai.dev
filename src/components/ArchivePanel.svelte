@@ -135,7 +135,7 @@ onMount(async () => {
                         <!-- post title -->
                         <div
                                 class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-bold
-                     group-hover:translate-x-1 transition-all group-hover:text-[var(--primary)]
+                     group-hover:translate-x-1 transition-all group-hover:text-[var(--primary-text)]
                      text-75 pr-8 whitespace-nowrap text-ellipsis overflow-hidden"
                         >
                             {post.data.title}

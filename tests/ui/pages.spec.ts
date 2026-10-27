@@ -302,6 +302,165 @@ test("about page lists open source contributions with a status on each", async (
 	expect(githubApiRequests).toEqual([]);
 });
 
+// Resolves CSS color values in the page. A fresh probe per value: the site gives
+// every span a color transition, so recoloring one probe would read back the
+// previous color
+function resolveColors(page: Page, values: readonly string[]) {
+	return page.evaluate(
+		(values) =>
+			values.map((value) => {
+				const probe = document.createElement("span");
+				probe.style.transition = "none";
+				probe.style.color = value;
+				document.body.append(probe);
+				const color = getComputedStyle(probe).color;
+				probe.remove();
+				return color;
+			}),
+		values,
+	);
+}
+
+async function reloadInDarkMode(page: Page) {
+	await page.evaluate(() => localStorage.setItem("theme", "dark"));
+	await page.reload({ waitUntil: "load" });
+	await expect(page.locator("html")).toHaveClass(/dark/);
+}
+
+test("links use the readable --primary-text color in both themes", async ({
+	page,
+}) => {
+	// tests/unit/color-contrast.test.mjs checks the token values; this checks
+	// that links are wired to the token rather than to the accent --primary
+	const readColors = async () => {
+		const [primaryText, primary] = await resolveColors(page, [
+			"var(--primary-text)",
+			"var(--primary)",
+		]);
+		const links = await page.evaluate(() =>
+			[
+				// Headings carry a hidden a.anchor first; check the visible body link
+				".custom-md a:not(.anchor)",
+				'a[href="/privacy/"]',
+				'section[aria-labelledby="open-source-heading"] h3 a',
+			].map((selector) => {
+				const element = document.querySelector(selector);
+				return element ? getComputedStyle(element).color : null;
+			}),
+		);
+		return { primaryText, primary, links };
+	};
+
+	await page.goto("/about/", { waitUntil: "load" });
+	const light = await readColors();
+	expect(light.primaryText).not.toBe(light.primary);
+	expect(light.links).toEqual([
+		light.primaryText,
+		light.primaryText,
+		light.primaryText,
+	]);
+
+	await reloadInDarkMode(page);
+	const dark = await readColors();
+	expect(dark.primaryText).toBe(dark.primary);
+	expect(dark.links).toEqual([
+		dark.primaryText,
+		dark.primaryText,
+		dark.primaryText,
+	]);
+});
+
+test("footer and profile links inside text keep an underline in both themes", async ({
+	page,
+}) => {
+	// The link text is close in lightness to the text around it, so the
+	// underline is the cue besides color; the unit test checks its contrast
+	const decorationsOf = (elements: Element[]) =>
+		elements.map((element) => {
+			const style = getComputedStyle(element);
+			return `${style.textDecorationLine} ${style.textDecorationColor}`;
+		});
+	const expectUnderlined = async () => {
+		const [underline] = await resolveColors(page, ["var(--link-underline)"]);
+		const footer = await page
+			.locator(".footer")
+			.filter({ visible: true })
+			.locator("a")
+			.evaluateAll(decorationsOf);
+		const profile = await page
+			.locator(`#sidebar a[href="${CREDIT_HREF}"]`)
+			.filter({ visible: true })
+			.evaluateAll(decorationsOf);
+		expect(footer.length).toBeGreaterThan(0);
+		expect(footer).toEqual(footer.map(() => `underline ${underline}`));
+		expect(profile).toEqual([`underline ${underline}`]);
+	};
+
+	await page.goto("/", { waitUntil: "load" });
+	await expectUnderlined();
+	await reloadInDarkMode(page);
+	await expectUnderlined();
+});
+
+test("admonition titles and icons use the readable text tokens in both themes", async ({
+	page,
+}) => {
+	// Only a draft post has admonitions, so build the markup that
+	// rehype-component-admonition.mjs emits inside a rendered .custom-md
+	const TYPES = ["tip", "note", "important", "warning", "caution"] as const;
+	const readTitles = async () => {
+		const tokens = await resolveColors(
+			page,
+			TYPES.flatMap((type) => [
+				`var(--admonitions-text-${type})`,
+				`var(--admonitions-color-${type})`,
+			]),
+		);
+		const titles = await page.evaluate((types) => {
+			const markdown = document.querySelector(".custom-md");
+			if (!markdown) throw new Error("The page has no .custom-md");
+			return types.map((type) => {
+				const admonition = document.createElement("blockquote");
+				admonition.className = `admonition bdm-${type}`;
+				const title = document.createElement("span");
+				title.className = "bdm-title";
+				title.textContent = type.toUpperCase();
+				admonition.append(title);
+				markdown.append(admonition);
+				return {
+					text: getComputedStyle(title).color,
+					icon: getComputedStyle(title, "::before").backgroundColor,
+				};
+			});
+		}, TYPES);
+		return TYPES.map((type, i) => ({
+			type,
+			token: tokens[2 * i],
+			accent: tokens[2 * i + 1],
+			...titles[i],
+		}));
+	};
+
+	await page.goto("/about/", { waitUntil: "load" });
+	for (const title of await readTitles()) {
+		// The accent stays on the side bar and the status badges
+		expect(title.token, title.type).not.toBe(title.accent);
+		expect([title.text, title.icon], title.type).toEqual([
+			title.token,
+			title.token,
+		]);
+	}
+
+	await reloadInDarkMode(page);
+	for (const title of await readTitles()) {
+		expect([title.text, title.icon, title.accent], title.type).toEqual([
+			title.token,
+			title.token,
+			title.token,
+		]);
+	}
+});
+
 async function firstTrackList(page: Page) {
 	const trackList = page.locator("main details").first();
 	await expect(trackList).toBeVisible();
