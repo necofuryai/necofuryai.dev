@@ -12,10 +12,10 @@ pmOnFail: ignore
 
 # audit.ignore: deepmerge (via @sveltejs/vite-plugin-svelte) only merges the Svelte
 # plugin options from astro.config.mjs at build time, and its maintainer declined
-# to fix it; see AGENTS.md. Remove the entry once the advisory is withdrawn, a
-# release fixes it, or vite-plugin-svelte drops deepmerge. Keep these comments
-# above the `audit:` key: `pnpm audit --ignore` re-renders the `ignore:` block and
-# drops any comment inside it.
+# to fix it; see docs/dependencies.md. Remove the entry once the advisory is
+# withdrawn, a release fixes it, or vite-plugin-svelte drops deepmerge. Keep these
+# comments above the `audit:` key: `pnpm audit --ignore` re-renders the `ignore:`
+# block and drops any comment inside it.
 audit:
   ignore:
     - GHSA-gcqx-w48m-w2h4
