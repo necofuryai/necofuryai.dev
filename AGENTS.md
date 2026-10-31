@@ -142,6 +142,7 @@ The navbar (`src/components/Navbar.astro`) persists across visits. Read `docs/na
 ### Biome
 
 - Every pattern in `files.includes` is anchored to the repository root (no `**/` prefix). `!!` force-ignores build output, nested checkouts, and local scratch (`dist`, `node_modules`, `playwright-report`, `test-results`, `.claude/.cc-writes`, `.claude/worktrees`, `tmp`), so the scanner never indexes them and a worktree's own `biome.json` is not reported as a nested root configuration; `.astro` keeps a plain `!` because it supplies generated types. Keep the patterns anchored: with a `**/` prefix they also match the worktree's own path, and Biome then ignores every file when it runs inside a worktree.
+- `markdown.formatter` and `yaml.formatter` are disabled. Biome 2.6 formats both by default, which would rewrite the vendored files under `.claude/skills/` away from upstream, reformat the pnpm-generated `pnpm-lock.yaml`, and insert a blank line after the opening `---` of post frontmatter. Enable either only together with excludes for those files.
 
 ### Dependencies
 
