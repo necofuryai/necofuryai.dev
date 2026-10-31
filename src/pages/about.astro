@@ -15,16 +15,19 @@ if (!aboutPost) {
 }
 
 const { Content } = await render(aboutPost);
+// The page is in English, so <html lang> is "en" here; the navbar, sidebar,
+// banner credit, and footer keep their Japanese UI marked with lang={uiLang}
 ---
 
 <MainGridLayout
 	title={i18n(I18nKey.about)}
 	description="About necofuryai, a backend and cloud engineer focused on reliable systems and automation."
+	lang="en"
 >
 	<div
 		class="relative flex min-h-32 w-full overflow-hidden rounded-[var(--radius-large)]"
 	>
-		<div class="card-base relative z-10 w-full px-9 py-6" lang="en">
+		<div class="card-base relative z-10 w-full px-9 py-6">
 			<Markdown class="mt-2">
 				<Content />
 			</Markdown>

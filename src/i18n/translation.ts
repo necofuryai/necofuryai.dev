@@ -46,3 +46,8 @@ export function i18n(key: I18nKey): string {
 	const lang = siteConfig.lang || "en";
 	return getTranslation(lang)[key];
 }
+
+// The language of the strings i18n() returns, as an HTML lang value. The navbar,
+// sidebar, banner credit, and footer carry it on every page, because a page in
+// another language (the English About page) still shows them in this one
+export const uiLang = (siteConfig.lang || "en").replace("_", "-");

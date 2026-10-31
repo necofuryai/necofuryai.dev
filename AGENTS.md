@@ -39,7 +39,7 @@ IMPORTANT: Write commit messages created with `git commit` and PR titles in Engl
 ## UI smoke tests
 
 - The tests live in `tests/ui/pages.spec.ts`. CI runs them against a pinned desktop Chromium configuration.
-- Do not use pixel diffs or committed baseline images. Directly test every route's rendering, theme switching, the employment timeline on About, playlist expansion and collapse, focus restoration, the absence of iframes, interactions after a Swup revisit, the default social image's meta tags and file, the favicons' link tags and files, the artist credits in the footer and the profile, and the banner credit's distance from the guide's face box, measured from DOM geometry.
+- Do not use pixel diffs or committed baseline images. Directly test every route's rendering, theme switching, the employment timeline on About, the page languages and the shared search index, playlist expansion and collapse, focus restoration, the absence of iframes, interactions after a Swup revisit, the default social image's meta tags and file, the favicons' link tags and files, the artist credits in the footer and the profile, and the banner credit's distance from the guide's face box, measured from DOM geometry.
 - The Playwright `webServer` starts `pnpm preview`, so run `pnpm build` before the tests.
 - Filter tests with `pnpm test:ui --grep <pattern>`. The config defines a single project, `desktop`, so `--project` narrows nothing.
 - After layout changes, inspect the rendered site locally in desktop, mobile, and dark modes. Saving screenshots and adding CI pixel diffs are not required.
@@ -79,6 +79,13 @@ The repository explicitly configures a `unified()`-based pipeline in `markdown.p
 ### Site configuration
 
 Site configuration is centralized in `src/config.ts` through `siteConfig`, `navBarConfig`, `profileConfig`, `licenseConfig`, and `expressiveCodeConfig`. Theme colors are stored as hue values from 0 through 360 and expanded into CSS variables. UI strings live in `src/i18n/`, and the site language is Japanese.
+
+### Page language
+
+- `siteConfig.lang` (`ja`) is the default `<html lang>`. `/about/` is written in English and passes `lang="en"` to `MainGridLayout`, as posts pass their frontmatter `lang`. Swup's head plugin copies `<html lang>` on each navigation.
+- `i18n()` always returns `siteConfig.lang` strings, so the navbar, sidebar, banner credit, and footer carry `lang={uiLang}` on every page. Do not set it per page: all but the footer sit outside the Swup containers and are not re-rendered.
+- Pagefind builds one index per `<html lang>` and searches only the index of the page it starts on. `force_language: "ja"` in `pagefind.yml` keeps `/about/` in the single index; without it, About drops out of searches on Japanese pages.
+- Google detects a page's language from its visible text and ignores `lang` and `hreflang` for that. The attributes serve screen readers, CJK glyph selection, and browser translation offers. Do not add a site-wide language toggle without translated pages behind it; translations would get their own URLs under `/en/`.
 
 ### Banner and avatar
 
