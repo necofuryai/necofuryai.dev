@@ -599,6 +599,7 @@ test("about page lists open source contributions with a status on each", async (
 			/^\s*(Released|Merged|In review|Awaiting review)\s*$/,
 		);
 		// Astro keeps line breaks around inline elements, which would render as "2026 ."
+		// biome-ignore lint/performance/useDomNodeTextContent: Playwright's Locator.innerText() returns the rendered text this check inspects; textContent() keeps the raw markup whitespace
 		expect(await entry.innerText()).not.toMatch(/\s[.,;:](\s|$)/);
 		openedDates.push(
 			await entry
