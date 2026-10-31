@@ -128,7 +128,7 @@ These rules apply everywhere:
 
 ### Page transitions (Swup)
 
-On each visit, `@swup/astro` replaces only the Swup containers, `main` and `#toc`; the rest of the body persists across visits. Client-side scripts cannot assume that they run only once on the initial load: account for Swup revisits and content replacement, since the elements in the containers are new after each visit. `@swup/astro` also sets `reloadScripts` to `true` by default, so it clones and re-executes page scripts on each navigation, and scripts must tolerate Swup script re-execution. The GA tag uses `data-swup-ignore-script` and a re-execution guard to opt out.
+On each visit, `@swup/astro` replaces only the Swup containers, `main` and `#toc`; the rest of the body persists across visits. Client-side scripts cannot assume that they run only once on the initial load: account for Swup revisits and content replacement, since the elements in the containers are new after each visit. `@swup/astro` also sets `reloadScripts` to `true` by default, so it clones and re-executes page scripts on each navigation, and scripts must tolerate Swup script re-execution. That includes a processed `<script>` once `pnpm build` (never `pnpm dev`) inlines it, which it does when the script has no imports and is under `build.assetsInlineLimit` (4 KiB by default), so a script that adds a listener to `document` guards the registration with a `data-*-ready` marker on `document.documentElement`, as the scripts in `src/pages/playlists.astro` do. The GA tag uses `data-swup-ignore-script` and a re-execution guard to opt out.
 
 Because `trailingSlash` is set to `"always"`, always include trailing slashes in internal links.
 
