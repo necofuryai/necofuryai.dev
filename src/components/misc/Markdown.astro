@@ -14,7 +14,7 @@ const className = Astro.props.class;
 </div>
 
 <script>
-document.addEventListener("click", (e: MouseEvent) => {
+function onCopyButtonClick(e: MouseEvent) {
     const target = e.target as Element | null;
     if (target?.classList.contains("copy-btn")) {
         const preEle = target.closest("pre");
@@ -39,5 +39,13 @@ document.addEventListener("click", (e: MouseEvent) => {
 
         target.setAttribute("data-timeout-id", newTimeoutId.toString());
     }
-});
+}
+
+// ビルドではこの script がインラインの module になり、@swup/astro の reloadScripts が
+// Markdown を描くページへの遷移ごとに再実行する。document へのリスナーが遷移のたびに
+// 増えないよう、html 要素の目印で登録を 1 回に限る (playlists.astro の script と同じ方式)
+if (!document.documentElement.hasAttribute("data-copy-btn-ready")) {
+    document.documentElement.setAttribute("data-copy-btn-ready", "");
+    document.addEventListener("click", onCopyButtonClick);
+}
 </script>
