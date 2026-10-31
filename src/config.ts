@@ -40,6 +40,9 @@ export const siteConfig: SiteConfig = {
 };
 
 export const navBarConfig: NavBarConfig = {
+	// From lg (1024px) the links share the navbar row with the search field.
+	// At 1024px only about 20px is left while the field is focused, so make
+	// room before adding a link; tests/ui/pages.spec.ts checks that the row fits
 	links: [
 		LinkPreset.Home,
 		LinkPreset.Archive,

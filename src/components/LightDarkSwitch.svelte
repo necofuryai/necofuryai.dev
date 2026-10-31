@@ -48,9 +48,9 @@ function toggleScheme() {
 	switchScheme(seq[(i + 1) % seq.length]);
 }
 
-// パネルは閉じている間も opacity: 0 になるだけでタブ順に残るため、
-// フォーカスが入ってきた時点で開く。開かないままだと、キーボード利用者は
-// 見えないボタンにフォーカスが乗った状態になる (WCAG 2.4.7 Focus Visible)。
+// 閉じたパネルは .float-panel-closed の visibility: hidden でタブ順から外れるため、
+// トグルボタンにフォーカスが入った時点で開く。開かないままだと、キーボード利用者は
+// テーマを選ぶボタンに届かない。
 //
 // 開閉を切り替えるのはフォーカスがこのコンポーネントを出入りしたときだけで、
 // 内部での移動 (トグルボタン <-> パネル内のボタン) では何もしない。
@@ -118,7 +118,12 @@ function handleKeyDown(event: KeyboardEvent) {
         </div>
     </button>
 
-    <div id="light-dark-panel" class="hidden lg:block absolute transition top-11 -right-2 pt-5" class:float-panel-closed={!panelOpen}>
+    <!-- 閉じている間は .float-panel-closed の visibility: hidden で隠れる。遷移の種類は変化後の
+         状態のものが使われるので、閉じるときだけ transition-all で visibility をフェードの終わりまで
+         visible に保ち、開くときは transition で visibility をすぐ切り替える。このパネルは
+         フォーカスが入った時点で開くため、visibility まで遷移させると最初のフレームは hidden の
+         ままで、すぐ続く Tab がテーマのボタンを飛ばしてしまう -->
+    <div id="light-dark-panel" class="hidden lg:block absolute top-11 -right-2 pt-5" class:transition={panelOpen} class:transition-all={!panelOpen} class:float-panel-closed={!panelOpen}>
         <div class="card-base float-panel p-2">
             <!-- 選択中のテーマは current-theme-btn の見た目でしか伝わらないため、
                  aria-pressed で状態を非視覚的にも公開する。ここで role="radio" を

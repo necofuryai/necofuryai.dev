@@ -43,6 +43,9 @@ test("search fields expose stable form metadata and accessible names", async ({
 	await expect(mobileSearch).toHaveAttribute("type", "search");
 	await expect(desktopSearch).toHaveAccessibleName("検索");
 	await page.setViewportSize({ width: 390, height: 844 });
+	// The closed search panel keeps its input out of view and out of the Tab order
+	await expect(mobileSearch).toBeHidden();
+	await page.locator("#search-switch").click();
 	await expect(mobileSearch).toBeVisible();
 	await expect(mobileSearch).toHaveAccessibleName("検索");
 });
@@ -88,19 +91,9 @@ test("mobile search clears results without closing its input panel", async ({
 	await expect(searchInput).toBeVisible();
 });
 
-test("desktop search ignores a stale result after its query is cleared", async ({
-	page,
-}) => {
-	await page.goto("/", { waitUntil: "load" });
-
-	const searchInput = page.locator("#search-bar input");
-	const searchPanel = page.locator("#search-panel");
-	const helloWorldResult = searchPanel.locator('a[href="/posts/hello-world/"]');
-	await searchInput.fill("Hello");
-	await expect(helloWorldResult).toBeVisible();
-	await searchInput.fill("");
-	await expect(helloWorldResult).toHaveCount(0);
-
+// Replace Pagefind with a search whose single Hello World result stays pending
+// until releaseHeldSearch(); waitForHeldSearch() resolves once it has started
+async function holdNextSearch(page: Page) {
 	await page.evaluate(() => {
 		// window.pagefind の型は src/global.d.ts にあるが、tsconfig の include 外なのでここで足す
 		const testWindow = window as Window & {
@@ -135,8 +128,9 @@ test("desktop search ignores a stale result after its query is cleared", async (
 			}),
 		};
 	});
+}
 
-	await searchInput.fill("Delayed");
+async function waitForHeldSearch(page: Page) {
 	await page.evaluate(
 		() =>
 			(
@@ -145,7 +139,9 @@ test("desktop search ignores a stale result after its query is cleared", async (
 				}
 			).__searchStarted,
 	);
-	await searchInput.fill("");
+}
+
+async function releaseHeldSearch(page: Page) {
 	await page.evaluate(() => {
 		(
 			window as Window & {
@@ -159,9 +155,325 @@ test("desktop search ignores a stale result after its query is cleared", async (
 				requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
 			}),
 	);
+}
+
+test("desktop search ignores a stale result after its query is cleared", async ({
+	page,
+}) => {
+	await page.goto("/", { waitUntil: "load" });
+
+	const searchInput = page.locator("#search-bar input");
+	const searchPanel = page.locator("#search-panel");
+	const helloWorldResult = searchPanel.locator('a[href="/posts/hello-world/"]');
+	await searchInput.fill("Hello");
+	await expect(helloWorldResult).toBeVisible();
+	await searchInput.fill("");
+	await expect(helloWorldResult).toHaveCount(0);
+
+	await holdNextSearch(page);
+	await searchInput.fill("Delayed");
+	await waitForHeldSearch(page);
+	await searchInput.fill("");
+	await releaseHeldSearch(page);
 
 	await expect(helloWorldResult).toHaveCount(0);
 	await expect(searchPanel).toHaveClass(/float-panel-closed/);
+});
+
+// The navbar is a single flex row. When it runs out of room its controls either
+// overflow the card or get squeezed, so check both: every visible control stays
+// inside the card's content box, and the square buttons stay square. A page
+// scroll check would miss this, because a small overflow stays in the viewport.
+async function expectNavbarRowInsideCard(page: Page, label: string) {
+	const row = await page.evaluate(() => {
+		const card = document.querySelector("#navbar > .card-base");
+		if (!card) throw new Error("#navbar > .card-base not found");
+		const box = card.getBoundingClientRect();
+		const style = getComputedStyle(card);
+		return {
+			left: box.left + Number.parseFloat(style.paddingLeft),
+			right: box.right - Number.parseFloat(style.paddingRight),
+			controls: [...card.querySelectorAll("a, button, input")]
+				.filter(
+					(element) =>
+						element.getBoundingClientRect().width > 0 &&
+						!element.closest(".float-panel, #light-dark-panel"),
+				)
+				.map((element) => {
+					const rect = element.getBoundingClientRect();
+					return {
+						name:
+							element.getAttribute("aria-label") ||
+							element.id ||
+							element.textContent?.trim(),
+						button: element.tagName === "BUTTON",
+						left: rect.left,
+						right: rect.right,
+						width: rect.width,
+						height: rect.height,
+					};
+				}),
+		};
+	});
+	expect(row.controls.length, label).toBeGreaterThan(3);
+	for (const control of row.controls) {
+		const where = `${control.name} at ${label}`;
+		expect(control.left, where).toBeGreaterThanOrEqual(row.left - 0.5);
+		expect(control.right, where).toBeLessThanOrEqual(row.right + 0.5);
+		if (control.button) {
+			expect(control.width, where).toBeCloseTo(control.height, 0);
+		}
+	}
+}
+
+test("the navbar row fits its card and moves the links into the menu below lg", async ({
+	page,
+}) => {
+	// The links share the lg breakpoint with the desktop search field, and the
+	// root font size changes at md, so check both sides of md and lg. 320px is
+	// the width WCAG 1.4.10 asks content to reflow at; below 360px the site
+	// title drops its home icon to fit
+	for (const [width, height, inlineLinks] of [
+		[320, 640, false],
+		[359, 780, false],
+		[360, 780, false],
+		[767, 1024, false],
+		[768, 1024, false],
+		[834, 1112, false],
+		[1023, 768, false],
+		[1024, 768, true],
+		[1280, 720, true],
+	] as const) {
+		await page.setViewportSize({ width, height });
+		await page.goto("/", { waitUntil: "load" });
+		// The theme switch and the search toggle are client:only islands
+		await expect(page.locator("#scheme-switch")).toBeVisible();
+		const aboutLink = page.locator('#navbar a[aria-label="About"]');
+		const menuSwitch = page.locator("#nav-menu-switch");
+		if (inlineLinks) {
+			await expect(aboutLink).toBeVisible();
+			await expect(menuSwitch).toBeHidden();
+			await expect(page.locator("#site-search-desktop")).toBeVisible();
+		} else {
+			await expect(aboutLink).toBeHidden();
+			await expect(menuSwitch).toBeVisible();
+			await expect(page.locator("#search-switch")).toBeVisible();
+		}
+		await expectNavbarRowInsideCard(page, `${width}x${height}`);
+
+		if (!inlineLinks) {
+			await menuSwitch.click();
+			const menuAbout = page.locator('#nav-menu-panel a[href="/about/"]');
+			await expect(menuAbout).toBeVisible();
+			const menuRight = await page
+				.locator("#nav-menu-panel")
+				.evaluate((panel) => panel.getBoundingClientRect().right);
+			expect(menuRight).toBeLessThanOrEqual(width);
+		}
+	}
+});
+
+test("a focused desktop search field keeps the navbar row inside its card", async ({
+	page,
+}) => {
+	// The field grows on focus. Below xl it grows less, because at 1024px the
+	// full width would push the theme buttons past the card
+	for (const [width, height, focusedWidth] of [
+		[1024, 768, 192],
+		[1279, 800, 192],
+		[1280, 720, 240],
+	] as const) {
+		await page.setViewportSize({ width, height });
+		await page.goto("/", { waitUntil: "load" });
+		await expect(page.locator("#scheme-switch")).toBeVisible();
+		// Measure the grown field, not a frame of its width transition
+		await page.addStyleTag({
+			content: "#site-search-desktop { transition: none !important; }",
+		});
+		const searchInput = page.locator("#site-search-desktop");
+		await searchInput.focus();
+		await expect(searchInput).toHaveCSS("width", `${focusedWidth}px`);
+		await expectNavbarRowInsideCard(page, `${width}x${height} focused`);
+	}
+});
+
+test("Tab skips the controls of closed float panels", async ({ page }) => {
+	// A closed panel only fades out, and neither opacity nor pointer-events
+	// takes its links and inputs out of the Tab order. Walk the Tab order from
+	// the top of the page past the navbar and check that focus never enters a
+	// closed panel. The light/dark panel opens when focus reaches its switch.
+	for (const [width, height] of [
+		[390, 844],
+		[1280, 720],
+	] as const) {
+		await page.setViewportSize({ width, height });
+		await page.goto("/", { waitUntil: "load" });
+		await expect(page.locator("#scheme-switch")).toBeVisible();
+		await expect(page.locator("#display-setting")).toHaveCount(1);
+		await expect(page.locator("#search-panel")).toHaveCount(1);
+
+		const stops: {
+			name: string;
+			inClosedPanel: boolean;
+			inThemePanel: boolean;
+			inNavbar: boolean;
+		}[] = [];
+		for (let i = 0; i < 30; i++) {
+			await page.keyboard.press("Tab");
+			const stop = await page.evaluate(() => {
+				const active = document.activeElement;
+				if (!active || active === document.body) return null;
+				return {
+					name:
+						active.getAttribute("aria-label") ||
+						active.id ||
+						active.textContent?.trim().slice(0, 40) ||
+						active.tagName,
+					inClosedPanel: Boolean(active.closest(".float-panel-closed")),
+					inThemePanel: Boolean(active.closest("#light-dark-panel")),
+					inNavbar: Boolean(active.closest("#navbar")),
+				};
+			});
+			if (stop) stops.push(stop);
+			if (stop && !stop.inNavbar) break;
+		}
+		expect(
+			stops.filter((stop) => stop.inClosedPanel).map((stop) => stop.name),
+			`${width}x${height}`,
+		).toEqual([]);
+		// The walk went through the navbar and reached the page content after it
+		expect(stops.map((stop) => stop.name)).toContain("Light/Dark Mode");
+		expect(stops.at(-1)?.inNavbar, `${width}x${height}`).toBe(false);
+		// From lg the theme panel is the only way to pick light, dark, or system
+		// by keyboard, so the walk must open it and visit its three buttons
+		if (width >= 1024) {
+			expect(stops.filter((stop) => stop.inThemePanel)).toHaveLength(3);
+		}
+	}
+});
+
+test("float panels close when a link inside them is followed", async ({
+	page,
+}) => {
+	// The navbar sits outside the Swup containers and survives each visit, and a
+	// click inside a panel does not count as a click outside it
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto("/", { waitUntil: "load" });
+	await page.evaluate(() => {
+		(
+			window as Window & { __uiSmokeSwupSentinel?: boolean }
+		).__uiSmokeSwupSentinel = true;
+	});
+
+	// A link to the current page only scrolls, so Swup starts no visit. Chosen
+	// by keyboard, the link would keep focus while it hides, so focus goes back
+	// to the menu button
+	const menuSwitch = page.locator("#nav-menu-switch");
+	const menuPanel = page.locator("#nav-menu-panel");
+	const menuHome = menuPanel.locator('a[href="/"]');
+	await menuSwitch.click();
+	await expect(menuHome).toBeVisible();
+	await menuHome.focus();
+	await page.keyboard.press("Enter");
+	await expect(menuPanel).toHaveClass(/float-panel-closed/);
+	await expect(menuHome).toBeHidden();
+	await expect(menuSwitch).toBeFocused();
+	expect(new URL(page.url()).pathname).toBe("/");
+
+	const menuArchive = menuPanel.locator('a[href="/archive/"]');
+	await page.locator("#nav-menu-switch").click();
+	await expect(menuArchive).toBeVisible();
+	await Promise.all([page.waitForURL("**/archive/"), menuArchive.click()]);
+	await expect(menuPanel).toHaveClass(/float-panel-closed/);
+	await expect(menuArchive).toBeHidden();
+
+	// A search still pending when the visit starts must not reopen the panel.
+	// Nor may the Pagefind loader run again: re-run on content:replace, it fired
+	// pagefindready, and the search reopened the panel with the old keyword.
+	await page.setViewportSize({ width: 1280, height: 720 });
+	const searchInput = page.locator("#site-search-desktop");
+	const searchPanel = page.locator("#search-panel");
+	const helloWorldResult = searchPanel.locator('a[href="/posts/hello-world/"]');
+	await searchInput.fill("Hello");
+	await expect(helloWorldResult).toBeVisible();
+	await page.evaluate(() => {
+		const testWindow = window as Window & {
+			__visitEnded?: Promise<void>;
+			swup?: {
+				hooks: { once: (hook: string, handler: () => void) => void };
+			};
+		};
+		// Swup's scripts plugin replaces a script it runs again with a copy,
+		// and a copy does not keep this property
+		const loader = [...document.scripts].find((script) =>
+			script.textContent?.includes("/pagefind/pagefind.js"),
+		) as (HTMLScriptElement & { __uiSmokeOriginal?: boolean }) | undefined;
+		if (!loader) throw new Error("Pagefind loader script not found");
+		loader.__uiSmokeOriginal = true;
+		testWindow.__visitEnded = new Promise<void>((resolve) => {
+			testWindow.swup?.hooks.once("visit:end", () => resolve());
+		});
+	});
+	await holdNextSearch(page);
+	await searchInput.fill("Delayed");
+	await waitForHeldSearch(page);
+	await Promise.all([
+		page.waitForURL("**/posts/hello-world/"),
+		helloWorldResult.click(),
+	]);
+	await expect(searchPanel).toHaveClass(/float-panel-closed/);
+	await page.evaluate(
+		() => (window as Window & { __visitEnded?: Promise<void> }).__visitEnded,
+	);
+	await releaseHeldSearch(page);
+	await expect(searchPanel).toHaveClass(/float-panel-closed/);
+	await expect(helloWorldResult).toBeHidden();
+	expect(
+		await page.evaluate(() => {
+			const loader = [...document.scripts].find((script) =>
+				script.textContent?.includes("/pagefind/pagefind.js"),
+			) as (HTMLScriptElement & { __uiSmokeOriginal?: boolean }) | undefined;
+			return loader?.__uiSmokeOriginal;
+		}),
+	).toBe(true);
+
+	expect(
+		await page.evaluate(
+			() =>
+				(window as Window & { __uiSmokeSwupSentinel?: boolean })
+					.__uiSmokeSwupSentinel,
+		),
+	).toBe(true);
+});
+
+test("the theme color reset button shows only after the hue changes and hands focus to the slider", async ({
+	page,
+}) => {
+	await page.goto("/", { waitUntil: "load" });
+	const defaultHue = await page
+		.locator("#config-carrier")
+		.getAttribute("data-hue");
+	if (!defaultHue) throw new Error("#config-carrier has no data-hue");
+	await page.locator("#display-settings-switch").click();
+	const reset = page.locator(
+		'#display-setting button[aria-label="Reset to Default"]',
+	);
+	const slider = page.locator("#colorSlider");
+	await expect(slider).toBeVisible();
+
+	// At the default hue the button would do nothing, so it is neither shown
+	// nor a Tab stop
+	await expect(reset).toBeHidden();
+	await slider.fill(defaultHue === "100" ? "200" : "100");
+	await expect(reset).toBeVisible();
+
+	// Resetting hides the button under the keyboard user's focus, so focus moves
+	// on to the slider instead of falling back to the page
+	await reset.focus();
+	await page.keyboard.press("Enter");
+	await expect(slider).toHaveValue(defaultHue);
+	await expect(reset).toBeHidden();
+	await expect(slider).toBeFocused();
 });
 
 test("custom 404 returns not found and offers recovery links", async ({

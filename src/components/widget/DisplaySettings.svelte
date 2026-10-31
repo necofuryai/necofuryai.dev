@@ -6,9 +6,16 @@ import { getDefaultHue, getHue, setHue } from "@utils/setting-utils";
 
 let hue = $state(getHue());
 const defaultHue = getDefaultHue();
+let slider = $state<HTMLInputElement | undefined>();
 
-function resetHue() {
+// 既定の色ではリセットしても何も変わらないので、ボタンは invisible で Tab 順からも外す
+// (transition-all で、消えるときも visibility をフェードの終わりまで保つ)。
+// 押すと自分が隠れてフォーカスの行き先がなくなるため、キーボードで押したときはスライダーへ移す
+function resetHue(event: MouseEvent) {
 	hue = getDefaultHue();
+	if (document.activeElement === event.currentTarget) {
+		slider?.focus();
+	}
 }
 
 // スライダーの値が変わるたびに CSS 変数へ反映する。
@@ -25,8 +32,8 @@ $effect(() => {
             before:absolute before:-left-3 before:top-[0.33rem]"
         >
             {i18n(I18nKey.themeColor)}
-            <button type="button" aria-label="Reset to Default" class="btn-regular w-7 h-7 rounded-md  active:scale-90 will-change-transform"
-                    class:opacity-0={hue === defaultHue} class:pointer-events-none={hue === defaultHue} onclick={resetHue}>
+            <button type="button" aria-label="Reset to Default" class="btn-regular transition-all w-7 h-7 rounded-md  active:scale-90 will-change-transform"
+                    class:opacity-0={hue === defaultHue} class:invisible={hue === defaultHue} onclick={resetHue}>
                 <div class="text-[var(--btn-content)]">
                     <Icon icon="fa6-solid:arrow-rotate-left" class="text-[0.875rem]"></Icon>
                 </div>
@@ -41,7 +48,7 @@ $effect(() => {
     </div>
     <div class="w-full h-6 px-1 bg-[oklch(0.80_0.10_0)] dark:bg-[oklch(0.70_0.10_0)] rounded-sm select-none">
         <input aria-label={i18n(I18nKey.themeColor)} type="range" min="0" max="360" bind:value={hue}
-               class="slider" id="colorSlider" step="5" style="width: 100%">
+               class="slider" id="colorSlider" step="5" style="width: 100%" bind:this={slider}>
     </div>
 </div>
 

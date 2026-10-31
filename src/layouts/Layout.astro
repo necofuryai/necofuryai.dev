@@ -399,6 +399,34 @@ setClickOutsideToClose("display-setting", ["display-setting", "display-settings-
 setClickOutsideToClose("nav-menu-panel", ["nav-menu-panel", "nav-menu-switch"])
 setClickOutsideToClose("search-panel", ["search-panel", "search-bar", "search-switch"])
 
+// ナビバーは Swup のコンテナの外にあって遷移後も残り、上の setClickOutsideToClose はパネル内の
+// クリックを無視するので、パネル内のリンクを選んだときはここで閉じる。今いるページへのリンク
+// (Swup はスクロールするだけ) と新しいタブで開くリンクでは visit:start が来ないため、クリックで
+// 閉じる。#light-dark-panel の開閉は Svelte の状態が持つので外から触らない
+function closeFloatPanels() {
+	for (const id of ['nav-menu-panel', 'search-panel', 'display-setting']) {
+		document.getElementById(id)?.classList.add('float-panel-closed')
+	}
+}
+// キーボードで選んだリンクは、パネルが閉じると見えないままフォーカスを持ち続けるので、パネルを
+// 開くボタンへ戻す (Swup で移動するときは、そのあと a11y プラグインが新しいページへ移す)。
+// lg 以上で隠れている #search-switch には移せないので、そのときはフォーカスを外す
+const floatPanelSwitches: Record<string, string> = {
+	'nav-menu-panel': 'nav-menu-switch',
+	'search-panel': 'search-switch',
+}
+document.addEventListener('click', event => {
+	const link = event.target instanceof Element ? event.target.closest('.float-panel a') : null
+	const panel = link?.closest('.float-panel')
+	if (!panel) return
+	if (panel.contains(document.activeElement)) {
+		document.getElementById(floatPanelSwitches[panel.id] ?? '')?.focus()
+		if (document.activeElement instanceof HTMLElement && panel.contains(document.activeElement)) {
+			document.activeElement.blur()
+		}
+	}
+	closeFloatPanels()
+})
 
 function loadTheme() {
 	const theme = getStoredTheme()
@@ -529,6 +557,9 @@ const setup = () => {
 	})
 	window.swup.hooks.on('content:replace', initCustomScrollbar)
 	window.swup.hooks.on('visit:start', (visit: {to: {url: string}}) => {
+		// ブラウザの戻る・進むでも、開いていたパネルを閉じる
+		closeFloatPanels()
+
 		// change banner height immediately when a link is clicked
 		const bodyElement = document.querySelector('body')
 		if (pathsEqual(visit.to.url, url('/'))) {

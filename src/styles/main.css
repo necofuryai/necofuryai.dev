@@ -27,8 +27,11 @@
     .float-panel {
         @apply top-[5.25rem] rounded-[var(--radius-large)] overflow-hidden bg-[var(--float-panel-bg)] transition shadow-xl dark:shadow-none
     }
+    /* opacity と pointer-events だけでは、中のリンクや入力欄が Tab 順と読み上げに残るので
+       visibility でも隠す。v4 の transition は visibility を含まないため、閉じるときも
+       フェードさせるパネルには transition-all を付ける */
     .float-panel-closed {
-        @apply -translate-y-1 opacity-0 pointer-events-none
+        @apply -translate-y-1 opacity-0 pointer-events-none invisible
     }
     .search-panel mark {
         @apply bg-transparent text-[var(--primary-text)]

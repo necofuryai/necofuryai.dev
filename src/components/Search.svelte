@@ -91,6 +91,13 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 };
 
 onMount(() => {
+	// Swup で移動し始めたら、結果待ちの検索を古いものとして捨てる。この部品はナビバーにあって
+	// 遷移後も残るので、移動前の検索が遅れて返ると、Layout.astro が visit:start で閉じた
+	// 検索パネルを新しいページの上で開き直してしまう
+	document.addEventListener("swup:visit:start", () => {
+		latestSearchRequest++;
+	});
+
 	const initializeSearch = () => {
 		initialized = true;
 		pagefindLoaded =
@@ -140,7 +147,7 @@ const handleSearchInput = (event: Event, isDesktop: boolean): void => {
     <input id="site-search-desktop" type="search" placeholder="{i18n(I18nKey.search)}" bind:value={keywordDesktop}
            oninput={(event) => handleSearchInput(event, true)} onfocus={() => search(keywordDesktop, true)}
            class="transition-all pl-10 text-sm bg-transparent outline-0
-         h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50"
+         h-full w-40 focus:w-48 xl:focus:w-60 text-black/50 dark:text-white/50"
     >
 </div>
 
@@ -151,7 +158,7 @@ const handleSearchInput = (event: Event, isDesktop: boolean): void => {
 </button>
 
 <!-- search panel -->
-<div id="search-panel" class="float-panel float-panel-closed search-panel absolute md:w-[30rem]
+<div id="search-panel" class="float-panel float-panel-closed search-panel absolute transition-all md:w-[30rem]
 top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
 
     <!-- search bar inside panel for phone/tablet -->
