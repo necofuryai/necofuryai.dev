@@ -834,6 +834,81 @@ test("playlist controls survive a Swup revisit", async ({ page }) => {
 	await verifyTrackListCollapse(page);
 });
 
+test("the code copy button copies once per click after Swup revisits", async ({
+	page,
+}) => {
+	// Markdown.astro registers the copy handler on document. The build inlines
+	// that script, and reloadScripts runs it again on each Swup visit to a page
+	// that renders Markdown, so every arrival at About could add a listener.
+	// Starting on Playlists, which has no Markdown, also checks that a Swup
+	// arrival still registers the handler at all
+	type CopySmoke = Window & {
+		__uiSmokeCopyCalls?: string[];
+		__uiSmokePageLoads?: number;
+	};
+	await page.goto("/playlists/", { waitUntil: "load" });
+	await page.evaluate(() => {
+		const smoke = window as CopySmoke;
+		smoke.__uiSmokeCopyCalls = [];
+		smoke.__uiSmokePageLoads = 0;
+		Object.defineProperty(navigator.clipboard, "writeText", {
+			configurable: true,
+			value: (text: string) => {
+				smoke.__uiSmokeCopyCalls?.push(text);
+				return Promise.resolve();
+			},
+		});
+		document.addEventListener("astro:page-load", () => {
+			smoke.__uiSmokePageLoads = (smoke.__uiSmokePageLoads ?? 0) + 1;
+		});
+	});
+
+	const playlistsLink = page.locator('#navbar a[aria-label="Playlists"]');
+	const aboutLink = page.locator('#navbar a[aria-label="About"]');
+	const visits = [
+		{ link: aboutLink, url: "**/about/" },
+		{ link: playlistsLink, url: "**/playlists/" },
+		{ link: aboutLink, url: "**/about/" },
+	];
+	for (const [index, visit] of visits.entries()) {
+		await Promise.all([page.waitForURL(visit.url), visit.link.click()]);
+		// astro:page-load fires on Swup's page:view, after the scripts plugin
+		// has re-inserted the page scripts on content:replace
+		await expect
+			.poll(() => page.evaluate(() => (window as CopySmoke).__uiSmokePageLoads))
+			.toBe(index + 1);
+	}
+	await expect(
+		page.getByRole("heading", { level: 1, name: "About" }),
+	).toBeVisible();
+
+	// No post has a code block yet, so add one in Expressive Code's shape
+	await page.locator("main").evaluate((main) => {
+		const pre = document.createElement("pre");
+		pre.dataset.uiSmokeCopy = "";
+		const code = document.createElement("code");
+		const line = document.createElement("div");
+		line.className = "code";
+		line.textContent = "copy me";
+		code.append(line);
+		const button = document.createElement("button");
+		button.className = "copy-btn";
+		button.setAttribute("aria-label", "Copy code");
+		// The reset CSS leaves an empty button 0px wide, which cannot be clicked
+		button.textContent = "Copy";
+		pre.append(code, button);
+		main.append(pre);
+	});
+	const copyButton = page
+		.locator("pre[data-ui-smoke-copy]")
+		.getByRole("button", { name: "Copy code" });
+	await copyButton.click();
+	await expect(copyButton).toHaveClass(/\bsuccess\b/);
+	expect(
+		await page.evaluate(() => (window as CopySmoke).__uiSmokeCopyCalls),
+	).toEqual(["copy me"]);
+});
+
 test("about page declares English while the shared UI stays Japanese across Swup visits", async ({
 	page,
 }) => {
