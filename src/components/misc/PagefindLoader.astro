@@ -2,7 +2,12 @@
 import { url } from "../../utils/url-utils";
 ---
 
-<script is:inline define:vars={{ scriptUrl: url("/pagefind/pagefind.js") }}>
+{/* ナビバーは Swup の遷移後も残り、window.pagefind も同じ文書で使い続けるので、読み込みは
+    最初の 1 回だけにする。@swup/astro の reloadScripts はコンテナ外のこの script も遷移ごとに
+    再実行し、pagefindready が届くたびに Search.svelte が入力欄に残った語で検索し直して、
+    閉じた検索パネルを開き直していた。そのため読み込みに失敗したときは、ページを読み込み
+    直すまで検索は空の結果を返す (以前は遷移ごとの再実行で、たまたま再試行されていた) */}
+<script is:inline data-swup-ignore-script define:vars={{ scriptUrl: url("/pagefind/pagefind.js") }}>
 async function loadPagefind() {
 	try {
 		const response = await fetch(scriptUrl, { method: "HEAD" });
