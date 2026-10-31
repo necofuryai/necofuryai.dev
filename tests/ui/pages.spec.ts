@@ -522,6 +522,75 @@ test("playlist controls survive a Swup revisit", async ({ page }) => {
 	await verifyTrackListCollapse(page);
 });
 
+test("about page declares English while the shared UI stays Japanese across Swup visits", async ({
+	page,
+}) => {
+	await page.goto("/", { waitUntil: "load" });
+	await page.evaluate(() => {
+		(
+			window as Window & { __uiSmokeSwupSentinel?: boolean }
+		).__uiSmokeSwupSentinel = true;
+	});
+	const html = page.locator("html");
+	await expect(html).toHaveAttribute("lang", "ja");
+
+	const aboutLink = page.locator('#navbar a[aria-label="About"]');
+	await expect(aboutLink).toHaveCount(1);
+	await Promise.all([page.waitForURL("**/about/"), aboutLink.click()]);
+	await expect(
+		page.getByRole("heading", { level: 1, name: "About" }),
+	).toBeVisible();
+	// Swup replaces only main and #toc; its head plugin copies <html lang>
+	await expect(html).toHaveAttribute("lang", "en");
+	await expect(page).toHaveTitle("About - necofuryai.dev");
+	// The page body inherits English from <html>, while the navbar, sidebar,
+	// banner credit, and footer keep their Japanese UI marked as such
+	expect(
+		await page
+			.locator("main h1")
+			.evaluate((heading) => heading.closest("[lang]")?.tagName),
+	).toBe("HTML");
+	await expect(page.locator("#navbar")).toHaveAttribute("lang", "ja");
+	await expect(page.locator("#sidebar")).toHaveAttribute("lang", "ja");
+	await expect(page.locator("#banner-credit")).toHaveAttribute("lang", "ja");
+	await expect(
+		page.locator(".footer").filter({ visible: true }).locator("[lang]"),
+	).toHaveAttribute("lang", "ja");
+
+	const homeLink = page.locator('#navbar a[aria-label="Home"]');
+	await Promise.all([
+		page.waitForURL((url) => url.pathname === "/"),
+		homeLink.click(),
+	]);
+	await expect(html).toHaveAttribute("lang", "ja");
+	expect(
+		await page.evaluate(
+			() =>
+				(window as Window & { __uiSmokeSwupSentinel?: boolean })
+					.__uiSmokeSwupSentinel,
+		),
+	).toBe(true);
+});
+
+test("the About page and the Japanese posts share one search index", async ({
+	page,
+}) => {
+	// Pagefind searches only the index of the <html lang> it starts on, so an
+	// index split by language would hide each side from searches on the other
+	const searchInput = page.locator("#search-bar input");
+	const searchPanel = page.locator("#search-panel");
+
+	await page.goto("/", { waitUntil: "load" });
+	await searchInput.fill("observability");
+	await expect(searchPanel.locator('a[href="/about/"]')).toBeVisible();
+
+	await page.goto("/about/", { waitUntil: "load" });
+	await searchInput.fill("開設");
+	await expect(
+		searchPanel.locator('a[href="/posts/hello-world/"]'),
+	).toBeVisible();
+});
+
 test("desktop home banner rules shift the grid and keep the sidebar sticky offset", async ({
 	page,
 }) => {

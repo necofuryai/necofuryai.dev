@@ -14,6 +14,7 @@ import {
 	BANNER_HEIGHT_HOME,
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 } from "../constants/constants";
+import { uiLang } from "../i18n/translation";
 import Layout from "./Layout.astro";
 
 interface Props {
@@ -75,7 +76,7 @@ const mainPanelTop = siteConfig.banner.enable
     mx-auto gap-4 px-0 md:px-4"
         >
             <!-- Banner image credit -->
-            {hasBannerCredit && <a href={siteConfig.banner.credit.url} id="banner-credit" target="_blank" rel="noopener"
+            {hasBannerCredit && <a href={siteConfig.banner.credit.url} id="banner-credit" lang={uiLang} target="_blank" rel="noopener"
                                    class:list={["group onload-animation transition-all absolute flex justify-center items-center rounded-full " +
                                    "px-2 md:px-3 right-4 -top-6 md:-top-[3.25rem] bg-black/60 hover:bg-black/70 h-5 md:h-9", {"hover:pr-9 active:bg-black/80": hasBannerLink}]}
             >

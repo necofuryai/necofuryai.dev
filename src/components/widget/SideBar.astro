@@ -1,5 +1,6 @@
 ---
 import type { MarkdownHeading } from "astro";
+import { uiLang } from "../../i18n/translation";
 import Categories from "./Categories.astro";
 import Profile from "./Profile.astro";
 import Tag from "./Tags.astro";
@@ -11,7 +12,7 @@ interface Props {
 
 const className = Astro.props.class;
 ---
-<div id="sidebar" class:list={[className, "w-full"]}>
+<div id="sidebar" class:list={[className, "w-full"]} lang={uiLang}>
     <div class="flex flex-col w-full gap-4 mb-4">
         <Profile></Profile>
     </div>

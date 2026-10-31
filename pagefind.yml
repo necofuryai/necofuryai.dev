@@ -1,3 +1,8 @@
+# Pagefind builds one index per <html lang> and searches only the index of the
+# page it starts on, so the English /about/ would get an index of its own:
+# missing from searches on Japanese pages, and a search started there would find
+# only itself. Keep the whole site in one index
+force_language: "ja"
 exclude_selectors:
   - "span.katex"
   - "span.katex-display"
