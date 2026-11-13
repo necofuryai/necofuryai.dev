@@ -17,10 +17,12 @@ Claude Code のプロジェクトスコープのスキル。このリポジト�
 |---|---|
 | `LICENSE` | `LICENSE` (リポジトリのルート) |
 | `wrangler/SKILL.md` | `skills/wrangler/SKILL.md` |
+| `wrangler/references/skill-feedback.md` | `skills/wrangler/references/skill-feedback.md` |
 | `workers-best-practices/SKILL.md` | `skills/workers-best-practices/SKILL.md` |
 | `workers-best-practices/references/configuration.md` | `skills/workers-best-practices/references/configuration.md` |
 | `workers-best-practices/references/platform-apis.md` | `skills/workers-best-practices/references/platform-apis.md` |
 | `workers-best-practices/references/runtime-patterns.md` | `skills/workers-best-practices/references/runtime-patterns.md` |
+| `workers-best-practices/references/skill-feedback.md` | `skills/workers-best-practices/references/skill-feedback.md` |
 | `workers-best-practices/references/static-assets/*.md` | `skills/cloudflare/references/static-assets/*.md` |
 | `workers-best-practices/references/observability/*.md` | `skills/cloudflare/references/observability/*.md` |
 
@@ -43,7 +45,9 @@ Apache-2.0 第 4 条 (b) は、改変したファイル自身に変更した旨�
    告知は `**Modified by necofuryai:**` で始める。単体テスト `tests/unit/vendored-skills-notice.test.mjs` がこの文字列で告知の有無と位置を確かめる。
 
 参照資料 (`references/` 以下) は上流と同一のまま置いている。
-`references/configuration.md` にも `node_modules/wrangler/config-schema.json` への言及が残るが、上記 2 の注記が入口の `SKILL.md` で先に読まれるため改変していない。
+`workers-best-practices/references/configuration.md` にも `node_modules/wrangler/config-schema.json` やインストール済みのスキーマを参照させる記述が残るが、上記 2 の注記が入口の `SKILL.md` で先に読まれるため改変していない。
+両 `SKILL.md` 末尾の "Skill feedback" 節が読ませる `references/skill-feedback.md` は、上流がスキルごとに置く資料で、どちらも同梱している。
+スキルの案内が誤っている・古い・足りないとユーザーが報告したときに、送るかどうかを尋ね、Issue の題と本文をユーザーに見せて承認を得てから cloudflare/skills に公開 Issue として投稿する手順を定めている。
 `references/observability/README.md` 末尾の `../tail-workers/README.md` への相対リンクは上流の包括スキル内の資料を指しており、このリポジトリには同梱していないためリンク切れになる。
 両 `SKILL.md` は Cloudflare CLI (`cf`) 向けの `cf-cli` スキルにも言及するが、同梱していない。
 このリポジトリは `wrangler.jsonc` を持ち `cloudflare.config.ts` を持たないため、どちらの `SKILL.md` の分岐でも `wrangler` スキルの側に入る。
