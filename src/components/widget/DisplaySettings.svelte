@@ -1,8 +1,12 @@
 <script lang="ts">
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import Icon from "@iconify/svelte";
+import Icon, { type IconifyIcon } from "@iconify/svelte";
 import { getDefaultHue, getHue, setHue } from "@utils/setting-utils";
+
+// Icon data resolved at build time in Navbar.astro, so that @iconify/svelte
+// renders it without fetching from the Iconify API
+let { icons }: { icons: { reset: IconifyIcon } } = $props();
 
 let hue = $state(getHue());
 const defaultHue = getDefaultHue();
@@ -35,7 +39,7 @@ $effect(() => {
             <button type="button" aria-label="Reset to Default" class="btn-regular transition-all w-7 h-7 rounded-md  active:scale-90 will-change-transform"
                     class:opacity-0={hue === defaultHue} class:invisible={hue === defaultHue} onclick={resetHue}>
                 <div class="text-[var(--btn-content)]">
-                    <Icon icon="fa6-solid:arrow-rotate-left" class="text-[0.875rem]"></Icon>
+                    <Icon icon={icons.reset} class="text-[0.875rem]"></Icon>
                 </div>
             </button>
         </div>

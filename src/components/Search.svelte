@@ -1,10 +1,15 @@
 <script lang="ts">
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import Icon from "@iconify/svelte";
+import Icon, { type IconifyIcon } from "@iconify/svelte";
 import { url } from "@utils/url-utils.ts";
 import { onMount } from "svelte";
 import type { SearchResult } from "@/global";
+
+// Icon data resolved at build time in Navbar.astro, so that @iconify/svelte
+// renders it without fetching from the Iconify API
+let { icons }: { icons: { search: IconifyIcon; chevronRight: IconifyIcon } } =
+	$props();
 
 // テンプレートから参照する値だけを $state にする。
 // pagefindLoaded / initialized / latestSearchRequest は描画に使わない内部フラグなので
@@ -142,7 +147,7 @@ const handleSearchInput = (event: Event, isDesktop: boolean): void => {
       bg-black/[0.04] hover:bg-black/[0.06] focus-within:bg-black/[0.06]
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
 ">
-    <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
+    <Icon icon={icons.search} class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
     <label class="sr-only" for="site-search-desktop">{i18n(I18nKey.search)}</label>
     <input id="site-search-desktop" type="search" placeholder="{i18n(I18nKey.search)}" bind:value={keywordDesktop}
            oninput={(event) => handleSearchInput(event, true)} onfocus={() => search(keywordDesktop, true)}
@@ -154,7 +159,7 @@ const handleSearchInput = (event: Event, isDesktop: boolean): void => {
 <!-- toggle btn for phone/tablet view -->
 <button type="button" onclick={togglePanel} aria-label="Search Panel" id="search-switch"
         class="btn-plain scale-animation lg:hidden! rounded-lg w-11 h-11 active:scale-90">
-    <Icon icon="material-symbols:search" class="text-[1.25rem]"></Icon>
+    <Icon icon={icons.search} class="text-[1.25rem]"></Icon>
 </button>
 
 <!-- search panel -->
@@ -166,7 +171,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
       bg-black/[0.04] hover:bg-black/[0.06] focus-within:bg-black/[0.06]
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
   ">
-        <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
+        <Icon icon={icons.search} class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
         <label class="sr-only" for="site-search-mobile">{i18n(I18nKey.search)}</label>
         <input id="site-search-mobile" type="search" placeholder="{i18n(I18nKey.search)}" bind:value={keywordMobile}
                oninput={(event) => handleSearchInput(event, false)}
@@ -181,7 +186,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
            class="transition first-of-type:mt-2 lg:first-of-type:mt-0 group block
        rounded-xl text-lg px-3 py-2 hover:bg-[var(--btn-plain-bg-hover)] active:bg-[var(--btn-plain-bg-active)]">
             <div class="transition text-90 inline-flex font-bold group-hover:text-[var(--primary-text)]">
-                {item.meta.title}<Icon icon="fa6-solid:chevron-right" class="transition text-[0.75rem] translate-x-1 my-auto text-[var(--primary-text)]"></Icon>
+                {item.meta.title}<Icon icon={icons.chevronRight} class="transition text-[0.75rem] translate-x-1 my-auto text-[var(--primary-text)]"></Icon>
             </div>
             <div class="transition text-sm text-50">
                 {@html item.excerpt}

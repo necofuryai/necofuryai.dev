@@ -9,14 +9,30 @@ const cases = [
 	{ path: "/posts/hello-world/", ready: "#post-container" },
 ] as const;
 
+// Requests to the Iconify API in the current test. The Svelte islands get their
+// icon data at build time (Navbar.astro), so a request here means an island
+// went back to fetching an icon by name from the visitor's browser
+let iconifyRequests: string[] = [];
+
 test.beforeEach(async ({ page }) => {
+	iconifyRequests = [];
 	await page.route("**/*", async (route) => {
 		const url = new URL(route.request().url());
+		if (
+			url.hostname === "iconify.design" ||
+			url.hostname.endsWith(".iconify.design")
+		) {
+			iconifyRequests.push(url.href);
+		}
 		const local = url.hostname === "127.0.0.1" || url.hostname === "localhost";
 		const remoteHttp =
 			(url.protocol === "http:" || url.protocol === "https:") && !local;
 		await (remoteHttp ? route.abort() : route.continue());
 	});
+});
+
+test.afterEach(() => {
+	expect(iconifyRequests, "requests to the Iconify API").toEqual([]);
 });
 
 for (const item of cases) {
@@ -29,6 +45,45 @@ for (const item of cases) {
 		await expect(page.locator(item.ready).first()).toBeVisible();
 	});
 }
+
+test("the Svelte islands draw their icons from build-time data", async ({
+	page,
+}) => {
+	await page.goto("/", { waitUntil: "load" });
+
+	// Every icon is an inline <svg> with its set's box; an icon fetched by name
+	// would never render here, because remote requests are aborted
+	const square = "0 0 24 24";
+	const themeIcons = page.locator("#scheme-switch svg");
+	await expect(themeIcons).toHaveCount(3);
+	for (const icon of await themeIcons.all()) {
+		await expect(icon).toHaveAttribute("viewBox", square);
+	}
+	await expect(page.locator("#light-dark-panel svg")).toHaveCount(3);
+	await expect(page.locator("#search-bar svg")).toHaveAttribute(
+		"viewBox",
+		square,
+	);
+	await expect(page.locator("#search-switch svg")).toHaveAttribute(
+		"viewBox",
+		square,
+	);
+	await expect(page.locator("#search-bar-inside svg")).toHaveAttribute(
+		"viewBox",
+		square,
+	);
+	await expect(
+		page.locator('#display-setting button[aria-label="Reset to Default"] svg'),
+	).toHaveAttribute("viewBox", "0 0 512 512");
+
+	// The result arrow keeps chevron-right's own 320-wide box
+	await page.locator("#search-bar input").fill("Hello");
+	const resultIcon = page.locator(
+		'#search-panel a[href="/posts/hello-world/"] svg',
+	);
+	await expect(resultIcon).toHaveAttribute("viewBox", "0 0 320 512");
+	await expect(resultIcon.locator("path")).toHaveCount(1);
+});
 
 test("search fields expose stable form metadata and accessible names", async ({
 	page,
