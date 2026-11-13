@@ -4,7 +4,7 @@ This is the detailed reference for the dependency settings in `pnpm-workspace.ya
 
 ## Node.js floor (`engines.node`)
 
-Node.js 22.22.0 or later is required: on Node 22, astro 7.4's CLI exits with an error below 22.22.0, and `engines.node` records that floor. Some dependencies declare a higher minimum (`@astrojs/prism` 4.1.1 declares 22.23.4) without checking it at run time. pnpm 12.9.1 neither warns about nor rejects an `engines` mismatch by default, whether in this repository's field or a dependency's; only `engineStrict` makes it fail, on both alike. Raise `engines.node` together with the astro update that raises the CLI floor.
+Node.js 22.23.4 or later is required, and `engines.node` records that floor. Since astro 7.4.2, `node_modules/astro/bin/astro.mjs` hard-codes `>=22.23.4` (`>=22.22.0` only on StackBlitz), checks Node 23 and earlier against it, and exits with an error below 22.23.4; on Node 24 and later it skips the check. That constant is the floor the CLI enforces, so compare it after each astro update. `@astrojs/prism`, `@astrojs/svelte`, and `@astrojs/telemetry` declare the same 22.23.4 without checking it at run time, and no dependency declares a higher minimum. pnpm 12.9.1 neither warns about nor rejects an `engines` mismatch by default, whether in this repository's field or a dependency's; only `engineStrict` makes it fail, on both alike. Raise `engines.node` together with the astro update that raises the CLI floor.
 
 ## Overrides
 

@@ -10,7 +10,7 @@ The banner and avatar illustrations are commissioned artwork that is not in the 
 
 ## Commands
 
-Use pnpm. The `preinstall` hook in `scripts/check-package-manager.js` enforces it. Node.js 22.22.0 or later is required: on Node 22, astro 7.4's CLI exits with an error below 22.22.0, and `engines.node` records that floor. Read "Node.js floor" in `docs/dependencies.md` before changing `engines.node`, and raise it together with the astro update that raises the CLI floor. `pnpm-workspace.yaml` sets `pmOnFail: ignore` to keep the lockfile readable by GitHub's dependency graph, so pnpm does not switch to the `packageManager` version by itself; run that version locally. CI installs it from `packageManager`.
+Use pnpm. The `preinstall` hook in `scripts/check-package-manager.js` enforces it. Node.js 22.23.4 or later is required: on Node 22, astro's CLI exits with an error below 22.23.4 (since astro 7.4.2), and `engines.node` records that floor. Read "Node.js floor" in `docs/dependencies.md` before changing `engines.node`, and raise it together with the astro update that raises the CLI floor. `pnpm-workspace.yaml` sets `pmOnFail: ignore` to keep the lockfile readable by GitHub's dependency graph, so pnpm does not switch to the `packageManager` version by itself; run that version locally. CI installs it from `packageManager`.
 
 Astro and Vite commands load live `.env*` files when present. Run `dev`, `check`, `build`, `preview`, `type-check`, or UI tests only when the user authorizes the exact environment file and purpose. Without authorization, limit validation to commands that do not invoke Astro/Vite, such as unit tests and diff checks, and report the skipped checks.
 
@@ -103,7 +103,7 @@ Tailwind CSS 4 applies variants such as `lg:` only to its own utilities and `@ut
 
 ### Icons
 
-The site uses two icon systems. Astro files use `astro-icon`, which embeds SVGs at build time from local `@iconify-json/*` packages; every such package listed in `package.json` is loaded, and the `include` map in `icon({ include })` in `astro.config.mjs` only narrows the icons kept for the sets it names, so a set absent from it (`simple-icons`, rendered by `Profile.astro`) is still available whole. Svelte islands use `@iconify/svelte`, which retrieves icons at runtime from `api.iconify.design` and therefore creates third-party requests.
+The site uses two icon systems. Astro files use `astro-icon`, which embeds SVGs at build time from local `@iconify-json/*` packages; every such package listed in `package.json` is loaded, and the `include` map in `icon({ include })` in `astro.config.mjs` only narrows the icons kept for the sets it names, so a set absent from it (`simple-icons`, rendered by `Profile.astro`) is still available whole. Svelte islands use `@iconify/svelte`, which retrieves icons at runtime from `api.iconify.design`, falling back to `api2.iconify.design` when the first host does not answer, and therefore creates third-party requests.
 
 Neither system emits `iconify` or `iconify--*` classes: `@iconify/svelte` omits them whenever a `class` prop is passed, as the islands do, and the omitted class is only a CSS hook that nothing reads. Do not write CSS or test selectors that depend on `.iconify`.
 
