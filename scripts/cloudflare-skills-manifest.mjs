@@ -29,8 +29,18 @@ export const FILES = [
 	// Apache-2.0 第 4 条 (a) によりライセンス本文を同梱している。上流で本文が変わったら気付けるよう検査する
 	["LICENSE", "LICENSE"],
 	["wrangler/SKILL.md", "skills/wrangler/SKILL.md"],
+	// 両 SKILL.md の "Skill feedback" 節がリンクする、上流のスキルごとの参照資料
+	[
+		"wrangler/references/skill-feedback.md",
+		"skills/wrangler/references/skill-feedback.md",
+	],
 	["workers-best-practices/SKILL.md", "skills/workers-best-practices/SKILL.md"],
-	...["configuration", "platform-apis", "runtime-patterns"].map((name) => [
+	...[
+		"configuration",
+		"platform-apis",
+		"runtime-patterns",
+		"skill-feedback",
+	].map((name) => [
 		`workers-best-practices/references/${name}.md`,
 		`skills/workers-best-practices/references/${name}.md`,
 	]),
@@ -58,10 +68,10 @@ export const FILES = [
 //   で取り出して改変を当て直す。左側 (記録済みの値) を渡せば旧版を取り出せるので、上流で何が変わったかを
 //   旧版と新版の比較で確かめられる。
 export const LOCALLY_MODIFIED = new Map([
-	["wrangler/SKILL.md", "1d2f6ed1c3f55279d1aa9202501d03a6f1af9f6b"],
+	["wrangler/SKILL.md", "d5cef1c15fd2434202c33f071cf502b5d69b141d"],
 	[
 		"workers-best-practices/SKILL.md",
-		"a669596e421f1945bd6a37d5f4dc012752428919",
+		"d150906f403b130b68e7e47b958c4e46fbd053f3",
 	],
 ]);
 
