@@ -578,6 +578,49 @@ test("robots.txt keeps build assets crawlable and advertises the sitemap", async
 	expect(body).toContain("Sitemap: https://necofuryai.dev/sitemap-index.xml");
 });
 
+test("pages declare UTF-8 as the first element of head, inside the first 1024 bytes", async ({
+	request,
+}) => {
+	// 本番の Content-Type は text/html だけで charset が付かないので、文字コードは
+	// <meta charset> で決まる。HTML の仕様はこの宣言を先頭 1024 バイト以内に置くよう
+	// 定めている。本番では head に GA のタグ (約 500 バイト) が入るが、
+	// PUBLIC_GA_MEASUREMENT_ID を設定しない CI のビルドには入らないため、バイト位置に
+	// 加えて head の最初の要素であること (間は HTML の空白だけ) も確かめる。
+	const pages = [
+		...cases.map((item) => ({ path: item.path, status: 200 })),
+		{ path: "/missing-page/", status: 404 },
+	];
+	for (const { path, status } of pages) {
+		const response = await request.get(path);
+		expect(response.status(), path).toBe(status);
+		const body = await response.body();
+
+		const start = body.indexOf("<meta charset");
+		expect(start, `${path}: <meta charset>`).toBeGreaterThan(-1);
+		const end = body.indexOf(">", start) + 1;
+		expect(end, `${path}: end byte of <meta charset>`).toBeLessThanOrEqual(
+			1024,
+		);
+		expect(body.subarray(start, end).toString(), path).toMatch(
+			/^<meta charset="utf-8"\s*\/?>$/i,
+		);
+		expect(
+			body.indexOf("<meta charset", end),
+			`${path}: second <meta charset>`,
+		).toBe(-1);
+
+		const headOpen = body.indexOf("<head>");
+		expect(headOpen, `${path}: <head>`).toBeGreaterThan(-1);
+		expect(start, `${path}: <meta charset> inside head`).toBeGreaterThan(
+			headOpen,
+		);
+		expect(
+			body.subarray(headOpen + "<head>".length, start).toString(),
+			`${path}: markup before <meta charset> in head`,
+		).toMatch(/^[\t\n\f\r ]*$/);
+	}
+});
+
 test("theme switch enables dark mode and persists it", async ({ page }) => {
 	await page.addInitScript(() => {
 		if (localStorage.getItem("theme") === null) {
