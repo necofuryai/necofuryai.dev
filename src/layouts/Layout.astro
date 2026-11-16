@@ -128,6 +128,10 @@ const gaInlineScript = gaMeasurementId
 	  data-overlayscrollbars-initialize
 >
 	<head>
+		{/* 本番の Content-Type には charset が付かず、文字コードはこの宣言で決まる。HTML の
+		    仕様は宣言を先頭 1024 バイト以内に収めるよう定めているので、GA のタグや長い
+		    タイトルに押し出されないよう head の最初に置く */}
+		<meta charset="UTF-8" />
 
 		{gaMeasurementId && (
 			<>
@@ -138,7 +142,6 @@ const gaInlineScript = gaMeasurementId
 
 		<title>{pageTitle}</title>
 
-		<meta charset="UTF-8" />
 		<meta name="description" content={description || pageTitle}>
 		<meta name="author" content={profileConfig.name}>
 		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
