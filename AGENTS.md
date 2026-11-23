@@ -74,7 +74,7 @@ The repository explicitly configures a `unified()`-based pipeline in `markdown.p
 
 ### Page language
 
-- `siteConfig.lang` (`ja`) is the default `<html lang>`. `/about/` is written in English and passes `lang="en"` to `MainGridLayout`, as posts pass their frontmatter `lang`. Swup's head plugin copies `<html lang>` on each navigation.
+- `siteConfig.lang` (`ja`) is the default `<html lang>`. `/about/` is written in English and passes `lang="en"` to `MainGridLayout`, as posts pass their frontmatter `lang`. Swup's head plugin copies `<html lang>` on each navigation. Chrome decides whether to offer translation only when a document loads, so after a Swup visit to or from `/about/` its offer still reflects the last fully loaded page; the owner accepts this and prefers Swup's transitions, so keep those visits on Swup rather than full page loads.
 - `i18n()` always returns `siteConfig.lang` strings, so the navbar, sidebar, banner credit, and footer carry `lang={uiLang}` on every page, whatever the page's own `lang`: all but the footer sit outside the Swup containers and persist across visits.
 - Pagefind builds one index per `<html lang>` and searches only the index of the page it starts on. `force_language: "ja"` in `pagefind.yml` keeps `/about/` in the single index; without it, About drops out of searches on Japanese pages.
 - Google detects a page's language from its visible text and ignores `lang` and `hreflang` for that. The attributes serve screen readers, CJK glyph selection, and browser translation offers. Add a site-wide language toggle only together with translated pages behind it; translations would get their own URLs under `/en/`.
