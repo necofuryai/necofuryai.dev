@@ -154,7 +154,7 @@ Read `docs/dependencies.md` before you:
 - fix a Dependabot alert on a transitive dependency by hand
 - remove a dependency
 
-Read it also when a Dependabot security update fails with `dependency_file_not_resolvable`, or every CI job on a Dependabot PR fails with `ERR_PNPM_BROKEN_LOCKFILE`.
+Read it also when a Dependabot security update fails with `dependency_file_not_resolvable`, every CI job on a Dependabot PR fails with `ERR_PNPM_BROKEN_LOCKFILE`, or a Dependabot PR bumps `@playwright/test`.
 
 These rules apply everywhere:
 
