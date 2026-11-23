@@ -1523,6 +1523,8 @@ deny 理由は job log に出力し、どの規則で手動マージへ回った
 
 本節は「実装する変更」の `.github/dependabot.yml` にある group 定義へ除外を追加し、「自動マージ範囲を広げる条件」の `@playwright/test` に関する再評価条件を上書きする。
 
+> **2026-11-23 改訂:** 本節の「背景」にある「Playwright は browser binary を package version 固有の path から探す」という説明と、「group からの除外」にある「container image の更新はその個別 PR の中だけで完結し」という記述は、「`@playwright/test` の置き換え PR 運用（2026-11-23 改訂）」節が上書きする。「container image の更新手順」のうち同節が上書きする箇所は、その節の冒頭に記す。
+
 ### 背景
 
 2026-08-03 の PR #89 で、`@playwright/test` の 1.61.1 から 1.62.0 への更新が、catch-all-minor-patch group の五件更新の一つとして届いた。
@@ -1553,6 +1555,8 @@ denylist による自動マージの除外は従来どおり維持する。
 [Dependabot の groups 設定](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference#groups)
 
 ### container image の更新手順
+
+> **2026-11-23 改訂:** この節の冒頭の一文、手順 3、merge を急ぐ理由を述べた末尾の一文は、「`@playwright/test` の置き換え PR 運用（2026-11-23 改訂）」節が上書きする。手順 1 と 2、digest を取得する command は、同節の手順でもそのまま使う。
 
 `@playwright/test` の個別 PR には、次の手順で container image の更新 commit を積む。
 
@@ -1709,6 +1713,68 @@ structured output は result message の `structured_output` から Action が�
 run 37770659952 は `--json-schema` を渡す前の構成で実行したので、この `claude_args` で Advisory Canary Fixture を改めて実行した。
 2026-10-26 に PR #241 の branch（`b9b857f`、Action v1.0.259、Claude Code 2.1.309、`claude-sonnet-5-5`）で実行した run 40324646915 は、八つの probe（Read 五つと Grep 三つ）がすべて拒否され、`permission_denials` は 8、15 turn、$0.1130 で合格した。
 Action は structured output を 4 つのフィールドで返し、log に canary の値は一つも現れなかった。
+
+## `@playwright/test` の置き換え PR 運用（2026-11-23 改訂）
+
+本節は、「`@playwright/test` と container image の更新運用（2026-08-03 改訂）」（以下、08-03 改訂）の次の三か所を上書きする。
+
+- 「背景」にある「Playwright は browser binary を package version 固有の path から探す」という説明
+- 「group からの除外」にある「container image の更新はその個別 PR の中だけで完結し」という記述
+- 「container image の更新手順」の冒頭の一文、手順 3、merge を急ぐ理由を述べた末尾の一文
+
+08-03 改訂の手順 1 と 2、digest を取得する command、`exclude-patterns` による group からの除外、自動化の見送りは引き続き有効である。
+group からの除外によって container image の更新が他の依存更新を巻き込まない点は変わらない。
+ただし、container image の更新は Dependabot の個別 PR ではなく、置き換え PR（Dependabot PR の commit を cherry-pick し、container image を上げる commit を足した maintainer の PR）の中で完結する。
+置き換え PR では Dependabot の branch に commit を積まないので、Dependabot PR の自動 rebase は止まらず、08-03 改訂が merge を急ぐ理由とした事情は生じない。
+
+### 背景
+
+08-03 改訂の後、PR #101、#144、#219、#235 の四件は、Dependabot の branch に container image を上げる `ci` commit を積んで merge した。
+このうち PR #144 と PR #219 では、Dependabot の commit だけの状態で UI smoke が失敗し、積んだ commit で green になった。
+2026-11-16 の PR #278（1.64.1 から 1.65.0）と 2026-11-23 の PR #290（1.65.0 から 1.65.1）でも、UI smoke の全 test が browser の起動で失敗した。
+この二件では Dependabot の branch に commit を積まず、maintainer の branch で置き換え PR を作った。
+置き換え PR は PR #281 と PR #293 で、どちらも Dependabot の commit を cherry-pick し、container image を上げる `ci` commit を足して merge した。
+PR #293 の本文は、今後の `@playwright/test` の Dependabot PR にも置き換え PR が要るとしている。
+以後は、置き換え PR を標準の手順とする。
+
+### 置き換え PR の作り方
+
+1. main から branch を作り、Dependabot PR の commit を cherry-pick する。cherry-pick した commit の author は `dependabot[bot]` のまま残る。
+2. 08-03 改訂の手順 1 と 2 で新しい tag の digest を取得し、`build.yml` の `container.image` を新しい tag と digest へ書き換える `ci` type の commit を足す。
+3. PR の本文で、置き換える Dependabot PR を示す。PR #281 と PR #293 は、title を `fix: move @playwright/test to <version> together with its container image` とした。
+4. required の status check である `CI OK`、`quality`、`Dependency Review`、`Dependabot Auto-merge Policy` がすべて success になったら、手動で merge する。置き換え PR の author は Dependabot ではないので、auto-merge を判定して設定する job は skip され、`Dependabot Auto-merge Policy` は判定を経ずに success になる（PR #293 では `Evaluate Dependabot auto-merge eligibility` と `Enable eligible Dependabot auto-merge` が skip された）。
+5. 元の Dependabot PR の扱いは、「元の Dependabot PR の閉じ方」に従う。
+
+置き換え PR には Claude advisory の comment が付かない。
+advisory Workflow の `preflight` が、PR author が `dependabot[bot]` であることを要求するためである（「advisory Workflow の実装との差異（2026-10-02 改訂）」）。
+release note に関する advisory は、元の Dependabot PR の comment で読む。
+
+### 元の Dependabot PR の閉じ方
+
+PR #278 は、PR #281 の merge から約 2 分後に、Dependabot が「Looks like @playwright/test is up-to-date now, so this is no longer needed.」と comment して close した。
+この comment のほかに、version を通知の対象から外す旨の comment は付かなかった。
+katex でも、PR #191 の merge の約 2 分後に、Dependabot が置き換えられた PR #187 を同じ文面で close した。
+PR #290 は、PR #293 の merge の 10 秒後に maintainer が close し、Dependabot は、その release を今後は通知せず、新しい version が出たら知らせると comment した。
+この comment どおりなら、通知の対象から外れるのは close した PR の version（1.65.1）だけなので、main がその version 以降である限り、以後の更新には影響しない。
+置き換え PR を revert して main がその version より前に戻ったときについては、同じ comment が、PR を reopen すれば Dependabot が conflict を解消して扱い直すと案内している（reopen による取り消しは試していない）。
+
+置き換え PR の merge 後は、maintainer は置き換えた旨の comment を残し、close は Dependabot に任せるのを既定とする。
+Dependabot が close すれば maintainer の操作は要らず、version を通知の対象から外す旨の comment も、その通知 mail も生じないためである。
+Dependabot が close しないまま残ったときを含め、maintainer が close してもよい。
+そのときは上記の comment が付くが、main がその version 以降である限り対処は要らない。
+PR #290 の close のときに Dependabot が comment で案内した `@dependabot ignore this major version` と `@dependabot ignore this minor version` は、次の major または minor version までのすべての更新を止めるので使わない。
+
+### version のずれの検出
+
+PR #293 は `tests/unit/playwright-container-image.test.mjs` を追加した。
+この test は、`package.json` の `@playwright/test` が exact version であること、`pnpm-lock.yaml` がその version に解決していること、`build.yml` に digest 固定の Playwright image がただ一つあり、その tag が `v<version>-noble` であることを確かめる。
+`CI script unit tests` job が `pnpm test:unit` でこの test を実行する。
+Dependabot PR は `package.json` と `pnpm-lock.yaml` だけを変えるので、単独で CI にかけるとこの test が version の不一致を報告して落ちる。
+UI smoke だけでは、この不一致を検出できない場合がある。
+Playwright が browser を探す path を決めるのは package version そのものではなく、playwright-core が version ごとに指定する browser の revision（`/ms-playwright/chromium_headless_shell-<rev>`）である。
+そのため、revision が変わらない更新では、古い image のままでも browser が見つかる。
+PR #101（1.62.0 から 1.62.1、どちらも revision 1234）と PR #235（1.64.0 から 1.64.1、どちらも revision 1248）では、Dependabot の commit だけの状態でも UI smoke が通った。
+置き換え PR でも、手順 2 の commit を足すまでこの test が落ちるので、build を要しない `pnpm test:unit` で commit の漏れを確かめられる。
 
 ## 公式資料
 
