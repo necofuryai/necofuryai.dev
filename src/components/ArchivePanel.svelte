@@ -3,21 +3,14 @@ import { onMount } from "svelte";
 
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
+import {
+	type ArchiveFilter,
+	filterArchivePosts,
+	formatArchiveDate,
+	groupArchivePostsByYear,
+	parseArchiveFilter,
+} from "../utils/archive-utils.mjs";
 import { getPostUrlBySlug } from "../utils/url-utils";
-
-interface Props {
-	sortedPosts?: Post[];
-}
-
-const { sortedPosts = [] }: Props = $props();
-
-// 絞り込み条件は URL のクエリ文字列だけが入力元。以前は tags / categories も
-// export let で受けていたが、受けた直後にここで必ず上書きしていたため
-// プロップとして機能しておらず、呼び出し側 (archive.astro) も渡していない。
-const params = new URLSearchParams(window.location.search);
-const tags = params.has("tag") ? params.getAll("tag") : [];
-const categories = params.has("category") ? params.getAll("category") : [];
-const uncategorized = params.get("uncategorized");
 
 interface Post {
 	slug: string;
@@ -29,69 +22,43 @@ interface Post {
 	};
 }
 
-interface Group {
-	year: number;
-	posts: Post[];
+interface Props {
+	sortedPosts?: Post[];
 }
 
-let groups = $state<Group[]>([]);
+const { sortedPosts = [] }: Props = $props();
 
-function formatDate(date: Date) {
-	const month = (date.getMonth() + 1).toString().padStart(2, "0");
-	const day = date.getDate().toString().padStart(2, "0");
-	return `${month}-${day}`;
-}
+// 初期描画 (SSR とハイドレーション初回) は全記事を UTC 基準で表示し、クエリ文字列の
+// 絞り込みはハイドレーション後の onMount で反映する。トップレベルで window を参照せず、
+// SSR とクライアント初回描画の DOM を一致させるため。
+let filter = $state<ArchiveFilter>({
+	tags: [],
+	categories: [],
+	uncategorized: false,
+});
+
+const groups = $derived(
+	groupArchivePostsByYear(filterArchivePosts(sortedPosts, filter)),
+);
 
 function formatTag(tagList: string[]) {
 	return tagList.map((t) => `#${t}`).join(" ");
 }
 
-onMount(async () => {
-	let filteredPosts: Post[] = sortedPosts;
-
-	if (tags.length > 0) {
-		filteredPosts = filteredPosts.filter(
-			(post) =>
-				Array.isArray(post.data.tags) &&
-				post.data.tags.some((tag) => tags.includes(tag)),
-		);
+onMount(() => {
+	const nextFilter = parseArchiveFilter(window.location.search);
+	if (
+		nextFilter.tags.length > 0 ||
+		nextFilter.categories.length > 0 ||
+		nextFilter.uncategorized
+	) {
+		filter = nextFilter;
 	}
-
-	if (categories.length > 0) {
-		filteredPosts = filteredPosts.filter(
-			(post) => post.data.category && categories.includes(post.data.category),
-		);
-	}
-
-	if (uncategorized) {
-		filteredPosts = filteredPosts.filter((post) => !post.data.category);
-	}
-
-	const grouped = filteredPosts.reduce(
-		(acc, post) => {
-			const year = post.data.published.getFullYear();
-			if (!acc[year]) {
-				acc[year] = [];
-			}
-			acc[year].push(post);
-			return acc;
-		},
-		{} as Record<number, Post[]>,
-	);
-
-	const groupedPostsArray = Object.keys(grouped).map((yearStr) => ({
-		year: Number.parseInt(yearStr, 10),
-		posts: grouped[Number.parseInt(yearStr, 10)],
-	}));
-
-	groupedPostsArray.sort((a, b) => b.year - a.year);
-
-	groups = groupedPostsArray;
 });
 </script>
 
 <div class="card-base px-8 py-6">
-    {#each groups as group}
+    {#each groups as group (group.year)}
         <div>
             <div class="flex flex-row w-full items-center h-[3.75rem]">
                 <div class="w-[15%] md:w-[10%] transition text-2xl font-bold text-right text-75">
@@ -108,7 +75,7 @@ onMount(async () => {
                 </div>
             </div>
 
-            {#each group.posts as post}
+            {#each group.posts as post (post.slug)}
                 <a
                         href={getPostUrlBySlug(post.slug)}
                         aria-label={post.data.title}
@@ -117,7 +84,7 @@ onMount(async () => {
                     <div class="flex flex-row justify-start items-center h-full">
                         <!-- date -->
                         <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
-                            {formatDate(post.data.published)}
+                            {formatArchiveDate(post.data.published)}
                         </div>
 
                         <!-- dot and line -->

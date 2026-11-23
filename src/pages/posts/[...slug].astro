@@ -71,7 +71,7 @@ const jsonLd = {
 
             <!-- title -->
             <div class="relative onload-animation">
-                <div
+                <h1
                     data-pagefind-body data-pagefind-weight="10" data-pagefind-meta="title"
                     class="transition w-full block font-bold mb-3
                     text-3xl md:text-[2.25rem]/[2.75rem]
@@ -80,7 +80,7 @@ const jsonLd = {
                     before:absolute before:top-[0.75rem] before:left-[-1.125rem]
                 ">
                     {entry.data.title}
-                </div>
+                </h1>
             </div>
 
             <!-- metadata -->
@@ -113,26 +113,38 @@ const jsonLd = {
         </div>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full">
-        <a href={entry.data.nextSlug ? getPostUrlBySlug(entry.data.nextSlug) : "#"}
-           class:list={["w-full font-bold overflow-hidden active:scale-95", {"pointer-events-none": !entry.data.nextSlug}]}>
-            {entry.data.nextSlug && <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-start! gap-4" >
-                <Icon name="material-symbols:chevron-left-rounded" class="text-[2rem] text-[var(--primary-text)]" />
-                <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
-                    {entry.data.nextTitle}
-                </div>
-            </div>}
-        </a>
+    {/* 前後の記事が無い側に href="#" の空リンクを出すとタブ順やクロール対象に残るため、
+        非リンクのプレースホルダで md:flex-row の 2 列配置だけを維持する */}
+    {(entry.data.nextSlug || entry.data.prevSlug) && (
+        <div class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full">
+            {entry.data.nextSlug ? (
+                <a href={getPostUrlBySlug(entry.data.nextSlug)}
+                   class="w-full font-bold overflow-hidden active:scale-95">
+                    <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-start! gap-4">
+                        <Icon name="material-symbols:chevron-left-rounded" class="text-[2rem] text-[var(--primary-text)]" />
+                        <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
+                            {entry.data.nextTitle}
+                        </div>
+                    </div>
+                </a>
+            ) : (
+                <div class="hidden md:block w-full" aria-hidden="true" />
+            )}
 
-        <a href={entry.data.prevSlug ? getPostUrlBySlug(entry.data.prevSlug) : "#"}
-           class:list={["w-full font-bold overflow-hidden active:scale-95", {"pointer-events-none": !entry.data.prevSlug}]}>
-            {entry.data.prevSlug && <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-end! gap-4">
-                <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
-                    {entry.data.prevTitle}
-                </div>
-                <Icon name="material-symbols:chevron-right-rounded" class="text-[2rem] text-[var(--primary-text)]" />
-            </div>}
-        </a>
-    </div>
+            {entry.data.prevSlug ? (
+                <a href={getPostUrlBySlug(entry.data.prevSlug)}
+                   class="w-full font-bold overflow-hidden active:scale-95">
+                    <div class="btn-card rounded-2xl w-full h-[3.75rem] max-w-full px-4 flex items-center justify-end! gap-4">
+                        <div class="overflow-hidden transition text-ellipsis whitespace-nowrap max-w-[calc(100%_-_3rem)] text-black/75 dark:text-white/75">
+                            {entry.data.prevTitle}
+                        </div>
+                        <Icon name="material-symbols:chevron-right-rounded" class="text-[2rem] text-[var(--primary-text)]" />
+                    </div>
+                </a>
+            ) : (
+                <div class="hidden md:block w-full" aria-hidden="true" />
+            )}
+        </div>
+    )}
 
 </MainGridLayout>

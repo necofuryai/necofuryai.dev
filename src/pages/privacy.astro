@@ -14,7 +14,10 @@ if (!privacyPost) {
 
 const { Content } = await render(privacyPost);
 ---
-<MainGridLayout title={i18n(I18nKey.privacyPolicy)} description={i18n(I18nKey.privacyPolicy)}>
+<MainGridLayout
+    title={i18n(I18nKey.privacyPolicy)}
+    description="necofuryai.dev のプライバシーポリシー。Google アナリティクス 4 によるアクセス解析と無効化方法、紹介リンクの取り扱い、免責事項を記載しています。"
+>
     <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
         <div class="card-base z-10 px-9 py-6 relative w-full ">
             <Markdown class="mt-2">
