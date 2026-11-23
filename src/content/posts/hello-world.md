@@ -8,7 +8,7 @@ draft: false
 lang: ja
 ---
 
-# はじめに
+## はじめに
 
 技術ブログ necofuryai.dev を開設しました。
 

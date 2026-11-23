@@ -8,8 +8,11 @@ import { getSortedPostsList } from "../utils/content-utils";
 const sortedPostsList = await getSortedPostsList();
 ---
 
-<MainGridLayout title={i18n(I18nKey.archive)}>
+<MainGridLayout
+	title={i18n(I18nKey.archive)}
+	description="necofuryai.dev の全記事アーカイブ。公開年別の一覧をタグやカテゴリで絞り込めます。"
+>
     <h1 class="sr-only">{i18n(I18nKey.archive)}</h1>
-    <ArchivePanel sortedPosts={sortedPostsList} client:only="svelte"></ArchivePanel>
+    <ArchivePanel sortedPosts={sortedPostsList} client:load></ArchivePanel>
 </MainGridLayout>
 

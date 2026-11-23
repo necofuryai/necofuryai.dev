@@ -36,14 +36,17 @@ interface Props {
 	lang?: string;
 	setOGTypeArticle?: boolean;
 	image?: string;
+	canonical?: boolean;
 }
 
 let { title, banner, description, lang, setOGTypeArticle } = Astro.props;
-const { image } = Astro.props;
+const { image, canonical = true } = Astro.props;
 
-const canonicalUrl = Astro.site
-	? new URL(Astro.url.pathname, Astro.site).href
-	: undefined;
+// 404 など正規 URL を持たないページでは canonical={false} として canonical / og:url / twitter:url を省く
+const canonicalUrl =
+	canonical && Astro.site
+		? new URL(Astro.url.pathname, Astro.site).href
+		: undefined;
 // 寸法・形式・代替テキストが分かるのは、ビルド時に作る既定の画像だけ。その場合だけ meta に出す
 const ogImage = resolveOgImage(image, Astro.site);
 
@@ -147,7 +150,7 @@ const gaInlineScript = gaMeasurementId
 		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
 		<meta property="og:site_name" content={siteConfig.title}>
-		<meta property="og:url" content={Astro.url}>
+		{canonical && <meta property="og:url" content={Astro.url} />}
 		<meta property="og:title" content={pageTitle}>
 		<meta property="og:description" content={description || pageTitle}>
 		{ogImage && <meta property="og:image" content={ogImage.url} />}
@@ -166,7 +169,7 @@ const gaInlineScript = gaMeasurementId
         )}
 
 		<meta name="twitter:card" content="summary_large_image">
-		<meta property="twitter:url" content={Astro.url}>
+		{canonical && <meta property="twitter:url" content={Astro.url} />}
 		<meta name="twitter:title" content={pageTitle}>
 		<meta name="twitter:description" content={description || pageTitle}>
 		{ogImage && <meta name="twitter:image" content={ogImage.url} />}

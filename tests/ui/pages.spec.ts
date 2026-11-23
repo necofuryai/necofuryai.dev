@@ -1,5 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 
+const SITE_ORIGIN = "https://necofuryai.dev";
+
 const cases = [
 	{ path: "/", ready: 'a[href="/posts/hello-world/"]' },
 	{ path: "/about/", ready: "main h1" },
@@ -40,8 +42,7 @@ for (const item of cases) {
 		const response = await page.goto(item.path, { waitUntil: "load" });
 		expect(response?.ok()).toBe(true);
 
-		// count() does not wait, and /archive/ renders its list in a client:only
-		// island after load; toBeVisible() retries until the element appears
+		// count() does not wait; toBeVisible() retries until the landmark is rendered
 		await expect(page.locator(item.ready).first()).toBeVisible();
 	});
 }
@@ -531,7 +532,7 @@ test("the theme color reset button shows only after the hue changes and hands fo
 	await expect(slider).toBeFocused();
 });
 
-test("custom 404 returns not found and offers recovery links", async ({
+test("custom 404 returns not found, omits canonical metadata, and restores it on recovery", async ({
 	page,
 }) => {
 	const response = await page.goto("/missing-page/", { waitUntil: "load" });
@@ -547,13 +548,204 @@ test("custom 404 returns not found and offers recovery links", async ({
 		"content",
 		"noindex",
 	);
+	await expect(page.locator('head link[rel="canonical"]')).toHaveCount(0);
+	await expect(page.locator('head meta[property="og:url"]')).toHaveCount(0);
 	await expect(
-		page.getByRole("link", { name: "ホームへ戻る" }),
-	).toHaveAttribute("href", "/");
+		page.locator(
+			'head meta[property="twitter:url"], head meta[name="twitter:url"]',
+		),
+	).toHaveCount(0);
+
+	const homeLink = page.getByRole("link", { name: "ホームへ戻る" });
+	await expect(homeLink).toHaveAttribute("href", "/");
 	await expect(page.getByRole("link", { name: "記事を探す" })).toHaveAttribute(
 		"href",
 		"/archive/",
 	);
+
+	// Swup の head 更新により、404 から回復リンクで戻ると canonical 類が復元され noindex は外れる
+	await page.evaluate(() => {
+		(
+			window as Window & { __uiSmokeSwupSentinel?: boolean }
+		).__uiSmokeSwupSentinel = true;
+	});
+	await expect
+		.poll(() =>
+			page.evaluate(() =>
+				Boolean((window as Window & { swup?: unknown }).swup),
+			),
+		)
+		.toBe(true);
+	await Promise.all([
+		page.waitForURL((url) => url.pathname === "/"),
+		homeLink.click(),
+	]);
+	await expect(page.locator('head link[rel="canonical"]')).toHaveAttribute(
+		"href",
+		`${SITE_ORIGIN}/`,
+	);
+	await expect(page.locator('head meta[property="og:url"]')).toHaveAttribute(
+		"content",
+		`${SITE_ORIGIN}/`,
+	);
+	await expect(
+		page.locator('head meta[property="twitter:url"]'),
+	).toHaveAttribute("content", `${SITE_ORIGIN}/`);
+	await expect(
+		page.locator('head meta[name="robots"][content*="noindex" i]'),
+	).toHaveCount(0);
+	expect(
+		await page.evaluate(
+			() =>
+				(window as Window & { __uiSmokeSwupSentinel?: boolean })
+					.__uiSmokeSwupSentinel,
+		),
+	).toBe(true);
+});
+
+test("indexable pages declare self-referencing canonical URLs without noindex", async ({
+	page,
+}) => {
+	for (const item of cases) {
+		const expected = `${SITE_ORIGIN}${item.path}`;
+		await page.goto(item.path, { waitUntil: "load" });
+		await expect(page.locator('head link[rel="canonical"]')).toHaveAttribute(
+			"href",
+			expected,
+		);
+		await expect(page.locator('head meta[property="og:url"]')).toHaveAttribute(
+			"content",
+			expected,
+		);
+		await expect(
+			page.locator('head meta[name="robots"][content*="noindex" i]'),
+		).toHaveCount(0);
+	}
+
+	// クエリで絞り込んだアーカイブ URL も正規 URL は /archive/ を指す
+	await page.goto("/archive/?tag=Blog", { waitUntil: "load" });
+	await expect(page.locator('head link[rel="canonical"]')).toHaveAttribute(
+		"href",
+		`${SITE_ORIGIN}/archive/`,
+	);
+	await expect(page.locator('head meta[property="og:url"]')).toHaveAttribute(
+		"content",
+		`${SITE_ORIGIN}/archive/`,
+	);
+	await expect(
+		page.locator('head meta[name="robots"][content*="noindex" i]'),
+	).toHaveCount(0);
+});
+
+test("sitemap lists all indexable trailing-slash pages and excludes 404 and drafts", async ({
+	request,
+}) => {
+	const indexResponse = await request.get("/sitemap-index.xml");
+	expect(indexResponse.status()).toBe(200);
+	const indexXml = await indexResponse.text();
+	expect(indexXml).toContain(`<loc>${SITE_ORIGIN}/sitemap-0.xml</loc>`);
+
+	const sitemapResponse = await request.get("/sitemap-0.xml");
+	expect(sitemapResponse.status()).toBe(200);
+	const sitemapXml = await sitemapResponse.text();
+	const locs = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+		(match) => match[1],
+	);
+	expect(locs.length).toBeGreaterThan(0);
+	for (const loc of locs) {
+		expect(loc.startsWith(`${SITE_ORIGIN}/`), loc).toBe(true);
+		expect(loc.endsWith("/"), loc).toBe(true);
+	}
+	for (const item of cases) {
+		expect(locs).toContain(`${SITE_ORIGIN}${item.path}`);
+	}
+	expect(locs.filter((loc) => /\/404(?:\.html|\/)?$/.test(loc))).toEqual([]);
+	expect(locs).not.toContain(`${SITE_ORIGIN}/posts/speak-review/`);
+
+	const draftResponse = await request.get("/posts/speak-review/");
+	expect(draftResponse.status()).toBe(404);
+});
+
+test("post page renders a single h1 for the title and emits no empty hash links", async ({
+	page,
+}) => {
+	await page.goto("/posts/hello-world/", { waitUntil: "load" });
+	await expect(page.locator("main h1")).toHaveCount(1);
+	await expect(page.locator("#post-container h1")).toHaveText("Hello World");
+	// #post-container と前後記事ページャの両方を含む main 全体で空の href="#" を出さない
+	await expect(page.locator('main a[href="#"]')).toHaveCount(0);
+});
+
+test("archive renders SSR post links with UTC dates and filters query parameters on the client", async ({
+	page,
+	request,
+}) => {
+	const response = await request.get("/archive/");
+	expect(response.status()).toBe(200);
+	const html = await response.text();
+	const mainMatch = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/);
+	expect(mainMatch).not.toBeNull();
+	// astro-island の props 属性ではなく、SSR で出力された中身だけを検査する
+	const islandMatch = mainMatch?.[1].match(
+		/<astro-island\b(?:[^>"']|"[^"]*"|'[^']*')*>([\s\S]*?)<\/astro-island>/,
+	);
+	expect(islandMatch).not.toBeNull();
+	const islandHtml = islandMatch?.[1] ?? "";
+	expect(islandHtml).toContain('href="/posts/hello-world/"');
+	const islandText = islandHtml
+		.replace(/<!--[\s\S]*?-->/g, "")
+		.replace(/<[^>]+>/g, " ");
+	expect(islandText).toMatch(/\b2026\b/);
+	expect(islandText).toMatch(/\b07-18\b/);
+	expect(islandText).not.toMatch(/\b07-17\b/);
+	expect(islandText).toContain("Hello World");
+
+	await page.goto("/archive/?tag=Blog", { waitUntil: "load" });
+	const helloWorld = page.locator('main a[href="/posts/hello-world/"]');
+	await expect(helloWorld).toBeVisible();
+	await expect(helloWorld).toContainText("07-18");
+	await expect(helloWorld).not.toContainText("07-17");
+
+	// SSR された全記事リストがハイドレーション後のクエリ絞り込みで実際に絞られることも確かめる
+	await page.goto("/archive/?tag=__nonexistent__", { waitUntil: "load" });
+	await expect(page.locator('main a[href="/posts/hello-world/"]')).toHaveCount(
+		0,
+	);
+});
+
+test("archive and privacy pages provide distinct meta descriptions", async ({
+	page,
+}) => {
+	for (const path of ["/archive/", "/privacy/"]) {
+		await page.goto(path, { waitUntil: "load" });
+		const title = await page.title();
+		const heading = (
+			await page.locator("main h1").evaluate((el) => {
+				const clone = el.cloneNode(true) as Element;
+				for (const anchor of clone.querySelectorAll(".anchor")) {
+					anchor.remove();
+				}
+				return clone.textContent ?? "";
+			})
+		).trim();
+		const description = (
+			(await page
+				.locator('head meta[name="description"]')
+				.getAttribute("content")) ?? ""
+		).trim();
+		expect(description.length, path).toBeGreaterThan(0);
+		expect(
+			description,
+			`${path}: description must differ from <title>`,
+		).not.toBe(title);
+		expect(
+			description,
+			`${path}: description must differ from bare heading`,
+		).not.toBe(heading);
+		await expect(
+			page.locator('head meta[property="og:description"]'),
+		).toHaveAttribute("content", description);
+	}
 });
 
 test("robots.txt keeps build assets crawlable and advertises the sitemap", async ({
