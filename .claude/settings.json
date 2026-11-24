@@ -1,0 +1,40 @@
+{
+	"permissions": {
+		"deny": [
+			"Read(./.site-assets/**)",
+			"Read(./src/assets/images/witch-*)",
+			"Read(./public/og/**)",
+			"Read(./public/favicon/**)",
+			"Read(./dist/_astro/witch-*)",
+			"Read(./dist/og/**)",
+			"Read(./dist/favicon/**)",
+			"Read(./node_modules/.astro/assets/witch-*)",
+			"Read(./playwright-report/**)",
+			"Read(./test-results/**)",
+			"Edit(./.site-assets/**)",
+			"Edit(./src/assets/images/witch-*)",
+			"Edit(./public/og/**)",
+			"Edit(./public/favicon/**)",
+			"Edit(./dist/_astro/witch-*)",
+			"Edit(./dist/og/**)",
+			"Edit(./dist/favicon/**)",
+			"Edit(./node_modules/.astro/assets/witch-*)",
+			"Edit(./playwright-report/**)",
+			"Edit(./test-results/**)",
+			"Bash(SITE_ASSETS_SOURCE=local *)",
+			"Bash(SITE_ASSETS_SOURCE=r2 *)"
+		],
+		"ask": [
+			"Read(./.env)",
+			"Read(./.env.local)",
+			"Read(./.env.development*)",
+			"Read(./.env.production*)",
+			"Read(./.env.test*)",
+			"Edit(./.env)",
+			"Edit(./.env.local)",
+			"Edit(./.env.development*)",
+			"Edit(./.env.production*)",
+			"Edit(./.env.test*)"
+		]
+	}
+}
