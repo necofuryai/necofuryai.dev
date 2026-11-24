@@ -24,7 +24,7 @@ pnpm new-post <slug>  # 新しい記事の作成
 pnpm build            # 本番ビルド (Pagefind インデックス生成込み)
 pnpm preview          # ビルド結果のプレビュー
 pnpm check            # astro check
-pnpm type-check       # tsc --noEmit
+pnpm type-check       # astro sync && tsc --noEmit
 pnpm lint             # Biome チェック (自動修正あり)
 pnpm format           # Biome フォーマット
 ```
