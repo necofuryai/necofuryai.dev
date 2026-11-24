@@ -41,3 +41,7 @@ If every CI job on a Dependabot PR fails with `ERR_PNPM_BROKEN_LOCKFILE` and a d
 ## `@playwright/test` Dependabot PRs
 
 A Dependabot PR that bumps `@playwright/test` fails CI on its own. The UI smoke job runs inside the digest-pinned `mcr.microsoft.com/playwright` image in `.github/workflows/build.yml`, whose tag must match the package version, and Dependabot cannot update a workflow's `container.image`. `tests/unit/playwright-container-image.test.mjs` fails on that mismatch even when the browser revision is unchanged and UI smoke still passes. Take each such update through a replacement PR: cherry-pick Dependabot's commit onto a branch from `main`, and add a `ci:` commit that moves the image to the matching tag and digest. The section "`@playwright/test` の置き換え PR 運用（2026-11-23 改訂）" in `docs/dependency-update-automation-plan.md` holds the procedure, including how to obtain the digest, which checks to wait for, and how to close the original PR.
+
+## Automation and advisory CI workflows
+
+Read `docs/dependency-update-automation-plan.md` before editing `.github/workflows/{dependabot-automerge,dependabot-advisory-review,advisory-canary-fixture,dependency-review}.yml` or `.github/claude/advisory-permissions.json`. It records the Action SHA-pinning policy, `claude_args` parity between the advisory review and canary workflows, and the `--json-schema` contract shared with `scripts/ci/`.

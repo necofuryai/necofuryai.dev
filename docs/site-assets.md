@@ -1,6 +1,6 @@
 # Banner and avatar: asset pipeline and operations
 
-This is the detailed reference for the commissioned banner (`siteConfig.banner`) and avatar (`profileConfig.avatar`), moved out of `AGENTS.md`. The rules in the "Banner and avatar" section of `AGENTS.md` apply in full while you work from this file: never Read, screenshot, upload, or pass on the originals or anything made from them, and never set `SITE_ASSETS_SOURCE` to `local` or `r2`.
+This is the detailed reference for the commissioned banner (`siteConfig.banner`) and avatar (`profileConfig.avatar`), moved out of `AGENTS.md`. The rules in "Non-negotiable guardrails" and "Banner and avatar" in `AGENTS.md` apply in full while you work from this file: never Read, screenshot, upload, or pass on the originals or anything made from them, and never set `SITE_ASSETS_SOURCE` to `local` or `r2`.
 
 ## Asset preparation (`scripts/prepare-site-assets.mjs`)
 
@@ -16,7 +16,7 @@ The same run resizes the avatar, uncropped, into the gitignored square PNG favic
 
 ## Workers Builds
 
-On Workers Builds (`WORKERS_CI=1`), the production branch `main` must use `r2`, with the three `SITE_ASSETS_R2_*` values set as build secrets under Settings > Build > Variables and secrets. Every other branch is forced to `placeholder`, so the script never reads the credentials there. Workers Builds would still pass the build secrets to any branch build it runs, so keep non-production branch builds disabled, as they are now. `build.yml` also sets `SITE_ASSETS_SOURCE=placeholder`, because failed UI runs upload screenshots as public artifacts. Deploy production only through Workers Builds: a local `pnpm build` followed by `wrangler deploy` would ship the placeholders.
+On Workers Builds (`WORKERS_CI=1`), the production branch `main` must use `r2`, with the three `SITE_ASSETS_R2_*` values set as build secrets under Settings > Build > Variables and secrets. Every other branch is forced to `placeholder`, so the script never reads the credentials there. Workers Builds would still pass the build secrets to any branch build it runs, so keep non-production branch builds disabled, as they are now. `build.yml` also sets `SITE_ASSETS_SOURCE=placeholder`, because failed UI runs upload Playwright reports and failure traces (`playwright-report/`, `test-results/`, which embed screenshots) as public artifacts. Deploy production only through Workers Builds: a local `pnpm build` followed by `wrangler deploy` would ship the placeholders.
 
 ## Keeping the originals out of `dist`
 
