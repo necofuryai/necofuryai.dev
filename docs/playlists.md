@@ -34,4 +34,4 @@ Data refresh PRs run the normal UI smoke tests. Track-list changes do not requir
 
 Add or reorder playlists in the script's `PLAYLISTS` array; the page renders `src/data/playlists/*.json` automatically in `order` sequence. The display follows a rolling window of Replay All Time, the current year, and the previous two years.
 
-At the start of a new year, update the `PLAYLISTS` array and move the `weekly` marker to the new current-year playlist. Move the former current year into a historical slot and remove the oldest year.
+At the start of a new year, update the `PLAYLISTS` array and move the `weekly` marker to the new current-year playlist. Move the former current year into a historical slot, remove the oldest year from `PLAYLISTS`, and delete its retired `src/data/playlists/*.json` file manually (`scripts/fetch-playlists.mjs` never deletes removed years, while `src/pages/playlists.astro` globs all `*.json` files). Then run a full fetch (`pnpm fetch-playlists` or `scope=all` in `workflow_dispatch`) so `order` is rewritten across the remaining JSON files.

@@ -46,9 +46,9 @@ Apache-2.0 第 4 条 (b) は、改変したファイル自身に変更した旨�
 
 参照資料 (`references/` 以下) は上流と同一のまま置いている。
 `workers-best-practices/references/configuration.md` にも `node_modules/wrangler/config-schema.json` やインストール済みのスキーマを参照させる記述が残るが、上記 2 の注記が入口の `SKILL.md` で先に読まれるため改変していない。
-両 `SKILL.md` 末尾の "Skill feedback" 節が読ませる `references/skill-feedback.md` は、上流がスキルごとに置く資料で、どちらも同梱している。
+両 `SKILL.md` 末尾の "Skill feedback" 節が読ませる `wrangler/references/skill-feedback.md` と `workers-best-practices/references/skill-feedback.md` は、上流がスキルごとに置く資料で、どちらも同梱している。
 スキルの案内が誤っている・古い・足りないとユーザーが報告したときに、送るかどうかを尋ね、Issue の題と本文をユーザーに見せて承認を得てから cloudflare/skills に公開 Issue として投稿する手順を定めている。
-`references/observability/README.md` 末尾の `../tail-workers/README.md` への相対リンクは上流の包括スキル内の資料を指しており、このリポジトリには同梱していないためリンク切れになる。
+`workers-best-practices/references/observability/README.md` 末尾の `../tail-workers/README.md` への相対リンクは上流の包括スキル内の資料を指しており、このリポジトリには同梱していないためリンク切れになる。
 両 `SKILL.md` は Cloudflare CLI (`cf`) 向けの `cf-cli` スキルにも言及するが、同梱していない。
 このリポジトリは `wrangler.jsonc` を持ち `cloudflare.config.ts` を持たないため、どちらの `SKILL.md` の分岐でも `wrangler` スキルの側に入る。
 
@@ -78,6 +78,7 @@ pnpm diff-skills
 上流のファイルを新たに改変するときは、先に `pnpm diff-skills` でそのファイルが「一致」であることを確かめる (「差分」なら先に取り込む)。
 そのうえで、編集する前に `git hash-object .claude/skills/<パス>` で求めた blob SHA とともに `LOCALLY_MODIFIED` に登録し、改変したファイルの冒頭 (frontmatter があればその直後) に変更告知を追加し (既にあれば概要を更新し)、「上流からの改変点」に記録する。
 `LICENSE` も検査対象に含めており、上流で本文が変われば「差分」として検出される。
+再同期で `.claude/skills/` 以下のファイルパスが変わった場合は、ここへ相対パスを直書きしている `.agents/skills/cloudflare-static-site/SKILL.md` の参照先も合わせて確認すること。
 
 終了コードは `.github/workflows/skills-drift.yml` が依存している契約になっている。
 
